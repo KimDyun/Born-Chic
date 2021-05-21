@@ -2,7 +2,7 @@
 
 ***
 ## Team Member
-***
+
 ### Team Leader
 Dae Hyeon Kim (2016722079)
 
