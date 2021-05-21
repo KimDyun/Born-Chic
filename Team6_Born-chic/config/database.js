@@ -8,7 +8,7 @@ module.exports = function () {
                 host: 'localhost',
                 user: 'root',
                 database: 'tutorial',
-                password: 'Eogus153@'
+                password: 'Wkdtlzm97!'
             })
         },
 
