@@ -27,5 +27,15 @@
         %>
     </div>
 </div>
+
+<ul class="pagination">
+    <%
+        for(i=1; i<=total_page; i++){
+    %>
+        <li>[<a href="/itemlist/<%=category%>/<%=i%>"><%=i%></a>]</li>
+    <%
+    }
+    %>
+</ul>
 </body>
 </html>
