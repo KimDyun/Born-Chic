@@ -16,11 +16,14 @@ router.post('/', function (req, res){
 });
 
 
-router.get('/l_main:id',function (req, res,next){
+router.get('/l_main',function (req, res,next){
+    var id = req.cookies.id;
+    console.log(id);
+
     var sqlForSelectList = "SELECT u_admin FROM USER WHERE u_id=?";
-    connection.query(sqlForSelectList,[req.params.id] ,function (err, admin){
+    connection.query(sqlForSelectList,[id] ,function (err, admin){
         if (err) console.error("err : " + err);
-        res.render('l_main', {title : 'Main', user_id: req.params.id, admin: admin});
+        res.render('l_main', {title : 'Main', user_id: id, admin: admin});
     });
 });
 
@@ -48,7 +51,10 @@ router.post('/login', function (req, res){
         console.log(passwd);
         if(result == 0)
             res.send("<script>alert('패스워드가 일치하지 않습니다.');history.back();</script>");
-        else res.redirect('/l_main' + user_id);
+        else {
+            res.cookie('id', user_id);
+            res.redirect('/l_main');
+        }
     });
 });
 
