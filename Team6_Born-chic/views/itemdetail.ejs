@@ -66,15 +66,10 @@
 
     <div class="input-group mb-3">
         <input type="hidden" id="idx" value="<%=rows[0].i_code%>"/>
+        <input type="hidden" id="user_id" value="<%=user_id%>"/>
         <input type="text" class="form-control" placeholder="수량" id = "count_button">
-
-        <button class="btn btn-outline-secondary" type="button" onclick="
-        const buy_count = $('#count_button').val();
-        const i_code = $('#idx').val();
-        location.href =  '/itemdetail/shopping/cart/'+buy_count+'/'+i_code;
-        ">장바구니</button>
-
-        <button class="btn btn-outline-secondary" type="button" onclick="location.href =  '#';">구매하기</button>
+        <button class="btn btn-outline-secondary" type="button" onclick="shopping_basket()">장바구니</button>
+        <button class="btn btn-outline-secondary" type="button" onclick="shopping_buy">구매하기</button>
     </div>
 
 </body>

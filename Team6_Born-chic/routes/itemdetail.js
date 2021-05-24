@@ -24,14 +24,60 @@ router.post('/:i_code', function (req, res){
 });
 
 router.get('/shopping/cart/:buy_count/:i_code',function (req, res,next){
-    var i_code = req.params.i_code;
+    var item_code = req.params.i_code;
+    var user_id = req.cookies.id;
     var buy_count = req.params.buy_count;
 
-    var sqlForSelectList = "SELECT count(*) FROM ITEM";
-    connection.query(sqlForSelectList,function (err, data){
+    var sqlForSelectList = "SELECT delivery FROM BUY WHERE b_id = ? and b_code = ?";
+    connection.query(sqlForSelectList,[user_id, item_code],function (err, data){
         if (err) console.error("err : " + err);
-        res.redirect('/itemdetail/'+i_code);
+        if(data.length!=0) {            //구매한 이력이 있는 경우
+            if (data[0].delivery == -1) {       //장바구니에 담아져 있는 경우
+                res.send({data: "already shopping cart"});
+            }
+            else{                       //구매 이력은 있지만 장바구니에는 담겨져 있지 않는 경우
+                var sqlForSelectList = "INSERT INTO BUY(b_id, b_code, delivery, b_count) VALUES (?,?,?,?)";
+                connection.query(sqlForSelectList,[user_id, item_code, -1, buy_count] ,function (err, data){
+                    if (err) console.error("err : " + err);
+                    if(data.length!=0)
+                        res.send({data: "success"});
+                    else
+                        res.send({data:"error"});
+                });
+            }
+        }
+        else{                           //구매한 이력이 없는 경우
+            var sqlForSelectList = "INSERT INTO BUY(b_id, b_code, delivery, b_count) VALUES (?,?,?,?)";
+            connection.query(sqlForSelectList,[user_id, item_code, -1, buy_count] ,function (err, data){
+                if (err) console.error("err : " + err);
+                if(data!=null)
+                    res.send({data: "success"});
+                else
+                    res.send({data:"error"});
+            });
+        }
     });
 });
 
+router.get('/shopping/buy/:buy_count/:i_code',function (req, res,next){
+    var item_code = req.params.i_code;
+    var user_id = req.cookies.id;
+    var buy_count = req.params.buy_count;
+
+    var sqlForSelectList = "SELECT delivery FROM BUY WHERE b_id = ? and b_code = ?";
+    connection.query(sqlForSelectList,[user_id, item_code],function (err, data){
+        if (err) console.error("err : " + err);
+        if(data!=null) {            //구매한 이력이 있는 경우
+            if (data[0].delivery == -1) {       //장바구니에 담아져 있는 경우
+
+                //여기에 코드짜야됨
+
+                res.send({data: "already shopping cart"});
+            }
+        }
+        else{                           //구매한 이력이 없는 경우
+
+        }
+    });
+});
 module.exports = router;
