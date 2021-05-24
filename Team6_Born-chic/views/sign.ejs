@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Born-Chic</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <style>
+        .carousel-inner > .carousel-item > img{  width: 20px; height: 500px;  }
+        .text-center {font-size: small;}
+    </style>
+
+</head>
+<body>
+<a href="/"  class="nav-link">
+    <div class="jumbotron text-center">
+        <h1 style="color: dimgrey">Born-chic</h1>
+    </div></a>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: aliceblue">Menu</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a href="#" class="nav-link">남성 아우터</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">남성 상의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">남성 하의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 아우터</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 상의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 하의</a></li>
+        </ul>
+    </div>
+</nav><br>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-6">
+            <img class="d-block img-fluid mx-auto" style=" height: 400px" src="https://images.pexels.com/photos/213399/pexels-photo-213399.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="First slide">
+        </div>
+        <div class="col-lg-4" style="position: relative">
+            <br><br><br><br>
+            <h3>회원가입</h3>
+            <form action="sign" method="post">
+                <div class="input-group mt-3 mb-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="u_id" name="u_id">ID</span>
+                    </div>
+                    <input type="text" name="u_id" class="form-control"
+                           placeholder="Input ID" aria-label="Input ID"
+                           aria-describedby="basic-addon1" required>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="pwd" name ="pwd">PW</span>
+                    </div>
+                    <input type="password" name="pwd" class="form-control"
+                           placeholder="Input Password" aria-label="Input Password"
+                           aria-describedby="basic-addon1" required>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="u_name" name ="u_name">Name</span>
+                    </div>
+                    <input type="password" name="u_name" class="form-control"
+                           placeholder="Input Name" aria-label="Input Name"
+                           aria-describedby="basic-addon1" required>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="u_number" name ="u_number">Phone Number</span>
+                    </div>
+                    <input type="password" name="u_number" class="form-control"
+                           placeholder="Input Phone Number" aria-label="Input Phone Number"
+                           aria-describedby="basic-addon1" required>
+                </div>
+                <button type="submit" class="btn btn-dark btn-sm btn-block mt-1">
+                    회원가입</button>
+            </form>
+        </div>
+    </div>
+</div>
+<br><br><br>
+</body>
+</html>
