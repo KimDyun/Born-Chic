@@ -10,9 +10,11 @@
     <script src="/javascript/functions.js"></script>
 </head>
 <body>
-<a href="/"  class="nav-link"> <div class="jumbotron text-center">
+<a href="/" class="nav-link">
+    <div class="jumbotron text-center">
         <h1 style="color: dimgrey">Born-chic</h1>
-    </div></a>
+    </div>
+</a>
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <a class="navbar-brand" style="color: aliceblue">Menu</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -35,57 +37,40 @@
                 </div>
             </div>
         </form>
-        <%if(user_id == ''){%>
+        <% if(user_id == ''){ %>
             <ul class="navbar-nav">
-                <li class="nav-item"><a href="/main/login" class="nav-link">Login</a></li>
+                <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
             </ul>
-        <%}else{
-        if(admin == '' || admin == 0){%>
+        <% }else{
+        if(admin == '' || admin == 0){ %>
             <ul class="navbar-nav">
                 <li class="nav-item "><a class="nav-link" href="/">마이페이지</a></li>
-                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+                <li class="nav-item "><a class="nav-link" href="/delete_cookie">Logout</a></li>
             </ul>
-        <%} else{%>
+        <% } else{ %>
             <ul class="navbar-nav">
                 <li class="nav-item "><a class="nav-link" href="/">물품관리</a></li>
-                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+                <li class="nav-item "><a class="nav-link" href="/delete_cookie">Logout</a></li>
             </ul>
-        <%}%>
-        <%}%>
+        <% } %>
+        <% } %>
     </div>
-</nav><br><br>
-<%for(var j = 0; j < Math.ceil(rows.length/4); j++){%>
-    <div class="card-deck justify-content-center">
-        <%
-        for(var i=j*4; i<4*(j+1); i++){
-            if(i==rows.length)
-                break;
-            var oneItem = rows[i];
-        %>
-        <div class="col-xs-3" style="width: 300px; height: 300px">
-        <div class="card" onclick="movetodetail(<%=oneItem.i_code%>)" >
-            <img class="card-img-top" src="<%=oneItem.image%>" width="100" height="200" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title"><%=oneItem.i_name%></h5>
-                <p class="card-text">가격 : <%=oneItem.price%> 원</p>
-            </div>
-        </div>
-        </div>
-        <%}%>
-    </div>
-<br><br><br>
-<%}%>
-<%if(rows.length==0){%>
-    <p>검색에 해당하는 물품이 존재하지 않습니다.</p>
-<%}%>
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-        <%
-        for(i=1; i<=total_page; i++){
-        %>
-        <li class="page-item" ><a class="page-link" style="color: dimgrey" href="/itemlist/<%=category%>/<%=i%>/<%=search%>"><%=i%></a></li>
-        <%}%>
-    </ul>
 </nav>
+<br><br>
+    <img src="<%=rows[0].image%>" width="150" height="150">
+    <p><%=rows[0].i_name%></p>
+    <p>남은 재고 : <%=rows[0].stock%></p>
+    <p>내용 : <%=rows[0].detail%></p>
+    <p>가격 : <%=rows[0].price%></p>
+    <p><%=date%></p>
+
+    <div class="input-group mb-3">
+        <input type="hidden" id="idx" value="<%=rows[0].i_code%>"/>
+        <input type="hidden" id="user_id" value="<%=user_id%>"/>
+        <input type="text" class="form-control" placeholder="수량" id = "count_button">
+        <button class="btn btn-outline-secondary" type="button" onclick="shopping_basket()">장바구니</button>
+        <button class="btn btn-outline-secondary" type="button" onclick="shopping_buy">구매하기</button>
+    </div>
+
 </body>
 </html>
