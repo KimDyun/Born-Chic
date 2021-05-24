@@ -9,25 +9,68 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container">
-    <div class="row">
-
+<a href="/"  class="nav-link"> <div class="jumbotron text-center">
+        <h1 style="color: dimgrey">Born-chic</h1>
+    </div></a>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: aliceblue">Menu</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a href="/itemlist/m_outer/1" class="nav-link">남성 아우터</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">남성 상의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">남성 하의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 아우터</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 상의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 하의</a></li>
+        </ul>
+        <form class="navbar-form pull-left" role="search" method="post">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default">검색</button>
+                </div>
+            </div>
+        </form>
+        <%if(user_id == ''){%>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
+            </ul>
+        <%}else{
+        if(admin == '' || admin == 0){%>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/">마이페이지</a></li>
+                <li class="nav-item "><a class="nav-link" href="/delete_cookie">Logout</a></li>
+            </ul>
+        <%} else{%>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/">물품관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/delete_cookie">Logout</a></li>
+            </ul>
+        <%}%>
+        <%}%>
+    </div>
+</nav><br><br>
+<%for(var j = 0; j < 3; j++){%>
+<div class="card-deck">
         <%
-        for(var i=0; i<rows.length; i++){
+        for(var i=j*4; i<4*(j+1); i++){
             var oneItem = rows[i];
         %>
-        <div class="col-lg-3">
-            <p><img src="<%=oneItem.image%>" width="200" height="200"></p>
-            <p><%=oneItem.i_name%></p>
-            <p>가격<%=oneItem.price%></p>
+        <div class="card">
+        <img class="card-img-top" src="<%=oneItem.image%>" width="100" height="200" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title"><%=oneItem.i_name%></h5>
+            <p class="card-text">가격<%=oneItem.price%></p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
         </div>
-
-        <%
-        }
-        %>
-    </div>
+        </div>
+        <%}%>
 </div>
-
+<br>
+<%}%>
 <ul class="pagination">
     <%
         for(i=1; i<=total_page; i++){

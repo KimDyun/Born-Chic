@@ -4,8 +4,8 @@ var mysql_dbc = require('../config/database')();
 var connection = mysql_dbc.init();
 mysql_dbc.test_open(connection);
 
+
 router.get('/',function (req, res,next){
-    //res.clearCookie('id');
      var id = req.cookies.id;
      if (id == null){
          res.cookie('id','');
@@ -18,14 +18,14 @@ router.get('/',function (req, res,next){
          var sqlForSelectList = "SELECT u_admin FROM USER WHERE u_id=?";
          connection.query(sqlForSelectList,[id] ,function (err, admin){
              if (err) console.error("err : " + err);
-             console.log(admin);
+             res.clearCookie('admin');
+             res.cookie('admin', admin[0].u_admin);
              res.render('main', {title : 'Main', user_id: id, admin: admin[0].u_admin});
          });
      }
 });
 
 router.post('/', function (req, res){
-
     var search = req.body.search;
     console.log(search);
     res.redirect('/');
@@ -33,7 +33,9 @@ router.post('/', function (req, res){
 
 router.get('/delete_cookie', function (req, res){
     res.clearCookie('id');
+    res.clearCookie('admin');
     res.cookie('id', '');
+    res.cookie('admin', '');
     res.redirect('/');
 });
 

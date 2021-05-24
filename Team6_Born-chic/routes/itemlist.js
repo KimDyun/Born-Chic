@@ -7,10 +7,12 @@ mysql_dbc.test_open(connection);
 router.get('/:category/:cur_page',function (req, res,next){
     var category = req.params.category;
     var cur_page = req.params.cur_page;
-
+    var id = req.cookies.id;
+    var admin = req.cookies.admin;
     var page_list_size = 12;
     var total_count = 0;
-
+    console.log(admin);
+    console.log(id);
     var sqlForSelectList = "SELECT count(*) as cnt FROM ITEM WHERE category = ?";
     connection.query(sqlForSelectList,[category], function (err, rows){
         if (err) console.error("err : " + err);
@@ -33,7 +35,7 @@ router.get('/:category/:cur_page',function (req, res,next){
                 result[seq] = data[i];
                 seq++;
             }
-            res.render('itemlist', {rows: result,total_page:totalpage, cur_page:cur_page, category:category});
+            res.render('itemlist', {user_id : id, admin: admin, rows: result,total_page:totalpage, cur_page:cur_page, category:category});
         });
     });
 
