@@ -8,6 +8,7 @@ router.get('/',function (req, res,next){
     var sqlForSelectList = "SELECT u_id, pwd FROM user";
     connection.query(sqlForSelectList, function (err, rows){
         if (err) console.error("err : " + err);
+
         console.log("rows : "+ JSON.stringify(rows));
 
         res.render('main', {title: 'test', rows: rows});
@@ -36,14 +37,25 @@ router.get('/sign', function (req, res, next){
     res.render('sign');
 });
 router.post('/sign', function (req, res){
-
-
     var sqlForInsertList = "INSERT INTO USER(u_id, pwd, u_name, addr, u_number, u_admin) values(?, ?, ?, ?, ?)";
     connection.query(sqlForInsertList,datas ,function (err, rows){
         if (err) console.error("err : " + err);
         console.log("rows : "+ JSON.stringify(rows));
 
         res.redirect('/test');
+    });
+});
+
+router.get('/mypage', function (req, res, next){
+    res.render('mypage');
+});
+router.post('/mypage', function (req, res){
+    var sqlForInsertList = "INSERT INTO USER(u_id, pwd, u_name, addr, u_number, u_admin) values(?, ?, ?, ?, ?)";
+    connection.query(sqlForInsertList,datas ,function (err, rows){
+        if (err) console.error("err : " + err);
+        console.log("rows : "+ JSON.stringify(rows));
+
+        res.redirect('/');
     });
 });
 
