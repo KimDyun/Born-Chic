@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Born-chic
+    </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<br><br><br><br>
+
+<%
+var basketEmpty = true;
+var basketRows = [];
+var deliveryEmpty = true;
+var deliveryRows = [];
+var j = 0;
+var k = 0;
+for(var i=0; i<rows.length; i++) {
+    if (rows[i].delivery == -1) {
+        basketEmpty = false;
+        basketRows[j] = rows[i];
+        j = j + 1;
+    }
+    else{
+        deliveryEmpty = false;
+        deliveryRows[k] = rows[i];
+        k = k + 1;
+    }
+}
+%>
+<div class="container">
+    <div class="column">
+        <%if(basketEmpty) {%>
+        <h3>장바구니가 비었습니다.</h3>
+        <h5><a href = "/">계속 쇼핑하기</a></h5>
+        <%}
+        else{
+            for(var i=0; i<basketRows.length; i++){
+                var basketItem = basketRows[i]; %>
+        <div class="row-cols-lg-3-lg-3">
+            <td><img src="<%=basketItem.image%>" width="200" height="200"></td>
+            <td><%=basketItem.i_name%></td>
+            <td><a href="/detail/<%=basketItem.i_code%>">자세히 보기</a></td>
+            <td><%=basketItem.price%></td>
+            <td><button type="submit" class="btn" onclick="purchase_popup(<%=basketItem.i_code%>)">구매</button></td>
+        </div>
+        <%}} %>
+    </div>
+
+    <div class="column">
+        <%if(deliveryEmpty) {%>
+            <h3>현재 배송중인 상품이 없습니다.</h3>
+            <h5><a href = "/">계속 쇼핑하기</a></h5>
+        <%}
+        else{
+        for(var i=0; i<deliveryRows.length; i++){
+            var deliveryItem = deliveryRows[i]; %>
+        <div class="row-cols-lg-3-lg-3">
+            <td><img src="<%=deliveryItem.image%>" width="200" height="200"></td>
+            <td><%=deliveryItem.i_name%></td>
+            <td><a href="/detail/<%=deliveryItem.i_code%>">자세히 보기</a></td>
+            <td><%=deliveryItem.price%></td>
+            <% if(deliveryItem.delivery == 0){%>
+            <td>배송 중</td>
+            <td><button type="submit" class="btn" onclick="purchase_popup(<%=deliveryItem.i_code%>)"></button></td>
+            <%} else{%>
+            <td>배송 완료</td>
+            <td><button type="submit" class="btn" onclick="purchase_popup(<%=deliveryItem.i_code%>)"></button></td>
+            <%}%>
+        </div>
+        <%}}%>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function purchase_popup(item_code) {
+        console.log(item_code);
+        var result = confirm("결제하시겠습니까?");
+        // 결제 시스템 추후 추가 구현
+        if(result){
+            console.log("result success");
+            $.ajax({// 서버로 데이터 전송
+                url:'/mypage',
+                type:'post',
+                data:{"i_code":item_code},
+                success: function(data) {
+                    var sign = JSON.parse(JSON.stringify(data));
+                    sign = sign.data;
+
+                    if(sign == "Purchase error") {
+                        alert("구매할 수 없습니다. 다시 시도해주십시오.");
+                        window.location.reload();
+                        return false;
+                    }
+                    else{
+                        alert("구매가 완료되었습니다.");
+                        window.location.reload();
+                        return true;
+                    }
+                },
+                error:function (data){}
+            })   //ajax
+        }
+        else{
+            alert("결제를 취소하셨습니다.");
+            window.location.reload();
+        }
+    }
+</script>
+</body>
+</html>

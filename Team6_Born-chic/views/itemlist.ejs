@@ -55,14 +55,15 @@
     </div>
 </nav><br><br>
 <%
-    for(var j = 0; j < Math.ceil(rows.length/4); j++){%>
-    <div class="card-deck" style="margin-left: 200px; margin-right: 200px">
+for(var j = 0; j < Math.ceil(rows.length/4); j++){%>
+    <div class="card-deck" style="margin-left: 150px;">
         <%
         for(var i=j*4; i<4*(j+1); i++){
             if(i==rows.length)
                 break;
             var oneItem = rows[i];
         %>
+        <div class="col-xs-3" style="width: 300px; height: 300px">
         <div class="card" onclick="movetodetail(<%=oneItem.i_code%>)" >
             <img class="card-img-top" src="<%=oneItem.image%>" width="100" height="200" alt="Card image cap">
             <div class="card-body">
@@ -71,9 +72,10 @@
                 <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
             </div>
         </div>
+        </div>
         <%}%>
     </div>
-<br>
+<br><br><br>
 <%}%>
 <%
 if(rows.length==0){%>
