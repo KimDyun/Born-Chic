@@ -6,11 +6,12 @@ mysql_dbc.test_open(connection);
 
 router.get('/', function (req, res, next){
     var id = req.cookies.id;
+    var admin = req.cookies.admin;
     var sqlForInsertList = "select i_code, i.image, i_name, i.price, b_date, b.delivery from item as i, buy as b where i_code = b_code and b.delivery <=0 and b_id = ?";
     connection.query(sqlForInsertList,[id],function (err, rows) {
         if (err) console.error("err : " + err);
         console.log("rows : " + JSON.stringify(rows));
-        res.render('mypage', {rows: rows});
+        res.render('mypage', {user_id: id, admin: admin ,rows: rows});
     });
 });
 router.post('/', function (req, res){
