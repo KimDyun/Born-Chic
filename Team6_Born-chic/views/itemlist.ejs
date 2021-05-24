@@ -53,10 +53,12 @@
         <%}%>
     </div>
 </nav><br><br>
-<%for(var j = 0; j < 3; j++){%>
-<div class="card-deck">
+<%for(var j = 0; j < Math.ceil(rows.length/4); j++){%>
+<div class="card-deck" style="margin-left: 200px; margin-right: 200px">
         <%
         for(var i=j*4; i<4*(j+1); i++){
+            if(i==rows.length)
+                break;
             var oneItem = rows[i];
         %>
         <div class="card">
