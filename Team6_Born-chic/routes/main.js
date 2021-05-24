@@ -81,17 +81,4 @@ router.post('/sign', function (req, res){
     });
 });
 
-router.get('/mypage', function (req, res, next){
-    res.render('mypage');
-});
-router.post('/mypage', function (req, res){
-    var sqlForInsertList = "INSERT INTO USER(u_id, pwd, u_name, addr, u_number, u_admin) values(?, ?, ?, ?, ?)";
-    connection.query(sqlForInsertList,datas ,function (err, rows){
-        if (err) console.error("err : " + err);
-        console.log("rows : "+ JSON.stringify(rows));
-
-        res.redirect('/');
-    });
-});
-
 module.exports = router;
