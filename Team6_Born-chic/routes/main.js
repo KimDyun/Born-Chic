@@ -5,7 +5,22 @@ var connection = mysql_dbc.init();
 mysql_dbc.test_open(connection);
 
 router.get('/',function (req, res,next){
-    res.render('main');
+    //res.clearCookie('id');
+     var id = req.cookies.id;
+     if (id == null){
+         res.cookie('id','');
+         res.render('main',{title : 'Main', user_id: '', admin: ''});
+     }
+     if(id == ''){
+         res.render('main',{title : 'Main', user_id: id, admin: ''});
+     }
+     else {
+         var sqlForSelectList = "SELECT u_admin FROM USER WHERE u_id=?";
+         connection.query(sqlForSelectList,[id] ,function (err, admin){
+             if (err) console.error("err : " + err);
+             res.render('main', {title : 'Main', user_id: id, admin: admin});
+         });
+     }
 });
 
 router.post('/', function (req, res){
@@ -15,20 +30,10 @@ router.post('/', function (req, res){
     res.redirect('/');
 });
 
-
-router.get('/l_main:id',function (req, res,next){
-    var sqlForSelectList = "SELECT u_admin FROM USER WHERE u_id=?";
-    connection.query(sqlForSelectList,[req.params.id] ,function (err, admin){
-        if (err) console.error("err : " + err);
-        res.render('l_main', {title : 'Main', user_id: req.params.id, admin: admin});
-    });
-});
-
-router.post('/l_main:id', function (req, res){
-
-    var search = req.body.search;
-    console.log(search);
-    res.redirect('/l_main');
+router.get('/delete_cookie', function (req, res){
+    res.clearCookie('id');
+    res.cookie('id', '');
+    res.redirect('/');
 });
 
 
@@ -48,7 +53,10 @@ router.post('/login', function (req, res){
         console.log(passwd);
         if(result == 0)
             res.send("<script>alert('패스워드가 일치하지 않습니다.');history.back();</script>");
-        else res.redirect('/l_main' + user_id);
+        else {
+            res.cookie('id', user_id);
+            res.redirect('/');
+        }
     });
 });
 
