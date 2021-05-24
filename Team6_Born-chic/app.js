@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var mainRouter = require('./routes/main');
 var mypageRouter = require('./routes/mypage');
 var itemlistRouter = require('./routes/itemlist');
+var cookieRouter = require('./routes/cookie');
 
 var app = express();
 
@@ -27,7 +28,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', mainRouter);
+app.use('/', cookieRouter);
+app.use('/main', mainRouter);
 app.use('/users', usersRouter);
 app.use('/index', indexRouter);
 app.use('/mypage', mypageRouter);
