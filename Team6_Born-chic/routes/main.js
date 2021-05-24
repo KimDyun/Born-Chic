@@ -60,7 +60,7 @@ router.post('/login', function (req, res){
             res.send("<script>alert('패스워드가 일치하지 않습니다.');history.back();</script>");
         else {
             res.cookie('id', user_id);
-            res.redirect('/');
+            res.redirect('/main');
         }
     });
 });
@@ -88,8 +88,7 @@ router.post('/sign', function (req, res){
             connection.query(sqlForInsertList,datas ,function (err, rows){
                 if (err) console.error("err : " + err);
                 console.log("rows : "+ JSON.stringify(rows));
-
-                res.redirect('/login');
+                res.redirect('/main/login');
             });
         }
     });
