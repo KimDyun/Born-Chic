@@ -36,25 +36,25 @@
         </form>
         <%if(user_id == ''){%>
             <ul class="navbar-nav">
-                <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
+                <li class="nav-item"><a href="/main/login" class="nav-link">Login</a></li>
             </ul>
         <%}else{
         if(admin == '' || admin == 0){%>
             <ul class="navbar-nav">
                 <li class="nav-item "><a class="nav-link" href="/">마이페이지</a></li>
-                <li class="nav-item "><a class="nav-link" href="/delete_cookie">Logout</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
             </ul>
         <%} else{%>
             <ul class="navbar-nav">
                 <li class="nav-item "><a class="nav-link" href="/">물품관리</a></li>
-                <li class="nav-item "><a class="nav-link" href="/delete_cookie">Logout</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
             </ul>
         <%}%>
         <%}%>
     </div>
 </nav><br><br>
 <%for(var j = 0; j < Math.ceil(rows.length/4); j++){%>
-    <div class="card-deck" style="margin-left: 150px;">
+    <div class="card-deck justify-content-center">
         <%
         for(var i=j*4; i<4*(j+1); i++){
             if(i==rows.length)
@@ -66,8 +66,7 @@
             <img class="card-img-top" src="<%=oneItem.image%>" width="100" height="200" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title"><%=oneItem.i_name%></h5>
-                <p class="card-text">가격<%=oneItem.price%></p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                <p class="card-text">가격 : <%=oneItem.price%> 원</p>
             </div>
         </div>
         </div>
@@ -75,18 +74,17 @@
     </div>
 <br><br><br>
 <%}%>
-<%
-if(rows.length==0){%>
+<%if(rows.length==0){%>
     <p>검색에 해당하는 물품이 존재하지 않습니다.</p>
 <%}%>
-<ul class="pagination">
-    <%
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <%
         for(i=1; i<=total_page; i++){
-    %>
-        <li>[<a href="/itemlist/<%=category%>/<%=i%>/<%=search%>"><%=i%></a>]</li>
-    <%
-    }
-    %>
-</ul>
+        %>
+        <li class="page-item" ><a class="page-link" style="color: dimgrey" href="/itemlist/<%=category%>/<%=i%>/<%=search%>"><%=i%></a></li>
+        <%}%>
+    </ul>
+</nav>
 </body>
 </html>
