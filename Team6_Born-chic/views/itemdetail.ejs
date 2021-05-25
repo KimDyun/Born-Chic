@@ -96,14 +96,6 @@
     }}
     %>
 
-    <div class="input-group mb-3">
-        <input type="hidden" id="idx" value="<%=rows[0].i_code%>"/>
-        <input type="hidden" id="user_id" value="<%=user_id%>"/>
-        <input type="text" class="form-control" placeholder="수량" id = "count_button">
-        <button class="btn btn-outline-secondary" type="button" onclick="shopping_basket()">장바구니</button>
-        <button class="btn btn-outline-secondary" type="button" onclick="shopping_buy()">구매하기</button>
-    </div>
-
 <br><br><br>
 
 
@@ -135,10 +127,6 @@
         </p>         <!--여기는 관리자인 경우에는 댓글만 클릭할 수 있도록 만들기-->
     <%}}%>
 
-
-    <div class="mb-3" style="margin-right: 40px;margin-left: 40px">
-        <button class="btn btn-dark btn-sm" type="button" onclick="reply_write()">작성하기</button>
-    </div>
 <div class="card mb-2">
 <div class="card-header bg-light"> 댓글</div>
 <div class="card-body">
