@@ -60,16 +60,65 @@
     <img src="<%=rows[0].image%>" width="150" height="150">
     <p><%=rows[0].i_name%></p>
     <p>남은 재고 : <%=rows[0].stock%></p>
-    <p>내용 : <%=rows[0].detail%></p>
     <p>가격 : <%=rows[0].price%></p>
     <p><%=date%></p>
+
+<br><br><br>
+
+    <p>상세 설명 시작</p>
+    <%
+    var test = rows[0].detail.split('\n');
+    for(var i=0; i<test.length; i++){
+        if(test[i].includes('/img/')){%>
+            <p><img src="<%=test[i]%>" width="200" height="200"></p>
+        <%}else{%>
+            <p><%=test[i]%><p>
+        <%
+    }}
+    %>
 
     <div class="input-group mb-3">
         <input type="hidden" id="idx" value="<%=rows[0].i_code%>"/>
         <input type="hidden" id="user_id" value="<%=user_id%>"/>
         <input type="text" class="form-control" placeholder="수량" id = "count_button">
         <button class="btn btn-outline-secondary" type="button" onclick="shopping_basket()">장바구니</button>
-        <button class="btn btn-outline-secondary" type="button" onclick="shopping_buy">구매하기</button>
+        <button class="btn btn-outline-secondary" type="button" onclick="shopping_buy()">구매하기</button>
+    </div>
+
+<br><br><br>
+
+
+<%
+ if(reply.length==0 || reply==null){%>
+        <p>아직 댓글이 없습니다.</p>
+     <%}%>
+
+
+
+    <%
+    for(var i=0; i<reply.length; i++){%>
+
+        <%if(admin == '' || admin == 0){%>
+        <p>
+            <%if(reply[i].reply==1){%>
+                &nbsp;&nbsp;&nbsp;&nbsp;            <!-- 답글인 경우에 띄어쓰기 해준부분-->
+            <%}%>
+                작성자: <%=reply[i].c_id%>            내용: <%=reply[i].content%> </p>        <!--여기는 관리자 아닌경우에는 클릭 못하도록 댓글 만들기-->
+        <%}else{%>
+        <p>
+            <%if(reply[i].reply==1){%>
+                &nbsp;&nbsp;&nbsp;&nbsp;                <!-- 답글인 경우에 띄어쓰기 해준부분-->
+            <%}%>
+                작성자: <%=reply[i].c_id%>            내용: <%=reply[i].content%>
+            <button class="btn btn-outline-secondary" type="button" onclick="reply_change('<%=reply[i].c_id%>')">
+                <img src="/img/reply.png" alt="btnImages" class="btnImages" width="20" height="20"></button>
+        </p>         <!--여기는 관리자인 경우에는 댓글만 클릭할 수 있도록 만들기-->
+    <%}}%>
+
+
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="댓글을 입력하세요" id = "reply_content">
+        <button class="btn btn-outline-secondary" type="button" onclick="reply_write()">작성하기</button>
     </div>
 
 </body>

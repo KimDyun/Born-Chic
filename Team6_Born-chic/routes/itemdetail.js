@@ -14,7 +14,12 @@ router.get('/:i_code',function (req, res,next){
         if (err) console.error("err : " + err);
         var date = new Date(data[0].i_date);
         date = date.getFullYear() + '년 ' + (date.getMonth()+1) + '월 ' + date.getDate() + '일';
-        res.render('itemdetail', {user_id : id, admin: admin, rows: data, date:date});
+
+        var sqlForSelectList = "SELECT * FROM COMMENT WHERE c_code=? ORDER BY p_id, reply, idx";
+        connection.query(sqlForSelectList,[i_code] ,function (err, reply){
+            if (err) console.error("err : " + err);
+            res.render('itemdetail', {user_id : id, admin: admin, rows: data, date:date, reply:reply});
+        });
     });
 });
 
@@ -64,20 +69,6 @@ router.get('/shopping/buy/:buy_count/:i_code',function (req, res,next){
     var user_id = req.cookies.id;
     var buy_count = req.params.buy_count;
 
-    var sqlForSelectList = "SELECT delivery FROM BUY WHERE b_id = ? and b_code = ?";
-    connection.query(sqlForSelectList,[user_id, item_code],function (err, data){
-        if (err) console.error("err : " + err);
-        if(data!=null) {            //구매한 이력이 있는 경우
-            if (data[0].delivery == -1) {       //장바구니에 담아져 있는 경우
-
-                //여기에 코드짜야됨
-
-                res.send({data: "already shopping cart"});
-            }
-        }
-        else{                           //구매한 이력이 없는 경우
-
-        }
-    });
+    //<<<물품 구매>>> 대현이 코드 받아오기
 });
 module.exports = router;
