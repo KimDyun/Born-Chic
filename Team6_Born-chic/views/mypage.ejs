@@ -36,17 +36,19 @@ for(var i=0; i<rows.length; i++) {
     <div class="column">
         <%if(basketEmpty) {%>
         <h3>장바구니가 비었습니다.</h3>
-        <h5><a href = "/">계속 쇼핑하기</a></h5>
+        <h5><a href = "/main">계속 쇼핑하기</a></h5>
         <%}
         else{
             for(var i=0; i<basketRows.length; i++){
                 var basketItem = basketRows[i]; %>
         <div class="row-cols-lg-3-lg-3">
+            <td><button type="submit" class="btn" onclick="purchase_delete_popup(<%=basketItem.i_code%>)">제거</button></td>
             <td><img src="<%=basketItem.image%>" width="200" height="200"></td>
             <td><%=basketItem.i_name%></td>
             <td><a href="/detail/<%=basketItem.i_code%>">자세히 보기</a></td>
-            <td><%=basketItem.price%></td>
-            <td><button type="submit" class="btn" onclick="purchase_popup(<%=basketItem.i_code%>)">구매</button></td>
+            <td><%=basketItem.price * basketItem.b_count%></td>
+            <td><%=basketItem.b_count%></td>
+            <td><button type="submit" class="btn" onclick="purchase_popup('<%=basketItem.i_code%>', <%=basketItem.b_count%>)">구매</button></td>
         </div>
         <%}} %>
     </div>
@@ -54,7 +56,7 @@ for(var i=0; i<rows.length; i++) {
     <div class="column">
         <%if(deliveryEmpty) {%>
             <h3>현재 배송중인 상품이 없습니다.</h3>
-            <h5><a href = "/">계속 쇼핑하기</a></h5>
+            <h5><a href = "/main">계속 쇼핑하기</a></h5>
         <%}
         else{
         for(var i=0; i<deliveryRows.length; i++){
@@ -63,13 +65,15 @@ for(var i=0; i<rows.length; i++) {
             <td><img src="<%=deliveryItem.image%>" width="200" height="200"></td>
             <td><%=deliveryItem.i_name%></td>
             <td><a href="/detail/<%=deliveryItem.i_code%>">자세히 보기</a></td>
-            <td><%=deliveryItem.price%></td>
+            <td><%=deliveryItem.price * deliveryItem.b_count%></td>
+            <td><%=deliveryItem.b_count%></td>
             <% if(deliveryItem.delivery == 0){%>
+            <td>배송 준비중</td>
+            <%} else if(deliveryItem.delivery == 1){%>
             <td>배송 중</td>
-            <td><button type="submit" class="btn" onclick="purchase_popup(<%=deliveryItem.i_code%>)"></button></td>
             <%} else{%>
             <td>배송 완료</td>
-            <td><button type="submit" class="btn" onclick="purchase_popup(<%=deliveryItem.i_code%>)"></button></td>
+            <td><button type="submit" class="btn" onclick="delivery_complete(<%=deliveryItem.i_code%>)">확인</button>
             <%}%>
         </div>
         <%}}%>
@@ -77,16 +81,48 @@ for(var i=0; i<rows.length; i++) {
 </div>
 
 <script type="text/javascript">
-    function purchase_popup(item_code) {
-        console.log(item_code);
-        var result = confirm("결제하시겠습니까?");
+   function purchase_delete_popup(item_code){
+       var result = confirm("장바구니에서 상품을 제거하시겠습니까?");
+       // 결제 시스템 추후 추가 구현
+       if(result){
+           $.ajax({// 서버로 데이터 전송
+               url:'/mypage',
+               type:'post',
+               data:{"i_code":item_code},
+               success: function(data) {
+                   var sign = JSON.parse(JSON.stringify(data));
+                   sign = sign.data;
+
+                   if(sign == "delete error") {
+                       alert("장바구니에서 해당 상품을 제거할 수 없습니다. 다시 시도해주십시오.");
+                       window.location.reload();
+                       return false;
+                   }
+                   else{
+                       alert("장바구니에서 해당 상품을 제거하였습니다.");
+                       window.location.reload();
+                       return true;
+                   }
+               },
+               error:function (data){}
+           })   //ajax
+       }
+       else{
+           alert("결제를 취소하셨습니다.");
+           window.location.reload();
+       }
+   }
+
+    function purchase_popup(i_code, buy_count) {
+       var item_code = parseInt(i_code);
+       console.log(item_code, buy_count);
+       var result = confirm("결제하시겠습니까?");
         // 결제 시스템 추후 추가 구현
         if(result){
-            console.log("result success");
             $.ajax({// 서버로 데이터 전송
                 url:'/mypage',
                 type:'post',
-                data:{"i_code":item_code},
+                data:{"i_code":item_code, "b_count":buy_count},
                 success: function(data) {
                     var sign = JSON.parse(JSON.stringify(data));
                     sign = sign.data;
@@ -98,6 +134,38 @@ for(var i=0; i<rows.length; i++) {
                     }
                     else{
                         alert("구매가 완료되었습니다.");
+                        window.location.reload();
+                        return true;
+                    }
+                },
+                error:function (data){}
+            })   //ajax
+        }
+        else{
+            alert("결제를 취소하셨습니다.");
+            window.location.reload();
+        }
+    }
+
+    function delivery_complete(item_code) {
+        var result = confirm("배송 목록에서 해당 상품을 삭제하시겠습니까?");
+        // 결제 시스템 추후 추가 구현
+        if(result){
+            $.ajax({// 서버로 데이터 전송
+                url:'/mypage',
+                type:'post',
+                data:{"b_code":item_code},
+                success: function(data) {
+                    var sign = JSON.parse(JSON.stringify(data));
+                    sign = sign.data;
+
+                    if(sign == "delete error") {
+                        alert("배송 목록에서 해당 상품을 삭제할 수 없습니다.");
+                        window.location.reload();
+                        return false;
+                    }
+                    else{
+                        alert("배송 목록에서 해당 상품을 삭제하였습니다.");
                         window.location.reload();
                         return true;
                     }
