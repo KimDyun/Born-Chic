@@ -19,7 +19,6 @@ router.get('/',function (req, res,next){
          var sqlForSelectList = "SELECT u_admin FROM USER WHERE u_id=?";
          connection.query(sqlForSelectList,[id] ,function (err, admin){
              if (err) console.error("err : " + err);
-             res.clearCookie('admin');
              res.cookie('admin', admin[0].u_admin);
              res.render('main', {title : 'Main', user_id: id, admin: admin[0].u_admin});
          });

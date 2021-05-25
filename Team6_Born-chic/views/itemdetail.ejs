@@ -10,7 +10,7 @@
     <script src="/javascript/functions.js"></script>
 </head>
 <body>
-<a href="/" class="nav-link">
+<a href="/main" class="nav-link">
     <div class="jumbotron text-center">
         <h1 style="color: dimgrey">Born-chic</h1>
     </div>
@@ -117,14 +117,15 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;                <!-- 답글인 경우에 띄어쓰기 해준부분-->
             <%}%>
                 작성자: <%=reply[i].c_id%>            내용: <%=reply[i].content%>
-            <button class="btn btn-outline-secondary" type="button" onclick="reply_change('<%=reply[i].c_id%>')">
+            <button class="btn btn-outline-secondary" type="button" onclick="reply_change('<%=reply[i].c_id%>', <%=reply[i].idx%>)">
                 <img src="/img/reply.png" alt="btnImages" class="btnImages" width="20" height="20"></button>
         </p>         <!--여기는 관리자인 경우에는 댓글만 클릭할 수 있도록 만들기-->
     <%}}%>
 
 
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="댓글을 입력하세요" id = "reply_content">
+    <div class="mb-3">
+        <input type="hidden" id="reply_id" value=""/>
+        <input type="text" placeholder="댓글을 입력하세요" id = "reply_content">
         <button class="btn btn-outline-secondary" type="button" onclick="reply_write()">작성하기</button>
     </div>
 
