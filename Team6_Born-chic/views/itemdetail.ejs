@@ -63,6 +63,9 @@
     <p>가격 : <%=rows[0].price%></p>
     <p><%=date%></p>
 
+    <input type="hidden" id="stock" value="<%=rows[0].stock%>"/>
+
+
 <br><br><br>
 
     <p>상세 설명 시작</p>
@@ -114,10 +117,10 @@
                 <img src="/img/reply.png" alt="btnImages" class="btnImages" width="20" height="20"></button>
         </p>         <!--여기는 관리자인 경우에는 댓글만 클릭할 수 있도록 만들기-->
     <%}}%>
+    <input type="hidden" id="stock" value=""/>
 
 
     <div class="mb-3">
-        <input type="hidden" id="reply_id" value=""/>
         <input type="text" placeholder="댓글을 입력하세요" id = "reply_content">
         <button class="btn btn-outline-secondary" type="button" onclick="reply_write()">작성하기</button>
     </div>

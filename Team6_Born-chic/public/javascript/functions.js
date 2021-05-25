@@ -5,8 +5,15 @@ function shopping_basket(){
     const count = $('#count_button').val();
     const idx = $('#idx').val();
     const user_id = $('#user_id').val();
+    const stock = $('#stock').val();
+
     if(user_id =="" || user_id==null){
         alert("로그인 없이는 장바구니에 담을 수 없습니다. 로그인 먼저 해주십시오.");
+        window.location.reload();
+        return;
+    }
+    if(count>stock){
+        alert("남은 재고보다 구매 수량이 많은 경우에 구매할 수 없습니다.");
         window.location.reload();
         return;
     }
@@ -45,11 +52,18 @@ function shopping_basket(){
     console.log(value);
 }
 function shopping_buy(){
-    const count = $('#count_button').val();
-    const idx = $('#idx').val();
+    const count = $('#count_button').val();     //구매수량
+    const idx = $('#idx').val();            //제품코드
     const user_id = $('#user_id').val();
+    const stock = $('#stock').val();
+
     if(user_id =="" || user_id==null){
         alert("로그인 없이는 구매하기 할 수 없습니다. 로그인 먼저 해주십시오.");
+        window.location.reload();
+        return;
+    }
+    if(count>stock){
+        alert("남은 재고보다 구매 수량이 많은 경우에 구매할 수 없습니다.");
         window.location.reload();
         return;
     }
