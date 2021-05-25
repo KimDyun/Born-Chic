@@ -57,44 +57,51 @@
     </div>
 </nav>
 <br><br>
-    <img src="<%=rows[0].image%>" width="150" height="150">
-    <p><%=rows[0].i_name%></p>
-    <p>남은 재고 : <%=rows[0].stock%></p>
-    <p>가격 : <%=rows[0].price%></p>
-    <p><%=date%></p>
-
+    <div class="container-fluid">
+        <div class="row">
+            <div class="row-cols-8">
+                <img style="margin-left: 300px" src="<%=rows[0].image%>" width="300" height="300">
+            </div>
+            <div class="row-cols-4">
+                <br>
+                <p style="margin-left: 100px"><%=rows[0].i_name%></p>
+                <p style="margin-left: 100px">가격 : <%=rows[0].price%></p>
+                <p style="margin-left: 100px">남은 재고 : <%=rows[0].stock%></p>
+                <p style="margin-left: 100px">입고 일자 : <%=date%></p>
+                <div class="input-group mb-3" style="margin-left: 100px">
+                    <input type="hidden" id="idx" value="<%=rows[0].i_code%>"/>
+                    <input type="hidden" id="user_id" value="<%=user_id%>"/>
+                    <div class="form-inline form-group">
+                        <label for="phone_num">수량 :&nbsp;&nbsp;</label>
+                        <input type="text" class="form-control input-lg" style="width: 70px" placeholder="1" id = "count_button">
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-dark btn-sm btn-block mt-1 col-lg-6" type="button" onclick="shopping_basket()">장바구니</button>&nbsp;
+                    <button class="btn btn-dark btn-sm btn-block mt-1 col-lg-6" type="button" onclick="shopping_buy()">구매하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
 <br><br><br>
-
-    <p>상세 설명 시작</p>
+    <p style="text-align: center">제품 상세 설명</p>
     <%
     var test = rows[0].detail.split('\n');
     for(var i=0; i<test.length; i++){
         if(test[i].includes('/img/')){%>
             <p><img src="<%=test[i]%>" width="200" height="200"></p>
         <%}else{%>
-            <p><%=test[i]%><p>
+            <p style="text-align: center; margin-left: 40px; margin-right: 40px"><%=test[i]%></p>
         <%
     }}
     %>
-
-    <div class="input-group mb-3">
-        <input type="hidden" id="idx" value="<%=rows[0].i_code%>"/>
-        <input type="hidden" id="user_id" value="<%=user_id%>"/>
-        <input type="text" class="form-control" placeholder="수량" id = "count_button">
-        <button class="btn btn-outline-secondary" type="button" onclick="shopping_basket()">장바구니</button>
-        <button class="btn btn-outline-secondary" type="button" onclick="shopping_buy()">구매하기</button>
-    </div>
-
 <br><br><br>
 
 
+<p>제품 댓글</p>
 <%
  if(reply.length==0 || reply==null){%>
         <p>아직 댓글이 없습니다.</p>
      <%}%>
-
-
-
     <%
     for(var i=0; i<reply.length; i++){%>
 
