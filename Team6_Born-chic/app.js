@@ -10,6 +10,7 @@ var mainRouter = require('./routes/main');
 var mypageRouter = require('./routes/mypage');
 var itemlistRouter = require('./routes/itemlist');
 var itemdetailRouter = require('./routes/itemdetail');
+var itemuploadRouter = require('./routes/itemupload');
 
 var cookieRouter = require('./routes/cookie');
 
@@ -37,6 +38,7 @@ app.use('/index', indexRouter);
 app.use('/mypage', mypageRouter);
 app.use('/itemlist', itemlistRouter);
 app.use('/itemdetail', itemdetailRouter);
+app.use('/itemupload', itemuploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
