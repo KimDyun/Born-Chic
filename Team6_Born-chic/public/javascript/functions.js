@@ -82,3 +82,10 @@ function shopping_buy(){
     }
     console.log(value);
 }
+
+function reply_change(c_id){
+    $('#reply_content').attr('placeholder',c_id+'님에 대한 답글을 작성하세요');
+}
+function reply_write(c_id){
+
+}
