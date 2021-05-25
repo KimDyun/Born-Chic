@@ -11,8 +11,7 @@ router.get('/:category/:cur_page/',function (req, res,next){
     var admin = req.cookies.admin;
     var page_list_size = 12;
     var total_count = 0;
-    console.log(admin);
-    console.log(id);
+
     var sqlForSelectList = "SELECT count(*) as cnt FROM ITEM WHERE category = ?";
     connection.query(sqlForSelectList,[category], function (err, rows){
         if (err) console.error("err : " + err);
@@ -75,5 +74,9 @@ router.get('/search/:cur_page/:search', function (req, res){
         });
     });
 
+});
+router.post('/:category/:cur_page/', function (req, res){
+    var search = req.body.search;
+    res.redirect('/itemlist/search/1/'+search);
 });
 module.exports = router;

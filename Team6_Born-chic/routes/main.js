@@ -19,7 +19,6 @@ router.get('/',function (req, res,next){
          var sqlForSelectList = "SELECT u_admin FROM USER WHERE u_id=?";
          connection.query(sqlForSelectList,[id] ,function (err, admin){
              if (err) console.error("err : " + err);
-             res.clearCookie('admin');
              res.cookie('admin', admin[0].u_admin);
              res.render('main', {title : 'Main', user_id: id, admin: admin[0].u_admin});
          });
@@ -74,9 +73,12 @@ router.post('/sign', function (req, res){
     var user_id = req.body.u_id;
     var passwd = req.body.pwd;
     var u_name = req.body.u_name;
-    var addr = "노원구";
+    var addr = req.body.u_addr;
+    var addr2 = req.body.u_addr2;
     var u_number = req.body.u_number;
     var u_admin = false;
+    addr += ' ';
+    addr += addr2;
     var datas = [user_id, passwd, u_name, addr, u_number, u_admin];
     var sqlForCheckList = "SELECT * FROM USER WHERE u_id=?";
     connection.query(sqlForCheckList, user_id, function(err, rows){
@@ -88,7 +90,6 @@ router.post('/sign', function (req, res){
             connection.query(sqlForInsertList,datas ,function (err, rows){
                 if (err) console.error("err : " + err);
                 console.log("rows : "+ JSON.stringify(rows));
-
                 res.redirect('/main/login');
             });
         }

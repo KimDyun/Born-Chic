@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Born-chic
+    </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="/javascript/functions.js"></script>
+</head>
+<body>
+<a href="/main" class="nav-link">
+    <div class="jumbotron text-center">
+        <h1 style="color: dimgrey">Born-chic</h1>
+    </div>
+</a>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: aliceblue">Menu</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a href="/itemlist/m_outer/1" class="nav-link">남성 아우터</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">남성 상의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">남성 하의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 아우터</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 상의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 하의</a></li>
+        </ul>
+        <form class="navbar-form pull-left" role="search" method="post">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default">검색</button>
+                </div>
+            </div>
+        </form>
+        <% if(user_id == ''){ %>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
+            </ul>
+        <% }else{
+        if(admin == '' || admin == 0){ %>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/">마이페이지</a></li>
+                <li class="nav-item "><a class="nav-link" href="/delete_cookie">Logout</a></li>
+            </ul>
+        <% } else{ %>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/">물품관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/delete_cookie">Logout</a></li>
+            </ul>
+        <% } %>
+        <% } %>
+    </div>
+</nav>
+<br><br>
+    <img src="<%=rows[0].image%>" width="150" height="150">
+    <p><%=rows[0].i_name%></p>
+    <p>남은 재고 : <%=rows[0].stock%></p>
+    <p>가격 : <%=rows[0].price%></p>
+    <p><%=date%></p>
+
+<br><br><br>
+
+    <p>상세 설명 시작</p>
+    <%
+    var test = rows[0].detail.split('\n');
+    for(var i=0; i<test.length; i++){
+        if(test[i].includes('/img/')){%>
+            <p><img src="<%=test[i]%>" width="200" height="200"></p>
+        <%}else{%>
+            <p><%=test[i]%><p>
+        <%
+    }}
+    %>
+
+    <div class="input-group mb-3">
+        <input type="hidden" id="idx" value="<%=rows[0].i_code%>"/>
+        <input type="hidden" id="user_id" value="<%=user_id%>"/>
+        <input type="text" class="form-control" placeholder="수량" id = "count_button">
+        <button class="btn btn-outline-secondary" type="button" onclick="shopping_basket()">장바구니</button>
+        <button class="btn btn-outline-secondary" type="button" onclick="shopping_buy()">구매하기</button>
+    </div>
+
+<br><br><br>
+
+
+<%
+ if(reply.length==0 || reply==null){%>
+        <p>아직 댓글이 없습니다.</p>
+     <%}%>
+
+
+
+    <%
+    for(var i=0; i<reply.length; i++){%>
+
+        <%if(admin == '' || admin == 0){%>
+        <p>
+            <%if(reply[i].reply==1){%>
+                &nbsp;&nbsp;&nbsp;&nbsp;            <!-- 답글인 경우에 띄어쓰기 해준부분-->
+            <%}%>
+                작성자: <%=reply[i].c_id%>            내용: <%=reply[i].content%> </p>        <!--여기는 관리자 아닌경우에는 클릭 못하도록 댓글 만들기-->
+        <%}else{%>
+        <p>
+            <%if(reply[i].reply==1){%>
+                &nbsp;&nbsp;&nbsp;&nbsp;                <!-- 답글인 경우에 띄어쓰기 해준부분-->
+            <%}%>
+                작성자: <%=reply[i].c_id%>            내용: <%=reply[i].content%>
+            <button class="btn btn-outline-secondary" type="button" onclick="reply_change('<%=reply[i].c_id%>', <%=reply[i].idx%>)">
+                <img src="/img/reply.png" alt="btnImages" class="btnImages" width="20" height="20"></button>
+        </p>         <!--여기는 관리자인 경우에는 댓글만 클릭할 수 있도록 만들기-->
+    <%}}%>
+
+
+    <div class="mb-3">
+        <input type="hidden" id="reply_id" value=""/>
+        <input type="text" placeholder="댓글을 입력하세요" id = "reply_content">
+        <button class="btn btn-outline-secondary" type="button" onclick="reply_write()">작성하기</button>
+    </div>
+
+</body>
+</html>
