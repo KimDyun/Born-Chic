@@ -71,4 +71,37 @@ router.get('/shopping/buy/:buy_count/:i_code',function (req, res,next){
 
     //<<<물품 구매>>> 대현이 코드 받아오기
 });
+
+router.post('/reply/write', function (req, res){
+    var idx = req.body.idx;             //글 번호
+    var reply_content = req.body.reply_content;
+    var reply_id = req.body.reply_id;
+    var id = req.cookies.id;
+    var admin = req.cookies.admin;
+
+    if(reply_id=="" || reply_id ==null){                                   //댓글작성
+        var sqlForUpdateList = "insert into COMMENT(c_id, c_code, content, reply, p_id) values (?, ?, ?, ?, (select t from (select max(idx) as t from COMMENT) as max_idx)+1)";
+        connection.query(sqlForUpdateList, [id, idx, reply_content, 0],function (err, check_reply){
+            if (err) {
+                console.error("err : " + err);
+                res.send({data:"error"});
+            }
+            else{
+                res.send({data:"success"});
+            }
+        });
+    }
+    else{                                                                   //답글작성
+        var sqlForUpdateList = "insert into COMMENT(c_id, c_code, content, reply, p_id) values (?, ?, ?, ?, ?)";
+        connection.query(sqlForUpdateList, [id, idx, reply_content, 1, reply_id],function (err, check_reply){
+            if (err) {
+                console.error("err : " + err);
+                res.send({data:"error"});
+            }
+            else{
+                res.send({data:"success"});
+            }
+        });
+    }
+});
 module.exports = router;
