@@ -7,7 +7,7 @@ mysql_dbc.test_open(connection);
 router.get('/', function (req, res, next) {
     var id = req.cookies.id;
     var admin = req.cookies.admin;
-    var sqlForInsertList = "select i_code, i.image, i_name, i.price, b_date, b.delivery from item as i, buy as b where i_code = b_code and b.delivery <=0 and b_id = ?";
+    var sqlForInsertList = "select i_code, i.image, i_name, i.price, b_date, b.delivery, b_count from item as i, buy as b where i_code = b_code and b.delivery <=2 and b_id = ?";
     connection.query(sqlForInsertList, [id], function (err, rows) {
         if (err) console.error("err : " + err);
         console.log("rows : " + JSON.stringify(rows));
@@ -26,7 +26,7 @@ router.post('/', function (req, res) {
     var day = date.getDate();
     var date_form = year + '-' + month + '-' + day;
 
-    if (item_code != undefined && buy_count == undefined && buy_code == undefined) {
+    if (item_code != undefined && buy_count == undefined && buy_code == undefined) { // 장바구니에서 상품 제거 시
         var sqlForDeleteList = "DELETE From buy WHERE b_id = ? and b_code = ? and delivery = -1";
         connection.query(sqlForDeleteList, [id, item_code], function (err, check) {
             console.log(check);
