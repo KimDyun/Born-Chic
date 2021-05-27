@@ -57,64 +57,79 @@
     </div>
 </nav>
 <br><br>
-<%
-if(rows.length == 0 || reply == null){ %>
-    <p style="margin-right: 40px;margin-left: 40px">아직 구매 상품이 없습니다.</p>
-<% } %>
+<table class="table">
+    <thead>
+    <tr class="table-secondary">
+        <th scope="col">구매자</th>
+        <th scope="col">상품명</th>
+        <th scope="col">카테고리</th>
+        <th scope="col">물품 재고, 판매량</th>
+        <th scop="col">가격 및 구매량</th>
+        <th scope="col">물품 이미지</th>
+        <th scope="col">배송 현황</th>
+    </tr>
+    </thead>
+    <tbody>
+        <%
+        if(rows.length == 0 || rows == null){ %>
+            <p style="margin-right: 40px;margin-left: 40px">아직 구매 상품이 없습니다.</p>
+        <% } %>
 
-<% for(var i = 0; i < rows.length; i++){ %>
-    <p>구매자: <%= rows[i].b_id %></p>
-    <p>물품 이름: <%= rows[i].i_name %></p>
-    <p>물품 카테고리: <%= rows[i].category %></p>
-    <p>물품 재고: <%= rows[i].stock %></p>
-    <p>물품 판매량: <%= rows[i].sell %></p>
-    <p>물품 가격: <%= rows[i].price %></p>
-    <p>물품 구매량: <%= rows[i].b_count %></p>
-    <p><img src="<%= rows[i].image %>" width="100" height="100"></p>
-    <% if(rows[i].delivery == 0){ %>
-        <p id="delivery">배송 준비중
-            <button class="btn btn-dark btn-sm btn-block" type="button"
-                    onclick="buy_check('<%= rows[i].delivery %>', <%= rows[i].idx %>)">배송 중으로 변경
-            </button>
-        </p>
-    <% }else if(rows[i].delivery == 1){ %>
-        <p id="delivery">배송 중
-            <button class="btn btn-dark btn-sm btn-block" type="button"
-                    onclick="buy_check('<%= rows[i].delivery %>', <%= rows[i].idx %>)">배송 완료로 변경
-            </button>
-        </p>
-    <% }else if(rows[i].delivery == 2){ %>
-        <p id="delivery">배송 완료
-            <button class="btn btn-dark btn-sm btn-block" type="button"
-                    onclick="buy_check('<%= rows[i].delivery %>', <%= rows[i].idx %>)">배송 완료 확정으로 변경
-            </button>
-        </p>
-<% }} %>
+        <% for(var i = 0; i < rows.length; i++){ %>
+            <tr>
+        <div class="row-cols-lg-3-lg-3">
+            <td style="vertical-align: middle">구매자: <%= rows[i].b_id %></td>
+            <td style="vertical-align: middle">물품 이름: <%= rows[i].i_name %></td>
+            <td style="vertical-align: middle">물품 카테고리: <%= rows[i].category %></td>
+            <td style="vertical-align: middle">물품 재고: <%= rows[i].stock %><br>물품 가격: <%= rows[i].price %></td>
+            <td style="vertical-align: middle">물품 구매량: <%= rows[i].b_count %></td>
+            <td style="vertical-align: middle"><img src="<%= rows[i].image %>" width="100" height="100"></td>
+            <% if(rows[i].delivery == 0){ %>
+                <td id="delivery" style="vertical-align: middle">배송 준비중
+                    <button class="btn btn-dark btn-sm float-right" type="button" style="width: 200px; height: 30px"
+                            onclick="buy_check('<%= rows[i].delivery %>', <%= rows[i].idx %>)">배송 중으로 변경
+                    </button>
+                </td>
+            <% }else if(rows[i].delivery == 1){ %>
+                <td id="delivery" style="vertical-align: middle">배송 중
+                    <button class="btn btn-dark btn-sm float-right" type="button" style="width: 200px; height: 30px"
+                            onclick="buy_check('<%= rows[i].delivery %>', <%= rows[i].idx %>)">배송 완료로 변경
+                    </button>
+                </td>
+            <% }else if(rows[i].delivery == 2){ %>
+                <td id="delivery" style="vertical-align: middle">배송 완료
+                    <button class="btn btn-dark btn-sm float-right" type="button" style="width: 200px; height: 30px"
+                            onclick="buy_check('<%= rows[i].delivery %>', <%= rows[i].idx %>)">배송 완료 확정으로 변경
+                    </button>
+                </td>
+        </div></tr></tbody>
+    <%}}%>
+</table>
 
 <div class="container">
     <div class="card">
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs" id="bologna-list" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#m_outer" role="tab" aria-controls="m_outer" aria-selected="true">남성
+                    <a class="nav-link active" href="#m_outer" role="tab" aria-controls="m_outer" aria-selected="true" style="color: black">남성
                         아우터</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#m_tops" role="tab" aria-controls="m_tops" aria-selected="false">남성 상의</a>
+                    <a class="nav-link" href="#m_tops" role="tab" aria-controls="m_tops" aria-selected="false" style="color: black">남성 상의</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#m_bottoms" role="tab" aria-controls="m_bottoms" aria-selected="false">남성
+                    <a class="nav-link" href="#m_bottoms" role="tab" aria-controls="m_bottoms" aria-selected="false" style="color: black">남성
                         하의</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#w_outer" role="tab" aria-controls="w_outer" aria-selected="false">여성
+                    <a class="nav-link" href="#w_outer" role="tab" aria-controls="w_outer" aria-selected="false" style="color: black">여성
                         아우터</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#w_tops" role="tab" aria-controls="w_tops" aria-selected="false">여성 상의</a>
+                    <a class="nav-link" href="#w_tops" role="tab" aria-controls="w_tops" aria-selected="false" style="color: black">여성 상의</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#w_bottoms" role="tab" aria-controls=w_bottoms" aria-selected="false">여성
+                    <a class="nav-link" href="#w_bottoms" role="tab" aria-controls=w_bottoms" aria-selected="false" style="color: black">여성
                         하의</a>
                 </li>
             </ul>
@@ -139,11 +154,11 @@ if(rows.length == 0 || reply == null){ %>
                         <% for(var i = 0; i < item.length; i++){
                         if(item[i].category == 'm_outer'){ %>
                             <tr>
-                                <th scope="row"><%= item[i].i_name %></th>
-                                <td><img src="<%= item[i].image %>" width="50" height="50"></td>
-                                <td><%= item[i].stock %></td>
-                                <td><%= item[i].sell %></td>
-                                <td><%= item[i].price %></td>
+                                <th scope="row" style="vertical-align: middle"><%= item[i].i_name %></th>
+                                <td style="vertical-align: middle"><img src="<%= item[i].image %>" width="50" height="50"></td>
+                                <td style="vertical-align: middle"><%= item[i].stock %></td>
+                                <td style="vertical-align: middle"><%= item[i].sell %></td>
+                                <td style="vertical-align: middle"><%= item[i].price %></td>
                             </tr>
                         <% }} %>
                         </tbody>
