@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Born-chic
+    </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="public/ckeditor/ckeditor.js"></script>
+</head>
+<style>
+    #contentForm {
+        width: 40%;
+        margin: 0 auto;
+        padding-top: 12%;
+    }
+
+    .table > thead > tr > th, .table > tbody > tr > th {
+        background-color: #e6ecff;
+        text-align: center;
+    }
+</style>
+<body>
+<a href="/" class="nav-link">
+    <div class="jumbotron text-center">
+        <h1 style="color: dimgrey">Born-chic</h1>
+    </div>
+</a>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: aliceblue">Menu</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a href="/itemlist/m_outer/1" class="nav-link">남성 아우터</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">남성 상의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">남성 하의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 아우터</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 상의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 하의</a></li>
+        </ul>
+        <form class="navbar-form pull-left" role="search" method="post">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default">검색</button>
+                </div>
+            </div>
+        </form>
+        <% if(user_id == ''){ %>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="/main/login" class="nav-link">Login</a></li>
+            </ul>
+        <% }else{
+        if(admin == '' || admin == 0){ %>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/mypage">마이페이지</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <% } else{ %>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/">물품관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <% } %>
+        <% } %>
+    </div>
+</nav>
+<br><br><br><br>
+
+<h2>물품 등록</h2>
+
+<form id="form1" name="form1" enctype="multipart/form-data"  method="post" action="/managedetail/itemuload">
+    <div class="input-group input-group-sm" role="group" style = "text-align:left">
+        <table class="table table-striped table-bordered">
+            <tread>
+                <tr>
+                    <td width="10%"><input type="hidden" class="form-control" aria-describedby="basic-addon1">상품번호</td>
+                    <td><input type = "hidden" name="i_code" id="i_code" class="form-control" aria-describedby="basic-addon1" > </td>
+                </tr>
+                <tr>
+                    <td><input type="hidden" class="form-control" aria-describedby="basic-addon1">카테고리</td>
+                    <td><input type="text" name="i_category" id="i_cagtegory" placeholder="카테고리를 입력하세요." class="form-control" aria-describedby="basic-addon1" ></td>
+                </tr>
+                <tr>
+                    <td><input type="hidden" class="form-control" aria-describedby="basic-addon1">상품명</td>
+                    <td><input type="text" name="i_name" id="i_name" placeholder="상품명을 입력하세요." class="form-control" aria-describedby="basic-addon1" ></td>
+                </tr>
+                <tr>
+                    <td><input type="hidden" class="form-control" aria-describedby="basic-addon1">상품 수량</td>
+                    <td><input type="text" name="i_stock" id="i_stock" placeholder="수량을 입력하세요." class="form-control" aria-describedby="basic-addon1" ></td>
+                </tr>
+                <tr>
+                    <td><input type="hidden" class="form-control" aria-describedby="basic-addon1">상품 가격</td>
+                    <td><input type="text" name="i_price" id="i_price" placeholder="가격을 입력하세요." class="form-control" aria-describedby="basic-addon1" ></td>
+                </tr>
+                <tr>
+                    <td><input type="hidden" class="form-control" aria-describedby="basic-addon1">상품 이미지</td>
+                    <td><input type="file" name="i_image" id="i_image" class="form-control" aria-describedby="basic-addon1"></td>
+                </tr>
+                <br><br>
+                <!-- placeholder은 제목을 입력할 수 있도록 도움말을 출력함 -->
+                <tr>
+                    <div style="width:800px;">
+                        <td colspan ="2"><textarea class="form-control" id="content" name="content" rows="3" cols="80"
+                                      placeholder="내용을 입력하세요"></textarea></td>
+                    </div>
+                </tr>
+            </tread>
+        </table>
+
+    </div>
+    </div>
+    <div style = "width:700px; text-align:center;">
+        <!-- 수정, 삭제에 필요한 글번호를 hidden 태그에 저장한다. -->
+        <input type = "hidden" name = "member_bno" value = "${dto.member_bno }">
+
+        <!-- 본인만 수정, 삭제 버튼을 표시한다. -->
+        <div class="btn-group btn-group-sm" role="group" aria-label="...">
+            <div style = "text-align:center;" >
+                <button type = "submit" class="btn">등록</button>
+                <button type = "button" id = "btnList" class="btn">목록</button>
+            </div></div>
+    </div>
+</form>
+
+<!-- 마찬가지로 내용을 입력하도록 도움말을 출력함 -->
+<script>
+    // ckeditor 적용
+    //id가 content인 태그 (글의 내용을 입력하는 태그)를 ck에디터를 적용한다는 의미
+    CKEDITOR.replace("content",{
+        height: "300px"
+    });
+
+    $(function() {
+        //목록 버튼
+        $("#btnList").click(function () {
+            location.href = "/manage";
+        });
+    });
+</script>
+</body>
+</html>
