@@ -1,3 +1,4 @@
+
 function movetodetail(i_code){
     location.href = "/itemdetail/"+i_code;
 }
@@ -51,44 +52,70 @@ function shopping_basket(){
     }
     console.log(value);
 }
-function shopping_buy(){
-    const count = $('#count_button').val();     //구매수량
+function shopping_buy(name, price){
+
+    let count = $('#count_button').val();     //구매수량
     const idx = $('#idx').val();            //제품코드
     const user_id = $('#user_id').val();
-    const stock = $('#stock').val();
-
+    let stock = $('#stock').val();
+    stock *=1;
+    count *=1;
     if(user_id =="" || user_id==null){
         alert("로그인 없이는 구매하기 할 수 없습니다. 로그인 먼저 해주십시오.");
         window.location.reload();
         return;
     }
+    console.log(count);
+    console.log(stock);
     if(count>stock){
         alert("남은 재고보다 구매 수량이 많은 경우에 구매할 수 없습니다.");
         window.location.reload();
         return;
     }
+
     var result = confirm("구매하시겠습니까?");
     if(result) {
-        $.ajax({// 서버로 데이터 전송
-            url:'/itemdetail/shopping/buy/'+count+'/'+idx,
-            type:'get',
-            success: function(data) {
-                var sign = JSON.parse(JSON.stringify(data));
-                sign = sign.data;
+        IMP.init('imp49200152');
+        IMP.request_pay({
+            pg : 'inicis', // version 1.1.0부터 지원.
+            pay_method : 'card',
+            merchant_uid : 'merchant_' + new Date().getTime(),
+            name : name,
+            amount : price*count, //판매 가격
+            buyer_email : 'iamport@siot.do',
+            buyer_name : '구매자이름',
+            buyer_tel : '010-1234-5678',
+            buyer_addr : '서울특별시 강남구 삼성동',
+            buyer_postcode : '123-456'
+        }, function(rsp) {
+            if ( rsp.success ) {
+                $.ajax({// 서버로 데이터 전송
+                    url:'/itemdetail/shopping/buy/'+count+'/'+idx,
+                    type:'get',
+                    success: function(data) {
+                        var sign = JSON.parse(JSON.stringify(data));
+                        sign = sign.data;
+                        if(sign == "success") {
+                            alert("구매하기 성공하였습니다.");
+                            window.location.reload();
+                            return true;
+                        }
+                        else{
+                            alert("구매하기 실패하였습니다");
+                            window.location.reload();
+                            return false;
+                        }
+                    },
+                    error:function (data){}
+                })
+            }
+            else {
+                alert("구매하기 실패하였습니다");
+                window.location.reload();
+                return false;
+            }
+        });
 
-                if(sign == "success") {
-                    alert("구매하기 성공하였습니다.");
-                    window.location.reload();
-                    return true;
-                }
-                else{
-                    alert("구매하기 실패하였습니다");
-                    window.location.reload();
-                    return false;
-                }
-            },
-            error:function (data){}
-        })
     }
     else{
         alert("구매하기를 취소하셨습니다.");

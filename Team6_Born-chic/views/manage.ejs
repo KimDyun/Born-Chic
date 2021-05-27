@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="/javascript/functions.js"></script>
 </head>
 <body>
@@ -58,7 +59,7 @@
 </nav>
 <br><br>
 <%
-if(rows.length == 0 || reply == null){ %>
+if(rows.length == 0 || rows == null){ %>
     <p style="margin-right: 40px;margin-left: 40px">아직 구매 상품이 없습니다.</p>
 <% } %>
 
@@ -139,7 +140,7 @@ if(rows.length == 0 || reply == null){ %>
                         <% for(var i = 0; i < item.length; i++){
                         if(item[i].category == 'm_outer'){ %>
                             <tr>
-                                <th scope="row"><%= item[i].i_name %></th>
+                                <th scope="row" ><%= item[i].i_name %></th>
                                 <td><img src="<%= item[i].image %>" width="50" height="50"></td>
                                 <td><%= item[i].stock %></td>
                                 <td><%= item[i].sell %></td>
@@ -287,11 +288,58 @@ if(rows.length == 0 || reply == null){ %>
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $('#bologna-list a').on('click', function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-    })
-</script>
+<div id="chart" style="width:1000px; height:1000px; margin-left: 200px; margin-right:200px;">
+
+    <script type="text/javascript">
+        $('#bologna-list a').on('click', function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        })
+        $(document).ready(function() {
+            var options = {
+                title:{
+                    text:"월별 매출액",
+                    align: 'center',
+                    style: {
+                        fontSize:  '18px',
+                        fontWeight:  'bold'
+                    },
+                },
+                series: [140000, 230000, 210000, 170000, 150000, 100000, 120000, 170000, 210000,0,50000,100000],
+                chart: {
+                    type: 'polarArea'
+                },
+                stroke: {
+                    colors: ['#fff']
+                },
+                fill: {
+                    opacity: 0.8
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200,
+                            height:200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }],
+                labels: ["1월", "2월", "3월","4월","5월","6월","7월","8월","9월","10월","11월", "12월"],
+                yaxis: {
+                    labels: {
+                        formatter: function(val) {
+                            return val + '원'
+                        }
+                    }
+                }
+            };
+            var chart = new ApexCharts(document.querySelector("#chart"), options);
+            chart.render();
+        });
+    </script>
+</div>
 </body>
 </html>
