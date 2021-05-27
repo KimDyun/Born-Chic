@@ -144,3 +144,35 @@ function reply_change(c_id, idx){
     $('#reply_id').val(idx);
     console.log($('#reply_id').val());
 }
+
+function buy_check(delivery, idx){
+
+    var result = confirm("변경하시겠습니까?");
+    if(result) {
+        $.ajax({// 서버로 데이터 전송
+            url:'/manage/delivery/change/',
+            type:'post',
+            data:{"delivery":delivery, "idx":idx},
+            success: function(data) {
+                var sign = JSON.parse(JSON.stringify(data));
+                sign = sign.data;
+
+                if(sign == "success") {
+                    alert("변경이 완료되였습니다.");
+                    window.location.reload();
+                    return true;
+                }
+                else{
+                    alert("변경이 실패하였습니다");
+                    window.location.reload();
+                    return false;
+                }
+            },
+            error:function (data){}
+        })
+    }
+    else{
+        alert("변경하기를 취소하셨습니다.");
+        window.location.reload();
+    }
+}
