@@ -111,46 +111,26 @@
     <div class="card col-lg-6">
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs" id="bologna-list" role="tablist">
-                <%for(var i=0; i<6; i++){
-                    if(category[i] == category){%>
+                <%var categorys = ['m_outer', 'm_tops', 'm_bottoms', 'w_outer', 'w_tops', 'w_bottoms'];
+                var names = ['남성 아우터', '남성 상의', '남성 하의', '여성 아우터', '여성 상의', '여성 하의'];
+                for(var i=0; i<6; i++){
+                    if(categorys[i] == category){%>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/manage/<%category[i]%>/1" role="tab" aria-controls="<%category[i]%>" aria-selected="true" style="color: black">남성
-                            아우터</a>
+                        <a class="nav-link active" href="/manage/<%=categorys[i]%>/1" role="tab" aria-selected="true" style="color: black"><%=names[i]%></a>
                     </li>
                 <%}
-                    else{
-
-                }
-                }%>
-                <li class="nav-item">
-                    <a class="nav-link active" href="#m_outer" role="tab" aria-controls="m_outer" aria-selected="true" style="color: black">남성
-                        아우터</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/mange/m_top/1" role="tab" aria-controls="m_tob" aria-selected="false" style="color: black">남성 상의</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/mange/m_bottoms/1" role="tab" aria-controls="m_bottoms" aria-selected="false" style="color: black">남성
-                        하의</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/mange/w_outer/1" role="tab" aria-controls="w_outer" aria-selected="false" style="color: black">여성
-                        아우터</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/mange/w_top/1" role="tab" aria-controls="w_tops" aria-selected="false" style="color: black">여성 상의</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/mange/w_bottoms/1" role="tab" aria-controls=w_bottoms" aria-selected="false" style="color: black">여성
-                        하의</a>
-                </li>
+                    else{%>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manage/<%=categorys[i]%>/1" role="tab" aria-selected="false" style="color: black"><%=names[i]%></a>
+                    </li>
+                <%}}%>
             </ul>
         </div>
         <div class="card-body">
             <h4 class="card-title">물품 관리</h4>
 
             <div class="tab-content mt-3">
-                <div class="tab-pane fade show active" id="m_outer" role="tabpanel" aria-labelledby="m_outer-tab">
+                <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="m_outer-tab">
                     <table class="table">
                         <thead>
                         <tr>
@@ -163,8 +143,7 @@
                         </thead>
 
                         <tbody>
-                        <% for(var i = 0; i < item.length; i++){
-                        if(item[i].category == 'm_outer'){ %>
+                        <% for(var i = 0; i < item.length; i++){%>
                             <tr>
                                 <th scope="row" style="vertical-align: middle"><%= item[i].i_name %></th>
                                 <td style="vertical-align: middle"><img src="<%= item[i].image %>" width="50" height="50"></td>
@@ -172,150 +151,34 @@
                                 <td style="vertical-align: middle"><%= item[i].sell %></td>
                                 <td style="vertical-align: middle"><%= item[i].price %></td>
                             </tr>
-                        <% }} %>
-                        </tbody>
-                    </table>
-
-                </div>
-
-                <div class="tab-pane fade" id="m_tops" role="tabpanel" aria-labelledby="m_tops-tab">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">물품 이름</th>
-                            <th scope="col">이미지</th>
-                            <th scope="col">재고</th>
-                            <th scope="col">판매량</th>
-                            <th scope="col">가격</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <% for(var i = 0; i < item.length; i++){
-                        if(item[i].category == 'm_tops'){ %>
-                            <tr>
-                                <th scope="row"><%= item[i].i_name %></th>
-                                <td><img src="<%= item[i].image %>" width="50" height="50"></td>
-                                <td><%= item[i].stock %></td>
-                                <td><%= item[i].sell %></td>
-                                <td><%= item[i].price %></td>
-                            </tr>
-                        <% }} %>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="tab-pane fade" id="m_bottoms" role="tabpanel" aria-labelledby="m_bottoms-tab">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">물품 이름</th>
-                            <th scope="col">이미지</th>
-                            <th scope="col">재고</th>
-                            <th scope="col">판매량</th>
-                            <th scope="col">가격</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <% for(var i = 0; i < item.length; i++){
-                        if(item[i].category == 'm_bottoms'){ %>
-                            <tr>
-                                <th scope="row"><%= item[i].i_name %></th>
-                                <td><img src="<%= item[i].image %>" width="50" height="50"></td>
-                                <td><%= item[i].stock %></td>
-                                <td><%= item[i].sell %></td>
-                                <td><%= item[i].price %></td>
-                            </tr>
-                        <% }} %>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="tab-pane fade" id="w_outer" role="tabpanel" aria-labelledby="w_outer-tab">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">물품 이름</th>
-                            <th scope="col">이미지</th>
-                            <th scope="col">재고</th>
-                            <th scope="col">판매량</th>
-                            <th scope="col">가격</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <% for(var i = 0; i < item.length; i++){
-                        if(item[i].category == 'w_outer'){ %>
-                            <tr>
-                                <th scope="row"><%= item[i].i_name %></th>
-                                <td><img src="<%= item[i].image %>" width="50" height="50"></td>
-                                <td><%= item[i].stock %></td>
-                                <td><%= item[i].sell %></td>
-                                <td><%= item[i].price %></td>
-                            </tr>
-                        <% }} %>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="tab-pane fade" id="w_tops" role="tabpanel" aria-labelledby="w_tops-tab">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">물품 이름</th>
-                            <th scope="col">이미지</th>
-                            <th scope="col">재고</th>
-                            <th scope="col">판매량</th>
-                            <th scope="col">가격</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <% for(var i = 0; i < item.length; i++){
-                        if(item[i].category == 'w_tops'){ %>
-                            <tr>
-                                <th scope="row"><%= item[i].i_name %></th>
-                                <td><img src="<%= item[i].image %>" width="50" height="50"></td>
-                                <td><%= item[i].stock %></td>
-                                <td><%= item[i].sell %></td>
-                                <td><%= item[i].price %></td>
-                            </tr>
-                        <% }} %>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="tab-pane fade" id="w_bottoms" role="tabpanel" aria-labelledby="w_bottoms-tab">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">물품 이름</th>
-                            <th scope="col">이미지</th>
-                            <th scope="col">재고</th>
-                            <th scope="col">판매량</th>
-                            <th scope="col">가격</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        <% for(var i = 0; i < item.length; i++){
-                        if(item[i].category == 'w_bottoms'){ %>
-                            <tr>
-                                <th scope="row"><%= item[i].i_name %></th>
-                                <td><img src="<%= item[i].image %>" width="50" height="50"></td>
-                                <td><%= item[i].stock %></td>
-                                <td><%= item[i].sell %></td>
-                                <td><%= item[i].price %></td>
-                            </tr>
-                        <% }} %>
+                        <%} %>
                         </tbody>
                     </table>
                 </div>
             </div>
             </tbody>
             </table>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <%
+                    for(i=1; i<=total_page; i++){
+                    %>
+                    <li class="page-item" ><a class="page-link" style="color: dimgrey" href="/manage/<%=category%>/<%=i%>/"><%=i%></a></li>
+                    <%}%>
+                </ul>
+            </nav>
+
         </div>
     </div>
         <div class="col-lg-6" id="chart" style="width:100px; height:100px;">
 
             <script type="text/javascript">
+                // $('#bologna-list a').on('click', function (e) {
+                //
+                //     $(this).tab('show');
+                // })
+
                 $(document).ready(function() {
                     var options = {
                         title:{
