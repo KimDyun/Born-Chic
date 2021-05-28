@@ -13,30 +13,41 @@ router.get('/', function (req, res, next) {
         var sqlForInsertList = "select * from ITEM";
         connection.query(sqlForInsertList, function (err, item) {
             if (err) console.error("err : " + err);
-            res.render('manage', {user_id: id, admin: admin, rows: rows, item:item});
+
+            var sqlForInsertList = "select * from buy as b JOIN ITEM as i on i.i_code = b.b_code where b.delivery != -1;";
+            connection.query(sqlForInsertList, function (err, buy) {
+                if (err) console.error("err : " + err);
+                var sales = Array.from({length: 12}, () => 0);
+                for(var i=0; i<buy.length; i++){
+                    var date = new Date(buy[i].i_date);
+                    sales[date.getMonth()]+=buy[i].b_count* buy[i].price;
+                }
+                res.render('manage', {user_id: id, admin: admin, rows: rows, item: item, sales:sales});
+            });
+
         });
     });
 });
-router.post('/delivery/change', function (req, res){
+router.post('/delivery/change', function (req, res) {
     var idx = req.body.idx;             //글 번호
     var delivery = req.body.delivery;
     var change = 0;
-    if(delivery == 0){
-        change =1;
-    }else if(delivery == 1){
+    if (delivery == 0) {
+        change = 1;
+    } else if (delivery == 1) {
         change = 2;
-    }else if(delivery ==2){
-        change=3;
+    } else if (delivery == 2) {
+        change = 3;
     }
     var sqlForUpdateList = "UPDATE BUY SET delivery = ? WHERE idx = ?";
-    connection.query(sqlForUpdateList, [change,idx], function (err, check_buy) {
+    connection.query(sqlForUpdateList, [change, idx], function (err, check_buy) {
         console.log(check_buy);
         var buy_success = check_buy.changedRows;
         if (err) console.error("err : " + err);
-        if (buy_success == undefined || buy_success==null){
+        if (buy_success == undefined || buy_success == null) {
             console.error("buy database setting is failed");
             res.send({data: "error"});
-        } else{
+        } else {
             res.send({data: "success"});
         }
     });

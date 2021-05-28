@@ -304,12 +304,17 @@
     </div>
 </div>
 <div id="chart" style="width:1000px; height:1000px; margin-left: 200px; margin-right:200px;">
+    <input type="hidden" id="item1" value=sales/>
 
     <script type="text/javascript">
         $('#bologna-list a').on('click', function (e) {
             e.preventDefault();
             $(this).tab('show');
         })
+
+        var sales = [];
+        sales[0] = $('#valuesed').val();
+        console.log(sales[0]);
         $(document).ready(function() {
             var options = {
                 title:{
@@ -320,7 +325,7 @@
                         fontWeight:  'bold'
                     },
                 },
-                series: [140000, 230000, 210000, 170000, 150000, 100000, 120000, 170000, 210000,0,50000,100000],
+                series: sales,
                 chart: {
                     type: 'polarArea'
                 },
