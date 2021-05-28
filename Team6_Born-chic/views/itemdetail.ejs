@@ -49,12 +49,12 @@
         if(admin == '' || admin == 0){ %>
             <ul class="navbar-nav">
                 <li class="nav-item "><a class="nav-link" href="/mypage">마이페이지</a></li>
-                <li class="nav-item "><a class="nav-link" href="/delete_cookie">Logout</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
             </ul>
         <% } else{ %>
             <ul class="navbar-nav">
                 <li class="nav-item "><a class="nav-link" href="/manage">물품관리</a></li>
-                <li class="nav-item "><a class="nav-link" href="/delete_cookie">Logout</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
             </ul>
         <% } %>
         <% } %>
@@ -125,10 +125,11 @@
         <p style="margin-right: 40px;margin-left: 40px">
             <%if(reply[i].reply==1){%>
                 &nbsp;&nbsp;&nbsp;&nbsp;  관리자 : <%=reply[i].c_id%>     <br>&nbsp;&nbsp;&nbsp;&nbsp; [RE]      : <%=reply[i].content%> </p>                   <!-- 답글인 경우에 띄어쓰기 해준부분-->
-            <%}%>
+            <%}else{%>
                 작성자 : <%=reply[i].c_id%>       <br>      <%=reply[i].content%>
             <button class="btn btn-dark btn-sm" type="button" onclick="reply_change('<%=reply[i].c_id%>', <%=reply[i].idx%>)">
                 <img src="/img/reply.png" alt="btnImages" class="btnImages" width="20" height="20"></button>
+            <%}%>
         </p>         <!--여기는 관리자인 경우에는 댓글만 클릭할 수 있도록 만들기-->
     <%}}%>
 
