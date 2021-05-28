@@ -111,19 +111,39 @@
     <div class="card col-lg-6">
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs" id="bologna-list" role="tablist">
-                <%var categorys = ['m_outer', 'm_top', 'm_bottom', 'w_outer', 'w_top', 'w_bottom'];
-                var names = ['남성 아우터', '남성 상의', '남성 하의', '여성 아우터', '여성 상의', '여성 하의'];
-                for(var i=0; i<6; i++){
-                    if(categorys[i] == category){%>
+                <%for(var i=0; i<6; i++){
+                    if(category[i] == category){%>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/manage/<%categorys[i]%>/1" role="tab" aria-controls="<%categorys[i]%>" aria-selected="true" style="color: black"><%names[i]%></a>
+                        <a class="nav-link active" href="/manage/<%category[i]%>/1" role="tab" aria-controls="<%category[i]%>" aria-selected="true" style="color: black">남성
+                            아우터</a>
                     </li>
                 <%}
-                    else{%>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/manage/<%categorys[i]%>/1" role="tab" aria-controls="<%categorys[i]%>" aria-selected="false" style="color: black"><%names[i]%></a>
-                    </li>
-                <%}}%>
+                    else{
+
+                }
+                }%>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#m_outer" role="tab" aria-controls="m_outer" aria-selected="true" style="color: black">남성
+                        아우터</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mange/m_top/1" role="tab" aria-controls="m_tob" aria-selected="false" style="color: black">남성 상의</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mange/m_bottoms/1" role="tab" aria-controls="m_bottoms" aria-selected="false" style="color: black">남성
+                        하의</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mange/w_outer/1" role="tab" aria-controls="w_outer" aria-selected="false" style="color: black">여성
+                        아우터</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mange/w_top/1" role="tab" aria-controls="w_tops" aria-selected="false" style="color: black">여성 상의</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mange/w_bottoms/1" role="tab" aria-controls=w_bottoms" aria-selected="false" style="color: black">여성
+                        하의</a>
+                </li>
             </ul>
         </div>
         <div class="card-body">
