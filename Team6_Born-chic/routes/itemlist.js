@@ -37,7 +37,6 @@ router.get('/:category/:cur_page/',function (req, res,next){
             res.render('itemlist', {user_id : id, admin: admin, rows: result,total_page:totalpage, cur_page:cur_page, category:category, search:""});
         });
     });
-
 });
 
 router.get('/search/:cur_page/:search', function (req, res){
