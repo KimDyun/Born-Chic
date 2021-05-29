@@ -1,7 +1,4 @@
 
-function movetodetail(i_code){
-    location.href = "/itemdetail/"+i_code;
-}
 function shopping_basket(){
     const count = $('#count_button').val();
     const idx = $('#idx').val();
@@ -127,6 +124,7 @@ function reply_write(){
     const reply_content = $('#reply_content').val();     //댓글 내용
     const reply_id = $('#reply_id').val();       //답글인 경우
     const user_id = $('#user_id').val();
+    const reply_star = $('#reply_star').val();
     console.log('유저'+user_id);
     console.log('답글'+reply_id);
     console.log('글번호'+idx);
@@ -141,7 +139,7 @@ function reply_write(){
         $.ajax({// 서버로 데이터 전송
             url:'/itemdetail/reply/write/',
             type:'post',
-            data:{"reply_content":reply_content, "reply_id":reply_id, "idx":idx},
+            data:{"reply_content":reply_content, "reply_id":reply_id, "idx":idx, "reply_star":reply_star},
             success: function(data) {
                 var sign = JSON.parse(JSON.stringify(data));
                 sign = sign.data;

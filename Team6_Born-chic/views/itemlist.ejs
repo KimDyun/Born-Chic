@@ -63,7 +63,7 @@
             var oneItem = rows[i];
         %>
         <div class="col-xs-3" style="width: 300px; height: 300px">
-        <div class="card" onclick="movetodetail(<%=oneItem.i_code%>)" >
+        <div class="card" onclick="location.href='/itemdetail/<%=oneItem.i_code%>'">
             <img class="card-img-top" src="<%=oneItem.image%>" width="100" height="200" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title"><%=oneItem.i_name%></h5>

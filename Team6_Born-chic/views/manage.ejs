@@ -145,7 +145,7 @@
                         <tbody>
                         <% for(var i = 0; i < item.length; i++){%>
                             <tr>
-                                <th scope="row" style="vertical-align: middle"><%= item[i].i_name %></th>
+                                <th scope="row" style="vertical-align: middle"><a style="color: black; text-decoration: none" href="/managedetail/itemupdate/<%= item[i].i_code%>"><%= item[i].i_name %></a></th>
                                 <td style="vertical-align: middle"><img src="<%= item[i].image %>" width="50" height="50"></td>
                                 <td style="vertical-align: middle"><%= item[i].stock %></td>
                                 <td style="vertical-align: middle"><%= item[i].sell %></td>
@@ -168,7 +168,7 @@
                     <%}%>
                 </ul>
             </nav>
-
+            <button type="submit" class="btn btn-dark btn-sm float-right" onclick="location.href='/managedetail/itemupload'">물품등록</button>
         </div>
     </div>
         <div class="col-lg-6" id="chart" style="width:100px; height:100px;">

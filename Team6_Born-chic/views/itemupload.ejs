@@ -132,6 +132,7 @@
     $('#Category_dd .dropdown-menu li > a').bind('click', function (e) {
         var html = $(this).html();
         selected_category = $(this).attr('value');
+        console.log($(this).attr("value"));
         $('#Category_dd button.dropdown-toggle').html(html + ' <span class="caret"></span>');
     });
     var fileInput = document.getElementById("addImage");
