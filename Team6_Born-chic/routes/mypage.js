@@ -26,7 +26,7 @@ router.post('/', function (req, res) {
     var day = date.getDate();
     var date_form = year + '-' + month + '-' + day;
 
-    if (item_code != undefined && buy_count == undefined && buy_code == undefined) {
+    if (item_code != undefined && buy_count == undefined && buy_code == undefined) { // 장바구니에서 상품 제거 시
         var sqlForDeleteList = "DELETE From buy WHERE b_id = ? and b_code = ? and delivery = -1";
         connection.query(sqlForDeleteList, [id, item_code], function (err, check) {
             console.log(check);

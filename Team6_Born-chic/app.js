@@ -10,6 +10,7 @@ var mainRouter = require('./routes/main');
 var mypageRouter = require('./routes/mypage');
 var itemlistRouter = require('./routes/itemlist');
 var itemdetailRouter = require('./routes/itemdetail');
+var managedetailRouter = require('./routes/managedetail');
 var manageRouter = require('./routes/manage');
 
 var cookieRouter = require('./routes/cookie');
@@ -25,6 +26,7 @@ app.set('view engine', 'ejs');
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -38,6 +40,7 @@ app.use('/index', indexRouter);
 app.use('/mypage', mypageRouter);
 app.use('/itemlist', itemlistRouter);
 app.use('/itemdetail', itemdetailRouter);
+app.use('/managedetail', managedetailRouter);
 app.use('/manage', manageRouter);
 
 // catch 404 and forward to error handler
