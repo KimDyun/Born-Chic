@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Born-chic
+    </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+
+<style>
+    .table > thead > tr > th, .table > tbody > tr > th {
+        background-color: #e6ecff;
+        text-align: center;
+    }
+</style>
+
+<body>
+<a href="/" class="nav-link">
+    <div class="jumbotron text-center">
+        <h1 style="color: dimgrey">Born-chic</h1>
+    </div>
+</a>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: aliceblue">Menu</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a href="/itemlist/m_outer/1" class="nav-link">남성 아우터</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">남성 상의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">남성 하의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 아우터</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 상의</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">여성 하의</a></li>
+        </ul>
+        <form class="navbar-form pull-left" role="search" method="post">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default">검색</button>
+                </div>
+            </div>
+        </form>
+        <% if(user_id == ''){ %>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="/main/login" class="nav-link">Login</a></li>
+            </ul>
+        <% }else{
+        if(admin == '' || admin == 0){ %>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/mypage">마이페이지</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <% } else{ %>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/">물품관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <% } %>
+        <% } %>
+    </div>
+</nav>
+<!--
+<div>
+            <td><input type="hidden" aria-describedby="basic-addon1">카테고리</td>
+            <td><input type="text" name="i_category" id="i_category" placeholder="카테고리를 입력하세요." class="form-control" aria-describedby="basic-addon1"/></td>
+        </div>
+-->
+<!--
+
+-->
+<br><br><br><br>
+
+<h2>물품 등록</h2>
+<div class="container">
+    <div>
+        <div id="Category_dd" class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" id="btnCategory" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select a category
+                <span class="caret"></span>
+            </button>
+            <ul id="Categories" class="dropdown-menu" role="menu" aria-labelledby="searchType">
+                <li role="presentation"><a class="dropdown-item" value="m_outer" href="javascript:void(0)">남성 아우터</a></li>
+                <li role="presentation"><a class="dropdown-item" value="m_tops" href="javascript:void(0)">남성 상의</a></li>
+                <li role="presentation"><a class="dropdown-item" value="m_bottoms" href="javascript:void(0)">남성 하의</a></li>
+                <li role="presentation"><a class="dropdown-item" value="w_outer" href="javascript:void(0)">여성 아우터</a></li>
+                <li role="presentation"><a class="dropdown-item" value="w_tops" href="javascript:void(0)">여성 상의</a></li>
+                <li role="presentation"><a class="dropdown-item" value="w_bottoms" href="javascript:void(0)">여성 하의</a></li>
+            </ul>
+        </div>
+        <div>
+            <td><input type="hidden" aria-describedby="basic-addon1">상품명</td>
+            <td><input type="text" name="i_name" id="i_name" placeholder="상품명을 입력하세요." class="form-control" aria-describedby="basic-addon1"/></td>
+        </div>
+        <div>
+            <td><input type="hidden" aria-describedby="basic-addon1">상품 수량</td>
+            <td><input type="text" name="i_stock" id="i_stock" placeholder="수량을 입력하세요." class="form-control" aria-describedby="basic-addon1"/></td>
+        </div>
+        <div>
+            <td><input type="hidden" aria-describedby="basic-addon1">상품 가격</td>
+            <td><input type="text" name="i_price" id="i_price" placeholder="가격을 입력하세요." class="form-control" aria-describedby="basic-addon1"/></td>
+        </div>
+        <div>
+            <td><input type="hidden" aria-describedby="basic-addon1">대표 이미지</td>
+            <td><input type="file" name="i_image" id="i_image" class="form-control" aria-describedby="basic-addon1"/></td>
+        </div>
+        <br><br>
+        <!-- placeholder은 제목을 입력할 수 있도록 도움말을 출력함 -->
+
+        <div>
+            <label style ="width:120px" class="form-control" aria-describedby="basic-addon1" for="addImage">이미지 삽입</label> <!-- id="addImage와 연결됨 -->
+            <td><textarea style="white-space:pre-line" class="form-control" id="i_content" name="i_content" rows="3" cols="80" placeholder="내용을 입력하세요"></textarea></td>
+        </div>
+    </div>
+    <div style = "width:700px; text-align:center;">
+        <div style = "text-align:center;" >
+            <button type = "submit" class="btn" onclick="btnUpload()">등록</button>
+            <button type = "button" id = "btnList" class="btn">목록</button>
+        </div>
+    </div>
+
+    <input type="file" name="addImage" id="addImage" style="display:none;"/></td> <!-- 안보임 -->
+</div>
+
+<!-- 마찬가지로 내용을 입력하도록 도움말을 출력함 -->
+<script>
+    var selected_category = "";
+    $('#Category_dd .dropdown-menu li > a').bind('click', function (e) {
+        var html = $(this).html();
+        selected_category = $(this).attr('value');
+        console.log($(this).attr("value"));
+        $('#Category_dd button.dropdown-toggle').html(html + ' <span class="caret"></span>');
+    });
+    var fileInput = document.getElementById("addImage");
+    fileInput.addEventListener('change',function(e){
+        var total_text = document.getElementById("i_content");
+        var image = fileInput.value;
+        var strarr = image.split("\\");
+        var image_path;
+        for(var i=0; strarr[i] != null; i++)
+            image_path = '/img/'+strarr[i];
+
+        var input_image = '\r\n' + image_path;
+        total_text.value += input_image;
+    });
+    function btnUpload(){
+        var uploadAvailable = onUploadSubmit();
+        if(uploadAvailable == false)
+            return false;
+
+        item_category = selected_category;
+        console.log(item_category);
+        var item_name = document.getElementById("i_name").value;
+        var item_stock = document.getElementById("i_stock").value;
+        var item_price = document.getElementById("i_price").value;
+        var image = document.getElementById("i_image").value;
+        var strarr = image.split("\\");
+        var item_image;
+        for(var i=0; strarr[i] != null; i++)
+            item_image = '/img/'+strarr[i];
+        var item_content = document.getElementById("i_content").value;
+
+        $.ajax({// 서버로 데이터 전송
+            url: '/managedetail/itemupload',
+            type: 'post',
+            data: {"i_category": item_category, "i_name": item_name, "i_stock": item_stock,
+                "i_price": item_price, "i_image": item_image, "i_content": item_content},
+            success: function (data) {
+                var sign = JSON.parse(JSON.stringify(data));
+                sign = sign.data;
+
+                if (sign == "upload error") {
+                    alert("물품을 등록할 수 없습니다. 다시 시도주십시오.");
+                    window.location.reload();
+                    return false;
+                } else {
+                    alert("물품이 등록되었습니다.");
+                    window.location.reload();
+                    return true;
+                }
+            },
+            error: function (data) {
+            }
+        })   //ajax
+
+    }
+    function onUploadSubmit(){
+        if(selected_category == "")
+        {
+            var message = "상품명을 입력하십시오.";
+            $("#i_name").val("");
+            $("#i_name").focus();
+            alert(message);
+            return false;
+        }
+        else if($("#i_name").val().trim() == "")
+        {
+            var message = "상품명을 입력하십시오.";
+            $("#i_name").val("");
+            $("#i_name").focus();
+            alert(message);
+            return false;
+        }
+        else if($("#i_stock").val().trim() == "")
+        {
+            var message = "상품 수량을 입력하십시오.";
+            $("#i_stock").val("");
+            $("#i_stock").focus();
+            alert(message);
+            return false;
+        }
+        else if($("#i_price").val().trim() == "")
+        {
+            var message = "상품 가격을 입력하십시오";
+            $("#i_price").val("");
+            $("#i_price").focus();
+            alert(message);
+            return false;
+        }
+        else if($("#i_image").val().trim() == "")
+        {
+            var message = "대표 이미지를 선택하십시오";
+            $("#i_image").val("");
+            $("#i_image").focus();
+            alert(message);
+            return false;
+        }
+        else if($("#i_content").val().trim() == "")
+        {
+            var message = "상세 설명을 입력하십시오.";
+            $("#i_content").val("");
+            $("#i_content").focus();
+            alert(message);
+            return false;
+        }
+        else true;
+    }
+    $(function() {
+        //목록 버튼
+        $("#btnList").click(function () {
+            location.href = "/main";
+        });
+    });
+
+</script>
+</body>
+</html>

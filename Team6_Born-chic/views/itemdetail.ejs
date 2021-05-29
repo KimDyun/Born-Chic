@@ -11,7 +11,10 @@
     <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
     <script src="/javascript/functions.js"></script>
     <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
-
+    <style>
+        #star a{ text-decoration: none; color: gray; }
+        #star a.on{ color: sandybrown; }
+    </style>
 </head>
 <body>
 <a href="/main" class="nav-link">
@@ -70,6 +73,7 @@
             <div class="row-cols-4">
                 <br>
                 <p style="margin-left: 100px"><%=rows[0].i_name%></p>
+                <p style="margin-left: 100px">평점 : <%if(rating == null){%> 입력된 평점이 없습니다.<%}else{%><span style="color: sandybrown"><%for(var i=0; i<rating; i++){%>★<%}}%></span></p>
                 <p style="margin-left: 100px">가격 : <%=rows[0].price%></p>
                 <p style="margin-left: 100px">남은 재고 : <%=rows[0].stock%></p>
                 <p style="margin-left: 100px">입고 일자 : <%=date%></p>
@@ -119,25 +123,34 @@
             <%if(reply[i].reply==1){%>
                 &nbsp;&nbsp;&nbsp;&nbsp;  관리자 : <%=reply[i].c_id%>     <br>&nbsp;&nbsp;&nbsp;&nbsp; [RE]      : <%=reply[i].content%> </p>          <!-- 답글인 경우에 띄어쓰기 해준부분-->
             <%}else{%>
-                작성자 : <%=reply[i].c_id%>     <br>        <%=reply[i].content%> </p>        <!--여기는 관리자 아닌경우에는 클릭 못하도록 댓글 만들기-->
+                작성자 : <%=reply[i].c_id%> &nbsp;   별점 :  <span style="color: sandybrown"><%for(var j=0; j<reply[i].rating; j++){%>★<%}%></span>  <br>  <%=reply[i].content%>     <!--여기는 관리자 아닌경우에는 클릭 못하도록 댓글 만들기-->
             <%}%>
         <%}else{%>
         <p style="margin-right: 40px;margin-left: 40px">
             <%if(reply[i].reply==1){%>
                 &nbsp;&nbsp;&nbsp;&nbsp;  관리자 : <%=reply[i].c_id%>     <br>&nbsp;&nbsp;&nbsp;&nbsp; [RE]      : <%=reply[i].content%> </p>                   <!-- 답글인 경우에 띄어쓰기 해준부분-->
             <%}else{%>
-                작성자 : <%=reply[i].c_id%>       <br>      <%=reply[i].content%>
+                작성자 : <%=reply[i].c_id%> &nbsp;   별점 :  <span style="color: sandybrown"><%for(var j=0; j<reply[i].rating; j++){%>★<%}%></span>  <br>  <%=reply[i].content%>
             <button class="btn btn-dark btn-sm" type="button" onclick="reply_change('<%=reply[i].c_id%>', <%=reply[i].idx%>)">
                 <img src="/img/reply.png" alt="btnImages" class="btnImages" width="20" height="20"></button>
             <%}%>
         </p>         <!--여기는 관리자인 경우에는 댓글만 클릭할 수 있도록 만들기-->
     <%}}%>
-
+<%if(admin == '0'){%>
 <div class="card mb-2">
 <div class="card-body">
     <ul class="list-group list-group-flush">
         <li class="list-group-item">
+            <p id="star"> <!-- 부모 -->
+                별점 :
+                <a href="#" value="1">★</a> <!-- 자식들-->
+                <a href="#" value="2">★</a>
+                <a href="#" value="3">★</a>
+                <a href="#" value="4">★</a>
+                <a href="#" value="5">★</a>
+            </p>
             <input type="hidden" id="reply_id" value=""/>
+            <input type="hidden" id="reply_star" value=""/>
             <textarea class="form-control" id = "reply_content" rows="3"></textarea>
             <br>
             <button class="btn btn-dark btn-sm" type="button" onclick="reply_write()">작성하기</button>
@@ -145,5 +158,27 @@
     </ul>
 </div>
 </div>
+<%}else{%>
+    <div class="card mb-2">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <input type="hidden" id="reply_id" value=""/>
+                    <textarea class="form-control" id = "reply_content" rows="3"></textarea>
+                    <br>
+                    <button class="btn btn-dark btn-sm" type="button" onclick="reply_write()">작성하기</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+<%}%>
+<script>
+    $('#star a').click(function(){ $(this).parent().children("a").removeClass("on");
+        $(this).addClass("on").prevAll("a").addClass("on");
+        console.log($(this).attr("value"));
+        $('#reply_star').val($(this).attr("value"));
+        return false;
+    });
+</script>
 </body>
 </html>

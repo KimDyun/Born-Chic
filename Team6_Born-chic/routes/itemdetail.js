@@ -18,7 +18,13 @@ router.get('/:i_code',function (req, res,next){
         var sqlForSelectList = "SELECT * FROM COMMENT WHERE c_code=? ORDER BY p_id, reply, idx";
         connection.query(sqlForSelectList,[i_code] ,function (err, reply){
             if (err) console.error("err : " + err);
-            res.render('itemdetail', {user_id : id, admin: admin, rows: data, date:date, reply:reply});
+
+            var sqlForCheckrating = "select ROUND(avg(rating)) as rate from comment where c_code = ? AND reply=0";
+            connection.query(sqlForCheckrating,[i_code] , function(err, rating){
+                if (err) console.error("err : " + err);
+
+                res.render('itemdetail', {user_id : id, admin: admin, rows: data, date:date, reply:reply, rating:rating[0].rate});
+            });
         });
     });
 });
@@ -101,14 +107,14 @@ router.post('/reply/write', function (req, res){
     var reply_id = req.body.reply_id;
     var id = req.cookies.id;
     var admin = req.cookies.admin;
-
+    var reply_star = req.body.reply_star;
 
     if(reply_id=="" || reply_id ==null){                                   //댓글작성
         var sqlForUpdateList = "select count(*) as cnt from COMMENT";
         connection.query(sqlForUpdateList, function (err, check_reply){
             if(check_reply[0].cnt==0){
-                var sqlForUpdateList = "insert into COMMENT(c_id, c_code, content, reply, p_id) values (?, ?, ?, ?, ?)";
-                connection.query(sqlForUpdateList, [id, idx, reply_content, 0, 1],function (err, check_reply){
+                var sqlForUpdateList = "insert into COMMENT(c_id, c_code, content, reply, p_id, rating) values (?, ?, ?, ?, ?, ?)";
+                connection.query(sqlForUpdateList, [id, idx, reply_content, 0, 1, reply_star],function (err, check_reply){
                     if (err) {
                         console.error("err : " + err);
                         res.send({data:"error"});
@@ -119,8 +125,8 @@ router.post('/reply/write', function (req, res){
                 });
             }
             else{
-                var sqlForUpdateList = "insert into COMMENT(c_id, c_code, content, reply, p_id) values (?, ?, ?, ?, (select t from (select max(idx) as t from COMMENT) as max_idx)+1)";
-                connection.query(sqlForUpdateList, [id, idx, reply_content, 0],function (err, check_reply){
+                var sqlForUpdateList = "insert into COMMENT(c_id, c_code, content, reply, rating, p_id) values (?, ?, ?, ?, ?, (select t from (select max(idx) as t from COMMENT) as max_idx)+1)";
+                connection.query(sqlForUpdateList, [id, idx, reply_content, 0, reply_star],function (err, check_reply){
                     if (err) {
                         console.error("err : " + err);
                         res.send({data:"error"});
@@ -133,8 +139,8 @@ router.post('/reply/write', function (req, res){
         });
     }
     else{                                                                   //답글작성
-        var sqlForUpdateList = "insert into COMMENT(c_id, c_code, content, reply, p_id) values (?, ?, ?, ?, ?)";
-        connection.query(sqlForUpdateList, [id, idx, reply_content, 1, reply_id],function (err, check_reply){
+        var sqlForUpdateList = "insert into COMMENT(c_id, c_code, content, reply, p_id, rating) values (?, ?, ?, ?, ?, ?)";
+        connection.query(sqlForUpdateList, [id, idx, reply_content, 1, reply_id, 0],function (err, check_reply){
             if (err) {
                 console.error("err : " + err);
                 res.send({data:"error"});

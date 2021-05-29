@@ -4,18 +4,10 @@
     <title>
         Born-chic
     </title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
-
-<style>
-    .table > thead > tr > th, .table > tbody > tr > th {
-        background-color: #e6ecff;
-        text-align: center;
-    }
-</style>
 
 <body>
 <a href="/" class="nav-link">
@@ -57,202 +49,201 @@
             </ul>
         <% } else{ %>
             <ul class="navbar-nav">
-                <li class="nav-item "><a class="nav-link" href="/">물품관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/manage">물품관리</a></li>
                 <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
             </ul>
         <% } %>
         <% } %>
     </div>
 </nav>
-<!--
-<div>
-            <td><input type="hidden" aria-describedby="basic-addon1">카테고리</td>
-            <td><input type="text" name="i_category" id="i_category" placeholder="카테고리를 입력하세요." class="form-control" aria-describedby="basic-addon1"/></td>
-        </div>
--->
-<!--
-
--->
 <br><br><br><br>
-<script>
-    function selectCategory(){
-        var sel =
-            console.log("hi");
 
-        var selText = $(this).text();
-        $('#btnCategory').text(selText);
+<%
+var basketEmpty = true;
+var basketRows = [];
+var deliveryEmpty = true;
+var deliveryRows = [];
+var j = 0;
+var k = 0;
+for (var i = 0; i < rows.length; i++) {
+    if (rows[i].delivery == -1) {
+        basketEmpty = false;
+        basketRows[j] = rows[i];
+        j = j + 1;
+    } else {
+        deliveryEmpty = false;
+        deliveryRows[k] = rows[i];
+        k = k + 1;
     }
-    $('#Categories li > a').on('click', function(){
-        console.log("hi")
-        var selText = $(this).text();
-        $('#btnCategory').text(selText);
-    });
-</script>
-
-
-<h2>물품 등록</h2>
+}
+%>
 <div class="container">
-    <div>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" id="btnCategory" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Select a category
-                <span class="caret"></span>
-            </button>
-            <ul id="Categories" class="dropdown-menu" role="menu" aria-labelledby="searchType" onclick="selectCategory()">
-                <li role="presentation"><a class="dropdown-item" value="m_outer" href="#">남성 아우터</a></li>
-                <li role="presentation"><a class="dropdown-item" value="m_tops" href="#">남성 상의</a></li>
-                <li role="presentation"><a class="dropdown-item" value="m_bottoms" href="#">남성 하의</a></li>
-                <li role="presentation"><a class="dropdown-item" value="w_outer" href="#">여성 아우터</a></li>
-                <li role="presentation"><a class="dropdown-item" value="w_tops" href="#">여성 상의</a></li>
-                <li role="presentation"><a class="dropdown-item" value="w_bottoms" href="#">여성 하의</a></li>
-            </ul>
-        </div>
-        <div>
-            <td><input type="hidden" aria-describedby="basic-addon1">상품명</td>
-            <td><input type="text" name="i_name" id="i_name" placeholder="상품명을 입력하세요." class="form-control" aria-describedby="basic-addon1"/></td>
-        </div>
-        <div>
-            <td><input type="hidden" aria-describedby="basic-addon1">상품 수량</td>
-            <td><input type="text" name="i_stock" id="i_stock" placeholder="수량을 입력하세요." class="form-control" aria-describedby="basic-addon1"/></td>
-        </div>
-        <div>
-            <td><input type="hidden" aria-describedby="basic-addon1">상품 가격</td>
-            <td><input type="text" name="i_price" id="i_price" placeholder="가격을 입력하세요." class="form-control" aria-describedby="basic-addon1"/></td>
-        </div>
-        <div>
-            <td><input type="hidden" aria-describedby="basic-addon1">대표 이미지</td>
-            <td><input type="file" name="i_image" id="i_image" class="form-control" aria-describedby="basic-addon1"/></td>
-        </div>
-        <br><br>
-        <!-- placeholder은 제목을 입력할 수 있도록 도움말을 출력함 -->
-
-        <div>
-            <label style ="width:120px" class="form-control" aria-describedby="basic-addon1" for="addImage">이미지 삽입</label> <!-- id="addImage와 연결됨 -->
-            <td><textarea style="white-space:pre-line" class="form-control" id="i_content" name="i_content" rows="3" cols="80" placeholder="내용을 입력하세요"></textarea></td>
-        </div>
-    </div>
-    <div style = "width:700px; text-align:center;">
-        <div style = "text-align:center;" >
-            <button type = "submit" class="btn" onclick="btnUpload()">등록</button>
-            <button type = "button" id = "btnList" class="btn">목록</button>
-        </div>
-    </div>
-
-    <input type="file" name="addImage" id="addImage" style="display:none;"/></td> <!-- 안보임 -->
+    <h4>장바구니<img src="/img/basket.jpg" style="width: 50px; height: 50px"></h4>
+    <table class="table">
+        <thead>
+            <tr class="table-secondary">
+                <th scope="col"></th>
+                <th scope="col">상품명</th>
+                <th scope="col">가격</th>
+                <th scope="col">수량</th>
+                <th scope="col">확인</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <%if(basketEmpty) {%>
+        </tr></tbody></table>
+        <h3 style="text-align: center">장바구니가 비었습니다.</h3>
+        <h5 style="text-align: center"><a href = "/main">계속 쇼핑하기</a></h5>
+        <%}
+        else{
+        for(var i = 0; i < basketRows.length; i++){
+            var basketItem = basketRows[i]; %>
+        <div class="row-cols-lg-3-lg-3">
+            <td><img src="<%=basketItem.image%>" width="200" height="200"></td>
+            <td style="vertical-align: middle"><a style="color: black; text-decoration: none" href="/itemdetail/<%= basketItem.i_code%>"><%= basketItem.i_name %></a></td>
+            <td style="vertical-align: middle"><%=basketItem.price * basketItem.b_count%>원</td>
+            <td style="vertical-align: middle"><%=basketItem.b_count%></td>
+            <td style="vertical-align: middle"><button type="submit" class="btn btn-dark btn-sm" onclick="purchase_popup('<%=basketItem.i_code%>', <%=basketItem.b_count%>)">구매</button>&nbsp;<button type="submit" class="btn btn-dark btn-sm" onclick="purchase_delete_popup(<%=basketItem.i_code%>)">제거</button></td>
+        </div></tr></tbody>
+        <%}} %>
+    </table>
+    <br><br><br><br>
+    <h4>배송목록<img src="/img/delivery.png" style="width: 50px; height: 50px"></h4>
+    <table class="table">
+        <thead>
+        <tr class="table-secondary">
+            <th scope="col"></th>
+            <th scope="col">상품명</th>
+            <th scope="col">가격</th>
+            <th scope="col">수량</th>
+            <th scop="col">배송 현황</th>
+            <th scope="col">확인</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <%if(deliveryEmpty) {%>
+        </tr></tbody></table>
+            <h3 style="text-align: center">현재 배송중인 상품이 없습니다.</h3>
+            <h5 style="text-align: center"><a href = "/main">계속 쇼핑하기</a></h5><br><br><br><br>
+        <%}
+        else{
+        for(var i = 0; i < deliveryRows.length; i++){
+            var deliveryItem = deliveryRows[i]; %>
+        <div class="row-cols-lg-3-lg-3">
+            <td style="width: 348px; height: 225px"><img src="<%=deliveryItem.image%>" width="200px" height="200px"></td>
+            <td style="vertical-align: middle"><a style="color: black; text-decoration: none" href="/itemdetail/<%= deliveryItem.i_code %>"><%= deliveryItem.i_name %></a></td>
+            <td style="vertical-align: middle"><%=deliveryItem.price * deliveryItem.b_count%>원</td>
+            <td style="vertical-align: middle"><%=deliveryItem.b_count%></td>
+            <% if(deliveryItem.delivery == 0){%>
+            <td style="vertical-align: middle">배송 준비중</td><td></td>
+            <%} else if(deliveryItem.delivery == 1){%>
+            <td style="vertical-align: middle">배송 중</td><td></td>
+            <%} else{%>
+            <td style="vertical-align: middle">배송 완료</td>
+            <td style="vertical-align: middle"><button type="submit" class="btn btn-dark btn-sm" onclick="delivery_complete(<%=deliveryItem.i_code%>)">확인</button>
+            <%}%>
+        </div></tr></tbody>
+        <%}}%>
+    </table>
 </div>
 
-<!-- 마찬가지로 내용을 입력하도록 도움말을 출력함 -->
-<script>
-    var fileInput = document.getElementById("addImage");
-    fileInput.addEventListener('change',function(e){
-        var total_text = document.getElementById("i_content");
-        var image = fileInput.value;
-        var strarr = image.split("\\");
-        var image_path;
-        for(var i=0; strarr[i] != null; i++)
-            image_path = '/img/'+strarr[i];
+<script type="text/javascript">
+    function purchase_delete_popup(item_code) {
+        var result = confirm("장바구니에서 상품을 제거하시겠습니까?");
+        // 결제 시스템 추후 추가 구현
+        if (result) {
+            $.ajax({// 서버로 데이터 전송
+                url: '/mypage',
+                type: 'post',
+                data: {"i_code": item_code},
+                success: function (data) {
+                    var sign = JSON.parse(JSON.stringify(data));
+                    sign = sign.data;
 
-        var input_image = '\r\n' + image_path;
-        total_text.value += input_image;
-    });
-    function btnUpload(){
-        var uploadAvailable = onUploadSubmit();
-        if(uploadAvailable == false)
-            return false;
-
-        var item_category = document.getElementById("i_category").value;
-        var item_name = document.getElementById("i_name").value;
-        var item_stock = document.getElementById("i_stock").value;
-        var item_price = document.getElementById("i_price").value;
-        var image = document.getElementById("i_image").value;
-        var strarr = image.split("\\");
-        var item_image;
-        for(var i=0; strarr[i] != null; i++)
-            item_image = '/img/'+strarr[i];
-        var item_content = document.getElementById("i_content").value;
-
-        $.ajax({// 서버로 데이터 전송
-            url: '/managedetail/itemupload',
-            type: 'post',
-            data: {"i_category": item_category, "i_name": item_name, "i_stock": item_stock,
-                "i_price": item_price, "i_image": item_image, "i_content": item_content},
-            success: function (data) {
-                var sign = JSON.parse(JSON.stringify(data));
-                sign = sign.data;
-
-                if (sign == "upload error") {
-                    alert("물품을 등록할 수 없습니다. 다시 시도주십시오.");
-                    window.location.reload();
-                    return false;
-                } else {
-                    alert("물품이 등록되었습니다.");
-                    window.location.reload();
-                    return true;
+                    if (sign == "delete error") {
+                        alert("장바구니에서 해당 상품을 제거할 수 없습니다. 다시 시도해주십시오.");
+                        window.location.reload();
+                        return false;
+                    } else {
+                        alert("장바구니에서 해당 상품을 제거하였습니다.");
+                        window.location.reload();
+                        return true;
+                    }
+                },
+                error: function (data) {
                 }
-            },
-            error: function (data) {
-            }
-        })   //ajax
+            })   //ajax
+        } else {
+            alert("결제를 취소하셨습니다.");
+            window.location.reload();
+        }
+    }
 
+    function purchase_popup(i_code, buy_count) {
+        var item_code = parseInt(i_code);
+        console.log(item_code, buy_count);
+        var result = confirm("결제하시겠습니까?");
+        // 결제 시스템 추후 추가 구현
+        if (result) {
+            $.ajax({// 서버로 데이터 전송
+                url: '/mypage',
+                type: 'post',
+                data: {"i_code": item_code, "b_count": buy_count},
+                success: function (data) {
+                    var sign = JSON.parse(JSON.stringify(data));
+                    sign = sign.data;
+
+                    if (sign == "Purchase error") {
+                        alert("구매할 수 없습니다. 다시 시도해주십시오.");
+                        window.location.reload();
+                        return false;
+                    } else {
+                        alert("구매가 완료되었습니다.");
+                        window.location.reload();
+                        return true;
+                    }
+                },
+                error: function (data) {
+                }
+            })   //ajax
+        } else {
+            alert("결제를 취소하셨습니다.");
+            window.location.reload();
+        }
     }
-    function onUploadSubmit(){
-        if($("#i_category").val().trim() == "")
-        {
-            console.log("???");
-            var message = "카테고리를 선택하십시오.";
-            $("#i_category").val("");
-            $("#i_category").focus();
-            alert(message);
-            return false;
+
+    function delivery_complete(item_code) {
+        var result = confirm("배송 목록에서 해당 상품을 삭제하시겠습니까?");
+        // 결제 시스템 추후 추가 구현
+        if (result) {
+            $.ajax({// 서버로 데이터 전송
+                url: '/mypage',
+                type: 'post',
+                data: {"b_code": item_code},
+                success: function (data) {
+                    var sign = JSON.parse(JSON.stringify(data));
+                    sign = sign.data;
+
+                    if (sign == "delete error") {
+                        alert("배송 목록에서 해당 상품을 삭제할 수 없습니다.");
+                        window.location.reload();
+                        return false;
+                    } else {
+                        alert("배송 목록에서 해당 상품을 삭제하였습니다.");
+                        window.location.reload();
+                        return true;
+                    }
+                },
+                error: function (data) {
+                }
+            })   //ajax
+        } else {
+            alert("결제를 취소하셨습니다.");
+            window.location.reload();
         }
-        else if($("#i_name").val().trim() == "")
-        {
-            var message = "상품명을 입력하십시오.";
-            $("#i_name").val("");
-            $("#i_name").focus();
-            alert(message);
-            return false;
-        }
-        else if($("#i_stock").val().trim() == "")
-        {
-            var message = "상품 수량을 입력하십시오.";
-            $("#i_stock").val("");
-            $("#i_stock").focus();
-            alert(message);
-            return false;
-        }
-        else if($("#i_price").val().trim() == "")
-        {
-            var message = "상품 가격을 입력하십시오";
-            $("#i_price").val("");
-            $("#i_price").focus();
-            alert(message);
-            return false;
-        }
-        else if($("#i_image").val().trim() == "")
-        {
-            var message = "대표 이미지를 선택하십시오";
-            $("#i_image").val("");
-            $("#i_image").focus();
-            alert(message);
-            return false;
-        }
-        else if($("#i_content").val().trim() == "")
-        {
-            var message = "상세 설명을 입력하십시오.";
-            $("#i_content").val("");
-            $("#i_content").focus();
-            alert(message);
-            return false;
-        }
-        else true;
     }
-    $(function() {
-        //목록 버튼
-        $("#btnList").click(function () {
-            location.href = "/managedetail";
-        });
-    });
 </script>
 </body>
 </html>
