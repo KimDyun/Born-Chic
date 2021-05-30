@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
     <script src="/javascript/functions.js"></script>
 
 </head>
@@ -131,17 +132,27 @@ for(var i=0; i<rows.length; i++) {
         <h5 style="text-align: center"><a href = "/main">계속 쇼핑하기</a></h5>
         <%}
         else{
-        for(var i = 0; i < basketRows.length; i++){
-            var basketItem = basketRows[i]; %>
+            for(var i=0; i<basketRows.length; i++){
+                var basketItem = basketRows[i];
+        %>
         <div class="row-cols-lg-3-lg-3">
             <td><img src="<%=basketItem.image%>" width="200" height="200"></td>
             <td style="vertical-align: middle"><a style="color: black; text-decoration: none" href="/itemdetail/<%= basketItem.i_code%>"><%= basketItem.i_name %></a></td>
             <td style="vertical-align: middle"><%=basketItem.price * basketItem.b_count%>원</td>
             <td style="vertical-align: middle"><%=basketItem.b_count%></td>
-            <td style="vertical-align: middle"><button type="submit" class="btn btn-dark btn-sm" onclick="purchase_popup('<%=basketItem.i_code%>', <%=basketItem.b_count%>)">구매</button>&nbsp;<button type="submit" class="btn btn-dark btn-sm" onclick="purchase_delete_popup(<%=basketItem.i_code%>)">제거</button></td>
+            <td style="vertical-align: middle"><button type="submit" class="btn btn-dark btn-sm" onclick="purchase_popup('<%=basketItem.i_code%>', '<%=basketItem.i_name%>', '<%=basketItem.price * basketItem.b_count%>', <%=basketItem.b_count%>)">구매</button>&nbsp;<button type="submit" class="btn btn-dark btn-sm" onclick="purchase_delete_popup(<%=basketItem.i_code%>)">제거</button></td>
+            <input type="hidden" id="code<%=i%>" value="<%=basketItem.i_code%>"/>
+            <input type="hidden" id="name<%=i%>" value="<%=basketItem.i_name%>"/>
+            <input type="hidden" id="price<%=i%>" value="<%=basketItem.price * basketItem.b_count%>"/>
+            <input type="hidden" id="count<%=i%>" value="<%=basketItem.b_count%>"/>
         </div></tr></tbody>
-        <%}} %>
+        <%}%>
     </table>
+    <div style="text-align: right">
+        <button type="submit" class="btn btn-dark btn-sm" onclick="all_purchase_popup()">전체 구매</button>
+        <button type="submit" class="btn btn-dark btn-sm" onclick="all_purchase_delete_popup()">전체 제거</button>
+    </div>
+    <%}%>
     <br><br><br><br>
     <h4>배송목록<img src="/img/delivery.png" style="width: 50px; height: 50px"></h4>
     <table class="table">
@@ -164,7 +175,7 @@ for(var i=0; i<rows.length; i++) {
             <h5 style="text-align: center"><a href = "/main">계속 쇼핑하기</a></h5><br><br><br><br>
         <%}
         else{
-        for(var i = 0; i < deliveryRows.length; i++){
+        for(var i=0; i<deliveryRows.length; i++){
             var deliveryItem = deliveryRows[i]; %>
         <div class="row-cols-lg-3-lg-3">
             <td style="width: 348px; height: 225px"><img src="<%=deliveryItem.image%>" width="200px" height="200px"></td>
@@ -180,14 +191,179 @@ for(var i=0; i<rows.length; i++) {
             <td style="vertical-align: middle"><button type="submit" class="btn btn-dark btn-sm" onclick="delivery_complete(<%=deliveryItem.i_code%>)">확인</button>
             <%}%>
             <td style="vertical-align: middle"><%=addr[0]%> <%=addr[1]%></td>
-
+            <input type="hidden" id="b_code<%=i%>" value="<%=deliveryItem.i_code%>"/>
         </div></tr></tbody>
-        <%}}%>
+        <%}%>
     </table>
+    <div style="text-align: right">
+        <button type="submit" class="btn btn-dark btn-sm" onclick="all_delivery_complete_popup()">전체 확인</button>
+    </div>
+    <%}%>
 </div>
 
 <script type="text/javascript">
-   function purchase_delete_popup(item_code){
+    function all_purchase_delete_popup(){
+        var result = confirm("장바구니에서 모든 상품을 제거하시겠습니까?");
+        if(result) {
+            var item_codes = [];
+            var item_code = "default";
+            for(var i=0; ; i++) {
+                var id = 'code'+i.toString();
+                if(document.getElementById(id)==null)
+                    break;
+                item_code=document.getElementById(id).value;
+                item_codes[i] = item_code;
+            }
+            $.ajax({// 서버로 데이터 전송
+                url:'/mypage/control',
+                type:'post',
+                traditional : true,
+                data:{"i_codes":item_codes},
+                success: function(data) {
+                    var sign = JSON.parse(JSON.stringify(data));
+                    sign = sign.data;
+
+                    if(sign == "delete error") {
+                        alert("장바구니에서 해당 상품을 제거할 수 없습니다. 다시 시도해주십시오.");
+                        window.location.reload();
+                        return false;
+                    }
+                    else{
+                        alert("장바구니에서 해당 상품을 제거하였습니다.");
+                        window.location.reload();
+                        return true;
+                    }
+                },
+                error:function (data){}
+            })   //ajax
+        }
+        else{
+            alert("상품 제거를 취소하셨습니다.");
+            window.location.reload();
+        }
+    }
+    function all_purchase_popup(){
+        var result = confirm("장바구니에 담긴 모든 상품들을 구매하시겠습니까?");
+        if(result) {
+            var item_count =0;
+            var all_price = 0;
+            var item_codes = [];
+            var item_code = "default";
+            var buy_counts = [];
+            var buy_count = 0;
+            for(var i=0; ; i++) {
+                var id = 'code'+i.toString();
+                if(document.getElementById(id)==null)
+                    break;
+                item_count += 1;
+
+                item_code=document.getElementById(id).value;
+                item_codes[i] = item_code;
+
+                var c_id = 'count'+i.toString();
+                buy_count = document.getElementById(c_id).value;
+                buy_counts[i] = buy_count;
+
+                var b_id = 'price'+i.toString();
+                var price = document.getElementById(b_id).value;
+                all_price+= parseInt(price);
+            }
+            var item_name;
+            if(item_count == 1)
+                item_name = document.getElementById("name0").value;
+            else
+                item_name = document.getElementById("name0").value + ' 외 ' + (item_count-1).toString() +'개';
+            console.log(item_name, all_price, typeof(item_name), typeof(all_price));
+            IMP.init('imp49200152');
+            IMP.request_pay({
+                pg : 'inicis', // version 1.1.0부터 지원.
+                pay_method : 'card',
+                merchant_uid : 'merchant_' + new Date().getTime(),
+                name : item_name,
+                amount : all_price, //판매 가격
+                buyer_email : 'iamport@siot.do',
+                buyer_name : '구매자이름',
+                buyer_tel : '010-1234-5678',
+                buyer_addr : '서울특별시 강남구 삼성동',
+                buyer_postcode : '123-456'
+            }, function(rsp) {
+                if ( rsp.success ) {
+                    $.ajax({// 서버로 데이터 전송
+                        url:'/mypage/control',
+                        type:'post',
+                        traditional: true,
+                        data:{"i_codes":item_codes, "b_counts":buy_counts},
+                        success: function(data) {
+                            var sign = JSON.parse(JSON.stringify(data));
+                            sign = sign.data;
+
+                            if(sign == "Purchase error") {
+                                alert("구매할 수 없습니다. 다시 시도해주십시오.");
+                                window.location.reload();
+                                return false;
+                            }
+                            else{
+                                alert("구매가 완료되었습니다.");
+                                window.location.reload();
+                                return true;
+                            }
+                        },
+                        error:function (data){}
+                    })   //ajax
+                }
+                else {
+                    alert("결제를 취소하셨습니다");
+                    window.location.reload();
+                    return false;
+                }
+            });
+        }
+        else{
+            alert("전체 상품 구매를 취소하셨습니다.");
+            window.location.reload();
+        }
+    }
+    function all_delivery_complete_popup(){
+        var result = confirm("모든 배송 완료 상품을 삭제하시겠습니까?");
+        if(result) {
+            var buy_codes = [];
+            var buy_code = "default";
+            for(var i=0; ; i++) {
+                var id = 'b_code'+i.toString();
+                if(document.getElementById(id)==null)
+                    break;
+                buy_code=document.getElementById(id).value;
+                buy_codes[i] = buy_code;
+            }
+            $.ajax({// 서버로 데이터 전송
+                url:'/mypage/control',
+                type:'post',
+                traditional : true,
+                data:{"b_codes":buy_codes},
+                success: function(data) {
+                    var sign = JSON.parse(JSON.stringify(data));
+                    sign = sign.data;
+
+                    if(sign == "delete error") {
+                        alert("배송 목록에서 배송 완료 상품들을 삭제할 수 없습니다. 다시 시도해주십시오.");
+                        window.location.reload();
+                        return false;
+                    }
+                    else{
+                        alert("배송 목록에서 배송 완료 상품들을 제거하였습니다.");
+                        window.location.reload();
+                        return true;
+                    }
+                },
+                error:function (data){}
+            })   //ajax
+        }
+        else{
+            alert("배송 확인을 취소하셨습니다.");
+            window.location.reload();
+        }
+    }
+    function purchase_delete_popup(item_code){
        var result = confirm("장바구니에서 상품을 제거하시겠습니까?");
        // 결제 시스템 추후 추가 구현
        if(result){
@@ -214,41 +390,61 @@ for(var i=0; i<rows.length; i++) {
            })   //ajax
        }
        else{
-           alert("결제를 취소하셨습니다.");
+           alert("상품 제거를 취소하셨습니다.");
            window.location.reload();
        }
    }
 
-    function purchase_popup(i_code, buy_count) {
+    function purchase_popup(i_code, item_name, b_price, buy_count) {
        var item_code = parseInt(i_code);
-       console.log(item_code, buy_count);
-       var result = confirm("결제하시겠습니까?");
-        // 결제 시스템 추후 추가 구현
-        if(result){
-            $.ajax({// 서버로 데이터 전송
-                url:'/mypage/control',
-                type:'post',
-                data:{"i_code":item_code, "b_count":buy_count},
-                success: function(data) {
-                    var sign = JSON.parse(JSON.stringify(data));
-                    sign = sign.data;
+       var buy_price = parseInt(b_price);
+       var result = confirm("구매하시겠습니까?");
+        if(result) {
+            IMP.init('imp49200152');
+            IMP.request_pay({
+                pg : 'inicis', // version 1.1.0부터 지원.
+                pay_method : 'card',
+                merchant_uid : 'merchant_' + new Date().getTime(),
+                name : item_name,
+                amount : buy_price, //판매 가격
+                buyer_email : 'iamport@siot.do',
+                buyer_name : '구매자이름',
+                buyer_tel : '010-1234-5678',
+                buyer_addr : '서울특별시 강남구 삼성동',
+                buyer_postcode : '123-456'
+            }, function(rsp) {
+                if ( rsp.success ) {
+                    $.ajax({// 서버로 데이터 전송
+                        url:'/mypage/control',
+                        type:'post',
+                        data:{"i_code":item_code, "b_count":buy_count},
+                        success: function(data) {
+                            var sign = JSON.parse(JSON.stringify(data));
+                            sign = sign.data;
 
-                    if(sign == "Purchase error") {
-                        alert("구매할 수 없습니다. 다시 시도해주십시오.");
-                        window.location.reload();
-                        return false;
-                    }
-                    else{
-                        alert("구매가 완료되었습니다.");
-                        window.location.reload();
-                        return true;
-                    }
-                },
-                error:function (data){}
-            })   //ajax
+                            if(sign == "Purchase error") {
+                                alert("구매할 수 없습니다. 다시 시도해주십시오.");
+                                window.location.reload();
+                                return false;
+                            }
+                            else{
+                                alert("구매가 완료되었습니다.");
+                                window.location.reload();
+                                return true;
+                            }
+                        },
+                        error:function (data){}
+                    })   //ajax
+                }
+                else {
+                    alert("결제를 취소하셨습니다");
+                    window.location.reload();
+                    return false;
+                }
+            });
         }
         else{
-            alert("결제를 취소하셨습니다.");
+            alert("구매하기를 취소하셨습니다.");
             window.location.reload();
         }
     }
@@ -280,7 +476,7 @@ for(var i=0; i<rows.length; i++) {
             })   //ajax
         }
         else{
-            alert("결제를 취소하셨습니다.");
+            alert("배송 완료 확인을 취소하셨습니다.");
             window.location.reload();
         }
     }

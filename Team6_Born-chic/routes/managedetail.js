@@ -34,20 +34,34 @@ router.post('/itemupdate/:i_code',function(req,res,next){
     var month = date.getMonth() + 1;
     var day = date.getDate();
     var date_form = year + '-' + month + '-' + day;
-
-    var data = [item_name,item_category,item_stock,0,item_image,item_detail,item_price,date_form, item_code];
-    console.log(data);
-    var sqlForUpdateList = "UPDATE item SET i_name =?, category =?, stock =?, sell =?, image =?, detail =?, price =?, i_date=? WHERE i_code = ?";
-    connection.query(sqlForUpdateList, data, function (err, check) {
-        console.log(check);
-        var purchase_success = check.changedRows;
-        if (err) console.error("err : " + err);
-        if (purchase_success == undefined) {
-            res.send({data: "upload error"});
-        } else {
-            res.send({data: "upload success"});
-        }
-    });
+    if(item_category !=undefined) {
+        var data = [item_name, item_category, item_stock, 0, item_image, item_detail, item_price, date_form, item_code];
+        console.log(data);
+        var sqlForUpdateList = "UPDATE item SET i_name =?, category =?, stock =?, sell =?, image =?, detail =?, price =?, i_date=? WHERE i_code = ?";
+        connection.query(sqlForUpdateList, data, function (err, check) {
+            console.log(check);
+            var purchase_success = check.changedRows;
+            if (err) console.error("err : " + err);
+            if (purchase_success == undefined) {
+                res.send({data: "upload error"});
+            } else {
+                res.send({data: "upload success"});
+            }
+        });
+    }
+    else{
+        var sqlForDeleteList = "DELETE FROM item WHERE i_code = ?";
+        connection.query(sqlForDeleteList, item_code, function(err,check){
+            console.log(check);
+            var purchase_success = check.changedRows;
+            if (err) console.error("err : " + err);
+            if (purchase_success == undefined) {
+                res.send({data: "delete error"});
+            } else {
+                res.send({data: "delete success"});
+            }
+        });
+    }
 });
 
 router.get('/itemupload', function (req, res, next){
