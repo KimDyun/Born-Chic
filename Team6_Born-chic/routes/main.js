@@ -74,7 +74,7 @@ router.post('/sign', function (req, res){
     var addr2 = req.body.u_addr2;
     var u_number = req.body.u_number;
     var u_admin = false;
-    addr += ' ';
+    addr += '+';
     addr += addr2;
     var datas = [user_id, passwd, u_name, addr, u_number, u_admin];
     var sqlForCheckList = "SELECT * FROM USER WHERE u_id=?";

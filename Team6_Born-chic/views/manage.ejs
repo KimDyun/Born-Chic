@@ -95,13 +95,7 @@
                             onclick="buy_check('<%= rows[i].delivery %>', <%= rows[i].idx %>)">배송 완료로 변경
                     </button>
                 </td>
-            <% }else if(rows[i].delivery == 2){ %>
-                <td id="delivery" style="vertical-align: middle">배송 완료
-                    <button class="btn btn-dark btn-sm float-right" type="button" style="width: 200px; height: 30px"
-                            onclick="buy_check('<%= rows[i].delivery %>', <%= rows[i].idx %>)">배송 완료 확정으로 변경
-                    </button>
-                </td>
-            <%}%>
+            <% }%>
         </div></tr></tbody>
     <%}%>
 </table>
