@@ -19,8 +19,13 @@ router.get('/',function (req, res,next){
          var sqlForSelectList = "SELECT u_admin FROM USER WHERE u_id=?";
          connection.query(sqlForSelectList,[id] ,function (err, admin){
              if (err) console.error("err : " + err);
-             res.cookie('admin', admin[0].u_admin);
-             res.render('main', {title : 'Main', user_id: id, admin: admin[0].u_admin});
+             var sqlForSelectList = "select * from ITEM ORDER BY i_date DESC limit 3";
+             connection.query(sqlForSelectList,[id] ,function (err, new_item){
+                 if (err) console.error("err : " + err);
+
+                 res.cookie('admin', admin[0].u_admin);
+                 res.render('main', {title : 'Main', user_id: id, admin: admin[0].u_admin, new_item:new_item});
+             });
          });
      }
 });
