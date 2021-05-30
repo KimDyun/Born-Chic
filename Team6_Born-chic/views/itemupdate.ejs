@@ -64,32 +64,7 @@
         <% } %>
     </div>
 </nav>
-<!--
-<div id="category_dd" class="dropdown">
-            <td><input type="hidden" aria-describedby="basic-addon1">카테고리</td>
-            <button class="btn btn-secondary dropdown-toggle" id="btnCategory" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Select a category
-                <span class="caret"></span>
-            </button>
-            <ul id="Categories" class="dropdown-menu" role="menu" aria-labelledby="btnCategory">
-                <li role="presentation"><a class="dropdown-item" value="m_outer" href="#">남성 아우터</a></li>
-                <li role="presentation"><a class="dropdown-item" value="m_tops" href="#">남성 상의</a></li>
-                <li role="presentation"><a class="dropdown-item" value="m_bottoms" href="#">남성 하의</a></li>
-                <li role="presentation"><a class="dropdown-item" value="w_outer" href="#">여성 아우터</a></li>
-                <li role="presentation"><a class="dropdown-item" value="w_tops" href="#">여성 상의</a></li>
-                <li role="presentation"><a class="dropdown-item" value="w_bottoms" href="#">여성 하의</a></li>
-            </ul>
-        </div>
--->
-<!--
-<script>
-    $('#Categories li > a').click(function (){
-        console.log("hi")
-        var selText = $(this).text();
-        $('#btnCategory').text(selText);
-    });
-</script>
--->
+
 <br><br><br><br>
 
 <h2>물품 수정</h2>
@@ -168,41 +143,49 @@
         var uploadAvailable = onUploadSubmit();
         if(uploadAvailable == false)
             return false;
-        var sendtourl = '/managedetail/itemupdate/'+item_code;
-        var item_category = selected_category;
-        var item_name = document.getElementById("i_name").value;
-        var item_stock = document.getElementById("i_stock").value;
-        var item_price = document.getElementById("i_price").value;
-        var image = document.getElementById("i_image").value;
-        var strarr = image.split("\\");
-        var item_image;
-        for(var i=0; strarr[i] != null; i++)
-            item_image = '/img/'+strarr[i];
-        var item_content = document.getElementById("i_content").value;
+        var result = confirm("상품의 정보를 수정하시겠습니까?");
+        if(result) {
+            var sendtourl = '/managedetail/itemupdate/' + item_code;
+            var item_category = selected_category;
+            var item_name = document.getElementById("i_name").value;
+            var item_stock = document.getElementById("i_stock").value;
+            var item_price = document.getElementById("i_price").value;
+            var image = document.getElementById("i_image").value;
+            var strarr = image.split("\\");
+            var item_image;
+            for (var i = 0; strarr[i] != null; i++)
+                item_image = '/img/' + strarr[i];
+            var item_content = document.getElementById("i_content").value;
 
-        $.ajax({// 서버로 데이터 전송
-            url: sendtourl,
-            type: 'post',
-            data: {"i_category": item_category, "i_name": item_name, "i_stock": item_stock,
-                "i_price": item_price, "i_image": item_image, "i_content": item_content},
-            success: function (data) {
-                var sign = JSON.parse(JSON.stringify(data));
-                sign = sign.data;
+            $.ajax({// 서버로 데이터 전송
+                url: sendtourl,
+                type: 'post',
+                data: {
+                    "i_category": item_category, "i_name": item_name, "i_stock": item_stock,
+                    "i_price": item_price, "i_image": item_image, "i_content": item_content
+                },
+                success: function (data) {
+                    var sign = JSON.parse(JSON.stringify(data));
+                    sign = sign.data;
 
-                if (sign == "upload error") {
-                    alert("물품을 수정할 수 없습니다. 다시 시도주십시오.");
-                    window.location.reload();
-                    return false;
-                } else {
-                    alert("물품이 수정되었습니다.");
-                    window.location.reload();
-                    return true;
+                    if (sign == "upload error") {
+                        alert("물품을 수정할 수 없습니다. 다시 시도주십시오.");
+                        window.location.reload();
+                        return false;
+                    } else {
+                        alert("물품이 수정되었습니다.");
+                        window.location.reload();
+                        return true;
+                    }
+                },
+                error: function (data) {
                 }
-            },
-            error: function (data) {
-            }
-        })   //ajax
-
+            })   //ajax
+        }
+        else{
+            alert("상품 정보 수정을 취소하셨습니다.");
+            window.location.reload();
+        }
     }
     function onUploadSubmit(){
         if(selected_category == "")
@@ -255,10 +238,41 @@
         }
         else true;
     }
+    function btnDelete(item_code) {
+        var result = confirm("등록 상품을 제거하시겠습니까?");
+        if (result) {
+            var sendtourl = '/managedetail/itemupdate/' + item_code;
+            $.ajax({// 서버로 데이터 전송
+                url: sendtourl,
+                type: 'post',
+                data: {i_code: item_code},
+                success: function (data) {
+                    var sign = JSON.parse(JSON.stringify(data));
+                    sign = sign.data;
+
+                    if (sign == "delete error") {
+                        alert("물품을 삭제할 수 없습니다. 다시 시도주십시오.");
+                        window.location.reload();
+                        return false;
+                    } else {
+                        alert("물품이 삭제되었습니다.");
+                        location.href = "/manage/m_outer/1";
+                        return true;
+                    }
+                },
+                error: function (data) {
+                }
+            })   //ajax
+        }
+        else{
+            alert("상품 제거를 취소하셨습니다.")
+            window.location.reload();
+        }
+    }
     $(function() {
         //목록 버튼
         $("#btnList").click(function () {
-            location.href = "/managedetail";
+            location.href = "/manage/m_outer/1";
         });
     });
 
