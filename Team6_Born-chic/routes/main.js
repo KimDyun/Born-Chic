@@ -8,26 +8,25 @@ mysql_dbc.test_open(connection);
 
 router.get('/',function (req, res,next){
      var id = req.cookies.id;
-     if (id == null){
-         res.cookie('id','');
-         res.render('main',{title : 'Main', user_id: '', admin: ''});
-     }
-     if(id == ''){
-         res.render('main',{title : 'Main', user_id: id, admin: ''});
-     }
-     else {
-         var sqlForSelectList = "SELECT u_admin FROM USER WHERE u_id=?";
-         connection.query(sqlForSelectList,[id] ,function (err, admin){
-             if (err) console.error("err : " + err);
-             var sqlForSelectList = "select * from ITEM ORDER BY i_date DESC limit 3";
-             connection.query(sqlForSelectList,[id] ,function (err, new_item){
-                 if (err) console.error("err : " + err);
+    var sqlForSelectList2 = "select * from ITEM ORDER BY i_date DESC limit 3";
+    connection.query(sqlForSelectList2 ,function (err, new_item) {
+        if (err) console.error("err : " + err);
+        if (id == null) {
+            res.cookie('id', '');
+            res.render('main', {title: 'Main', user_id: '', admin: '', new_item: new_item});
+        }
+        if (id == '') {
+            res.render('main', {title: 'Main', user_id: id, admin: '', new_item: new_item});
+        } else {
+            var sqlForSelectList = "SELECT u_admin FROM USER WHERE u_id=?";
+            connection.query(sqlForSelectList, [id], function (err, admin) {
+                if (err) console.error("err : " + err);
+                res.cookie('admin', admin[0].u_admin);
+                res.render('main', {title: 'Main', user_id: id, admin: admin[0].u_admin, new_item: new_item});
 
-                 res.cookie('admin', admin[0].u_admin);
-                 res.render('main', {title : 'Main', user_id: id, admin: admin[0].u_admin, new_item:new_item});
-             });
-         });
-     }
+            });
+        }
+    });
 });
 
 router.post('/', function (req, res){
