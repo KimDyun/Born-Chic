@@ -26,12 +26,12 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item"><a href="#" class="nav-link">남성 아우터</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">남성 상의</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">남성 하의</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">여성 아우터</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">여성 상의</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">여성 하의</a></li>
+            <li class="nav-item"><a href="/itemlist/m_outer/1" class="nav-link">남성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/m_tops/1" class="nav-link">남성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/m_bottoms/1" class="nav-link">남성 하의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_outer/1" class="nav-link">여성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/w_tops/1" class="nav-link">여성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/m_bottoms/1" class="nav-link">여성 하의</a></li>
         </ul>
     </div>
 </nav><br>
@@ -42,36 +42,30 @@
             <img class="d-block img-fluid mx-auto" style=" height: 400px" src="https://images.pexels.com/photos/213399/pexels-photo-213399.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="First slide">
         </div>
         <div class="col-lg-4" style="position: relative">
-            <br><br><br><br>
+            <br>
             <h3>회원가입</h3>
             <form action="sign" method="post">
                 <div class="input-group mt-3 mb-1">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="u_id" name="u_id">ID</span>
+                        <span class="input-group-text" id="u_id" name="u_id" style="width: 130px; display: inline-block; text-align: center">I D</span>
                     </div>
-                    <input type="text" name="u_id" class="form-control"
-                           placeholder="Input ID" aria-label="Input ID"
-                           aria-describedby="basic-addon1" required>
+                    <input type="text" name="u_id" class="form-control" placeholder="Input ID" aria-label="Input ID" aria-describedby="basic-addon1" required>
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="pwd" name ="pwd">PW</span>
+                        <span class="input-group-text" id="pwd" name ="pwd" style="width: 130px; display: inline-block; text-align: center">Password</span>
                     </div>
-                    <input type="password" name="pwd" class="form-control"
-                           placeholder="Input Password" aria-label="Input Password"
-                           aria-describedby="basic-addon1" required>
+                    <input type="password" name="pwd" class="form-control" placeholder="Input Password" aria-label="Input Password" aria-describedby="basic-addon1" required>
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="u_name" name ="u_name">Name</span>
+                        <span class="input-group-text" id="u_name" name ="u_name" style="width: 130px; display: inline-block; text-align: center">Name</span>
                     </div>
-                    <input type="text" name="u_name" class="form-control"
-                           placeholder="Input Name" aria-label="Input Name"
-                           aria-describedby="basic-addon1" required>
+                    <input type="text" name="u_name" class="form-control" placeholder="Input Name" aria-label="Input Name" aria-describedby="basic-addon1" required>
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="u_addr" name ="u_addr">Addr</span>
+                        <span class="input-group-text" id="u_addr" name ="u_addr" style="width: 130px; display: inline-block; text-align: center">Addr</span>
                     </div>
                 <input type="text" name="u_addr" class="form-control" aria-label="address" aria-describedby="basic-addon1" id="sample5_address" placeholder="addr">
                 <input type="button" class="btn btn-dark" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
@@ -132,7 +126,7 @@
                 </script>
                 <div class="input-group mb-2">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="u_addr2" name ="u_addr2">detail addr</span>
+                        <span class="input-group-text" id="u_addr2" name ="u_addr2" style="width: 130px; display: inline-block; text-align: center">detail addr</span>
                     </div>
                     <input type="text" name="u_addr2" class="form-control"
                            placeholder="detail addr" aria-label="Input addr2"
@@ -140,7 +134,7 @@
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="u_number" name ="u_number">Phone Number</span>
+                        <span class="input-group-text" id="u_number" name ="u_number" style="width: 130px; display: inline-block; text-align: center">Phone Number</span>
                     </div>
                     <input type="text" name="u_number" class="form-control"
                            placeholder="Input Phone Number" aria-label="Input Phone Number"
