@@ -45,8 +45,7 @@ router.get('/:category/:cur_page/',function (req, res,next){
                     if (err) console.error("err : " + err);
                     var sales = Array.from({length: 12}, () => 0);
                     for(var i=0; i<buy.length; i++){
-                        var date = new Date(buy[i].i_date);
-                        sales[date.getMonth()]+=buy[i].b_count* buy[i].price;
+                        sales[buy[i].b_date.getMonth()]+=buy[i].b_count* buy[i].price;
                     }
                     res.render('manage', {user_id: id, admin: admin, rows: rows,total_page:totalpage, cur_page:cur_page,item: result, category:category, sales:sales});
 

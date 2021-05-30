@@ -107,7 +107,7 @@
         var test = rows[0].detail.split('\n');
         for(var i=0; i<test.length; i++){
         if(test[i].includes('/img/')){%>
-        <p style="text-align: center"><img src="<%=test[i]%>" width="200" height="200"></p>
+        <p style="text-align: center"><img src="<%=test[i]%>"></p>
         <%}else{%>
         <p style="text-align: center; margin-left: 40px; margin-right: 40px"><%=test[i]%></p>
         <%
@@ -136,16 +136,35 @@
             <%if(reply[i].reply==1){%>
                 &nbsp;&nbsp;&nbsp;&nbsp;  관리자 : <%=reply[i].c_id%>     <br>&nbsp;&nbsp;&nbsp;&nbsp; [RE]      : <%=reply[i].content%> </p>          <!-- 답글인 경우에 띄어쓰기 해준부분-->
             <%}else{%>
-                작성자 : <%=reply[i].c_id%> &nbsp;   별점 :  <span style="color: sandybrown"><%for(var j=0; j<reply[i].rating; j++){%>★<%}%></span>  <br>  <%=reply[i].content%>     <!--여기는 관리자 아닌경우에는 클릭 못하도록 댓글 만들기-->
+                작성자 : <%=reply[i].c_id%> &nbsp;   별점 :  <span style="color: sandybrown"><%for(var j=0; j<reply[i].rating; j++){%>★<%}%></span>  <br>
+<%
+    var test = reply[i].content.split('\n');
+for(var j=0; j<test.length; j++){
+if(test[j].includes('/img/')){%>
+<p style="margin-right: 40px;margin-left: 40px"><img src="<%=test[j]%>" width="200" height="150"></p>
+<%}else{%>
+<p style="margin-right: 40px;margin-left: 40px"><%=test[j]%></p>
+<%
+}}
+%><!--여기는 관리자 아닌경우에는 클릭 못하도록 댓글 만들기-->
             <%}%>
         <%}else{%>
         <p style="margin-right: 40px;margin-left: 40px">
             <%if(reply[i].reply==1){%>
                 &nbsp;&nbsp;&nbsp;&nbsp;  관리자 : <%=reply[i].c_id%>     <br>&nbsp;&nbsp;&nbsp;&nbsp; [RE]      : <%=reply[i].content%> </p>                   <!-- 답글인 경우에 띄어쓰기 해준부분-->
             <%}else{%>
-                작성자 : <%=reply[i].c_id%> &nbsp;   별점 :  <span style="color: sandybrown"><%for(var j=0; j<reply[i].rating; j++){%>★<%}%></span>  <br>  <%=reply[i].content%>
-            <button class="btn btn-dark btn-sm" type="button" onclick="reply_change('<%=reply[i].c_id%>', <%=reply[i].idx%>)">
-                <img src="/img/reply.png" alt="btnImages" class="btnImages" width="20" height="20"></button>
+                작성자 : <%=reply[i].c_id%> &nbsp;   별점 :  <span style="color: sandybrown"><%for(var j=0; j<reply[i].rating; j++){%>★<%}%></span>&nbsp;&nbsp;
+<button class="btn btn-dark btn-sm" type="button" onclick="reply_change('<%=reply[i].c_id%>', <%=reply[i].idx%>)">
+    <img src="/img/reply.png" alt="btnImages" class="btnImages" width="20" height="20"></button> <br>
+<%
+    var test = reply[i].content.split('\n');
+for(var j=0; j<test.length; j++){
+if(test[j].includes('/img/')){%>
+<p style="margin-right: 40px;margin-left: 40px"><img src="<%=test[j]%>" width="200" height="150"></p>
+<%}else{%>
+<p style="margin-right: 40px;margin-left: 40px"><%=test[j]%></p>
+<%
+}}%>
             <%}%>
         </p>         <!--여기는 관리자인 경우에는 댓글만 클릭할 수 있도록 만들기-->
     <%}}%>
@@ -203,7 +222,6 @@
         var image_path;
         for(var i=0; strarr[i] != null; i++)
             image_path = '/img/'+strarr[i];
-
         var input_image = '\r\n' + image_path;
         total_text.value += input_image;
     });
