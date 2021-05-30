@@ -12,6 +12,7 @@ var itemlistRouter = require('./routes/itemlist');
 var itemdetailRouter = require('./routes/itemdetail');
 var managedetailRouter = require('./routes/managedetail');
 var manageRouter = require('./routes/manage');
+var changedetailRouter = require('./routes/changedetail');
 
 var cookieRouter = require('./routes/cookie');
 
@@ -42,7 +43,7 @@ app.use('/itemlist', itemlistRouter);
 app.use('/itemdetail', itemdetailRouter);
 app.use('/managedetail', managedetailRouter);
 app.use('/manage', manageRouter);
-
+app.use('/changedetail',changedetailRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

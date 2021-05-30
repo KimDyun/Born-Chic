@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Born-Chic</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="/javascript/functions.js"></script>
+    <style>
+        .carousel-inner > .carousel-item > img{  width: 700px; height: 100px;  }
+        .text-center {font-size: small;}
+    </style>
+
+</head>
+<body>
+<a href="/main"  class="nav-link"> <div class="jumbotron text-center">
+        <h1 style="color: dimgrey">Born-chic</h1>
+    </div></a>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: aliceblue">Menu</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a href="/itemlist/m_outer/1" class="nav-link">남성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/m_tops/1" class="nav-link">남성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/m_bottoms/1" class="nav-link">남성 하의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_outer/1" class="nav-link">여성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/w_tops/1" class="nav-link">여성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_bottoms/1" class="nav-link">여성 하의</a></li>
+        </ul>
+        <form class="navbar-form pull-left" role="search" method="post">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default">검색</button>
+                </div>
+            </div>
+        </form>
+        <%if(user_id == ''){%>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="/main/login" class="nav-link">Login</a></li>
+            </ul>
+        <%}else{
+        if(admin == '' || admin == 0){%>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/mypage">마이페이지</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <%} else{%>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/manage/m_outer/1">물품관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <%}%>
+        <%}%>
+    </div>
+</nav>
+
+
+<br>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-6">
+            <img class="d-block img-fluid mx-auto" style=" height: 400px" src="https://images.pexels.com/photos/213399/pexels-photo-213399.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="First slide">
+        </div>
+        <div class="col-lg-4" style="position: relative">
+            <br><br><br><br>
+            <h3>개인정보수정</h3>
+            <form action="sign" method="post">
+
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" name ="u_name">Name</span>
+                    </div>
+                    <input type="text" name="u_name" class="form-control"  id="detail_name"
+                           value = "<%=rows[0].u_name%>" aria-label="Input Name"
+                           aria-describedby="basic-addon1" required>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="u_addr" name ="u_addr">Addr</span>
+                    </div>
+                    <input type="text" name="u_addr" class="form-control" id="detail_addr" aria-label="address" aria-describedby="basic-addon1"  value = "<%=rows[0].addr%>">
+                    <input type="button" class="btn btn-dark" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
+                </div>
+                <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+                <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=발급받은 API KEY를 사용하세요&libraries=services"></script>
+                <script> var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                        mapOption = { center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+                            level: 5 // 지도의 확대 레벨
+                        };
+                    //지도를 미리 생성
+                    var map = new daum.maps.Map(mapContainer, mapOption);
+                    //주소-좌표 변환 객체를 생성
+                    var geocoder = new daum.maps.services.Geocoder();
+                    //마커를 미리 생성
+                    var marker = new daum.maps.Marker({ position: new daum.maps.LatLng(37.537187, 127.005476), map: map });
+                    function sample5_execDaumPostcode() {
+                        new daum.Postcode({
+                            oncomplete: function(data) {
+                                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                                var fullAddr = data.address; // 최종 주소 변수
+                                var extraAddr = ''; // 조합형 주소 변수
+
+                                // 기본 주소가 도로명 타입일때 조합한다.
+                                if(data.addressType === 'R'){
+                                    //법정동명이 있을 경우 추가한다.
+                                    if(data.bname !== ''){
+                                        extraAddr += data.bname;
+                                    }
+                                    // 건물명이 있을 경우 추가한다.
+                                    if(data.buildingName !== ''){
+                                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                                    }
+                                    // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+                                    fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+                                }
+                                // 주소 정보를 해당 필드에 넣는다.
+                                document.getElementById("detail_addr").value = fullAddr;
+                                // 주소로 상세 정보를 검색
+                                geocoder.addressSearch(data.address, function(results, status) {
+                                    // 정상적으로 검색이 완료됐으면
+                                    if (status === daum.maps.services.Status.OK) {
+
+                                        var result = results[0]; //첫번째 결과의 값을 활용
+                                        // 해당 주소에 대한 좌표를 받아서
+                                        var coords = new daum.maps.LatLng(result.y, result.x);
+                                        // 지도를 보여준다.
+                                        mapContainer.style.display = "block"; map.relayout();
+                                        // 지도 중심을 변경한다.
+                                        map.setCenter(coords);
+                                        // 마커를 결과값으로 받은 위치로 옮긴다.
+                                        marker.setPosition(coords) }
+                                });
+                            }
+                        }).open();
+                    }
+                </script>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="u_addr2" name ="u_addr2">detail addr</span>
+                    </div>
+                    <input type="text" name="u_addr2" class="form-control" id="detail_addr2"
+                           placeholder="detail addr" aria-label="Input addr2" value=""
+                           aria-describedby="basic-addon1" required>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="u_number" name ="u_number">Phone Number</span>
+                    </div>
+                    <input type="text" name="u_number" class="form-control"
+                           id="detail_num" value = "<%=rows[0].u_number%>" aria-label="Input Phone Number"
+                           aria-describedby="basic-addon1" required>
+                </div>
+                <button onclick="change_detail()" class="btn btn-dark btn-sm btn-block mt-1">
+                    개인정보수정</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

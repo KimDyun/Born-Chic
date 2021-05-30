@@ -172,13 +172,22 @@
         </div>
     </div>
         <div class="col-lg-6" id="chart" style="width:100px; height:100px;">
+            <input type="hidden" id="mon_1" value="<%=sales[0]%>"/>
+            <input type="hidden" id="mon_2" value="<%=sales[1]%>"/>
+            <input type="hidden" id="mon_3" value="<%=sales[2]%>"/>
+            <input type="hidden" id="mon_4" value="<%=sales[3]%>"/>
+            <input type="hidden" id="mon_5" value="<%=sales[4]%>"/>
+            <input type="hidden" id="mon_6" value="<%=sales[5]%>"/>
+            <input type="hidden" id="mon_7" value="<%=sales[6]%>"/>
+            <input type="hidden" id="mon_8" value="<%=sales[7]%>"/>
+            <input type="hidden" id="mon_9" value="<%=sales[8]%>"/>
+            <input type="hidden" id="mon_10" value="<%=sales[9]%>"/>
+            <input type="hidden" id="mon_11" value="<%=sales[10]%>"/>
+            <input type="hidden" id="mon_12" value="<%=sales[11]%>"/>
+
 
             <script type="text/javascript">
-                // $('#bologna-list a').on('click', function (e) {
-                //
-                //     $(this).tab('show');
-                // })
-
+                var sales = [$('#mon_1').val(),$('#mon_2').val(),$('#mon_3').val(),$('#mon_4').val(),$('#mon_5').val(),$('#mon_6').val(),$('#mon_7').val(),$('#mon_8').val(),$('#mon_9').val(),$('#mon_10').val(),$('#mon_11').val(),$('#mon_12').val()];
                 $(document).ready(function() {
                     var options = {
                         title:{
@@ -189,7 +198,7 @@
                                 fontWeight:  'bold'
                             },
                         },
-                        series: [140000, 230000, 210000, 170000, 150000, 100000, 120000, 170000, 210000,0,50000,100000],
+                        series: sales,
                         chart: {
                             type: 'polarArea'
                         },

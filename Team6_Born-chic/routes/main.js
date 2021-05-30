@@ -27,9 +27,6 @@ router.get('/',function (req, res,next){
 
 router.post('/', function (req, res){
     var search = req.body.search;
-    // res.redirect(url.format({
-    //     pathname:'/itemlist/search/1/?search='+search
-    // }));
     res.redirect('/itemlist/search/1/'+search);
 });
 
