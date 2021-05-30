@@ -107,7 +107,7 @@
         var test = rows[0].detail.split('\n');
         for(var i=0; i<test.length; i++){
         if(test[i].includes('/img/')){%>
-        <p style="text-align: center"><img src="<%=test[i]%>" width="200" height="200"></p>
+        <p style="text-align: center"><img src="<%=test[i]%>"></p>
         <%}else{%>
         <p style="text-align: center; margin-left: 40px; margin-right: 40px"><%=test[i]%></p>
         <%
@@ -203,7 +203,6 @@
         var image_path;
         for(var i=0; strarr[i] != null; i++)
             image_path = '/img/'+strarr[i];
-
         var input_image = '\r\n' + image_path;
         total_text.value += input_image;
     });
