@@ -70,17 +70,17 @@
     <div class="carousel-inner">
         <div class="carousel-item active">
             <a href="#">
-                <img class="d-block img-fluid mx-auto" style="width: 1200px; height: 500px" src="https://images.pexels.com/photos/213399/pexels-photo-213399.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="First slide">
+                <img class="d-block img-fluid mx-auto" style="width: 1200px; height: 500px" src="/img/main1.jpeg" alt="First slide">
             </a>
         </div>
         <div class="carousel-item" >
             <a href="#">
-                <img class="d-block img-fluid mx-auto" style="width: 1200px; height: 500px" src="https://images.pexels.com/photos/2355519/pexels-photo-2355519.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260" alt="Second slide">
+                <img class="d-block img-fluid mx-auto" style="width: 1200px; height: 500px" src="/img/main2.png" alt="Second slide">
             </a>
         </div>
         <div class="carousel-item">
             <a href="#">
-                <img class="d-block img-fluid mx-auto" style="width: 1200px; height: 500px"  src="https://images.pexels.com/photos/2544554/pexels-photo-2544554.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Third slide">
+                <img class="d-block img-fluid mx-auto" style="width: 1200px; height: 500px"  src="/img/main3.png" alt="Third slide">
             </a>
         </div>
         <a class="carousel-control-prev" href="#demo" data-slide="prev">
@@ -96,34 +96,33 @@
     </div>
 </div>
 <br><br>
-
-<div class="container-fluid" style="text-align: center;display: inline-block">
+<div class="container-fluid" style="text-align: center;display: inline-block; margin-left: 40px;">
     <div class="row">
     <div id="demo1" class="carousel slide" data-ride="carousel" style="margin-left: 110px; margin-right: 110px">
         <h4>인기 상품</h4>
     <div class="carousel-inner" style="height: 300px; width: 500px">
     <div class="carousel-item active">
         <a href="/itemdetail/<%=popular_item[0].i_code%>">
-            <img class="d-block img-fluid mx-auto" style="width: 1200px; height: 500px" src="<%=popular_item[0].image%>" alt="First slide">
+            <img class="d-block img-fluid mx-auto" style="width: auto; height: auto;" src="<%=popular_item[0].image%>" alt="First slide">
         </a>
         <div class="carousel-caption d-none d-md-block">
-            <p>제품명</p>
+            <p><%=popular_item[0].i_name%></p>
         </div>
     </div>
     <div class="carousel-item" >
         <a href="/itemdetail/<%=popular_item[1].i_code%>">
-            <img class="d-block img-fluid mx-auto" style="width: 1200px; height: 500px" src="<%=popular_item[1].image%>" alt="Second slide">
+            <img class="d-block img-fluid mx-auto" style="width: auto; height: auto;" src="<%=popular_item[1].image%>" alt="Second slide">
         </a>
         <div class="carousel-caption d-none d-md-block">
-            <p>제품명</p>
+            <p><%=popular_item[1].i_name%></p>
         </div>
     </div>
     <div class="carousel-item">
         <a href="/itemdetail/<%=popular_item[2].i_code%>">
-            <img class="d-block img-fluid mx-auto" style="width: 1200px; height: 500px"  src="<%=popular_item[2].image%>" alt="Third slide">
+            <img class="d-block img-fluid mx-auto" style="width: auto; height: auto;"  src="<%=popular_item[2].image%>" alt="Third slide">
         </a>
         <div class="carousel-caption d-none d-md-block">
-            <p>제품명</p>
+            <p><%=popular_item[2].i_name%></p>
         </div>
     </div>
     <a class="carousel-control-prev" href="#demo1" data-slide="prev">
@@ -147,7 +146,7 @@
                         <img class="d-block img-fluid mx-auto" style="width: auto; height: auto;" src="<%=new_item[0].image%>" alt="First slide">
                     </a>
                     <div class="carousel-caption d-none d-md-block">
-                        <p>제품명</p>
+                        <p><%=new_item[0].i_name%></p>
                     </div>
                 </div>
                 <div class="carousel-item" >
@@ -155,7 +154,7 @@
                         <img class="d-block img-fluid mx-auto" style="width: auto; height: auto;" src="<%=new_item[1].image%>" alt="Second slide">
                     </a>
                     <div class="carousel-caption d-none d-md-block">
-                        <p>제품명</p>
+                        <p><%=new_item[1].i_name%></p>
                     </div>
                 </div>
                 <div class="carousel-item">
@@ -163,7 +162,7 @@
                         <img class="d-block img-fluid mx-auto" style="max-width: 100%; height: auto;"  src="<%=new_item[2].image%>" alt="Third slide">
                     </a>
                     <div class="carousel-caption d-none d-md-block">
-                        <p>제품명</p>
+                        <p><%=new_item[2].i_name%></p>
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#demo2" data-slide="prev">
