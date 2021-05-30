@@ -15,44 +15,55 @@ router.get('/:category/:cur_page/',function (req, res,next){
 
         var page_list_size = 7;
         var total_count = 0;
+        var sqlForSelectList = "select i_code, i_name, sell, price, image, category from item where sell>=1;";
+        connection.query(sqlForSelectList, function (err, sellList) {
+            if(err) console.error("err : " + err);
 
-        var sqlForUpdateList = "SELECT count(*) as cnt FROM ITEM WHERE category = ?";
-        connection.query(sqlForUpdateList, [category], function (err, number) {
-            if (err) console.error("err : " + err);
-            total_count = number[0].cnt;
-            if (total_count < 0) {
-                total_count = 0
-            }
-            var totalpage = Math.ceil(total_count/page_list_size);
-            var start = ((cur_page-1)*page_list_size);
-            var end = (cur_page)*page_list_size-1;
-
-            var sqlForInsertList = "select * from ITEM where category = ?";
-            connection.query(sqlForInsertList,[category], function (err, data) {
+            var sqlForUpdateList = "SELECT count(*) as cnt FROM ITEM WHERE category = ?";
+            connection.query(sqlForUpdateList, [category], function (err, number) {
                 if (err) console.error("err : " + err);
-                var result = [];
-                var seq=0;
-                for(var i= start; i<=end; i++){
-                    if(data[i]==null)
-                        break;
-                    result[seq] = data[i];
-                    seq++;
+                total_count = number[0].cnt;
+                if (total_count < 0) {
+                    total_count = 0
                 }
+                var totalpage = Math.ceil(total_count / page_list_size);
+                var start = ((cur_page - 1) * page_list_size);
+                var end = (cur_page) * page_list_size - 1;
 
-
-                var sqlForInsertList = "select * from buy as b JOIN ITEM as i on i.i_code = b.b_code where b.delivery != -1;";
-                connection.query(sqlForInsertList, function (err, buy) {
+                var sqlForInsertList = "select * from ITEM where category = ?";
+                connection.query(sqlForInsertList, [category], function (err, data) {
                     if (err) console.error("err : " + err);
-                    var sales = Array.from({length: 12}, () => 0);
-                    for(var i=0; i<buy.length; i++){
-                        sales[buy[i].b_date.getMonth()]+=buy[i].b_count* buy[i].price;
+                    var result = [];
+                    var seq = 0;
+                    for (var i = start; i <= end; i++) {
+                        if (data[i] == null)
+                            break;
+                        result[seq] = data[i];
+                        seq++;
                     }
-                    res.render('manage', {user_id: id, admin: admin, rows: rows,total_page:totalpage, cur_page:cur_page,item: result, category:category, sales:sales});
 
+                    var sqlForInsertList = "select * from buy as b JOIN ITEM as i on i.i_code = b.b_code where b.delivery != -1;";
+                    connection.query(sqlForInsertList, function (err, buy) {
+                        if (err) console.error("err : " + err);
+                        var sales = Array.from({length: 12}, () => 0);
+                        for (var i = 0; i < buy.length; i++) {
+                            sales[buy[i].b_date.getMonth()] += buy[i].b_count * buy[i].price;
+                        }
+                        res.render('manage', {
+                            user_id: id,
+                            admin: admin,
+                            rows: rows,
+                            sellList: sellList,
+                            total_page: totalpage,
+                            cur_page: cur_page,
+                            item: result,
+                            category: category,
+                            sales: sales
+                        });
+                    });
                 });
             });
         });
-
     });
 });
 router.post('/delivery/change', function (req, res) {
