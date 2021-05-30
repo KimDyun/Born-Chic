@@ -8,15 +8,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="/javascript/functions.js"></script>
     <style>
-        .carousel-inner > .carousel-item > img{  width: 20px; height: 500px;  }
+        .carousel-inner > .carousel-item > img{  width: 700px; height: 100px;  }
         .text-center {font-size: small;}
     </style>
 
 </head>
 <body>
-<a href="/"  class="nav-link">
-    <div class="jumbotron text-center">
+<a href="/main"  class="nav-link"> <div class="jumbotron text-center">
         <h1 style="color: dimgrey">Born-chic</h1>
     </div></a>
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -33,8 +33,37 @@
             <li class="nav-item"><a href="/itemlist/w_tops/1" class="nav-link">여성 상의</a></li>
             <li class="nav-item"><a href="/itemlist/w_bottoms/1" class="nav-link">여성 하의</a></li>
         </ul>
+        <form class="navbar-form pull-left" role="search" method="post">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default">검색</button>
+                </div>
+            </div>
+        </form>
+        <%if(user_id == ''){%>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="/main/login" class="nav-link">Login</a></li>
+            </ul>
+        <%}else{
+        if(admin == '' || admin == 0){%>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/mypage">마이페이지</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <%} else{%>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/manage/m_outer/1">물품관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <%}%>
+        <%}%>
     </div>
-</nav><br>
+</nav>
+
+
+<br>
+
 <div class="container-fluid">
 
     <div class="row">
@@ -43,45 +72,30 @@
         </div>
         <div class="col-lg-4" style="position: relative">
             <br><br><br><br>
-            <h3>회원가입</h3>
+            <h3>개인정보수정</h3>
             <form action="sign" method="post">
-                <div class="input-group mt-3 mb-1">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="u_id" name="u_id">ID</span>
-                    </div>
-                    <input type="text" name="u_id" class="form-control"
-                           placeholder="Input ID" aria-label="Input ID"
-                           aria-describedby="basic-addon1" required>
-                </div>
+
                 <div class="input-group mb-2">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="pwd" name ="pwd">PW</span>
+                        <span class="input-group-text" name ="u_name">Name</span>
                     </div>
-                    <input type="password" name="pwd" class="form-control"
-                           placeholder="Input Password" aria-label="Input Password"
-                           aria-describedby="basic-addon1" required>
-                </div>
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="u_name" name ="u_name">Name</span>
-                    </div>
-                    <input type="text" name="u_name" class="form-control"
-                           placeholder="Input Name" aria-label="Input Name"
+                    <input type="text" name="u_name" class="form-control"  id="detail_name"
+                           value = "<%=rows[0].u_name%>" aria-label="Input Name"
                            aria-describedby="basic-addon1" required>
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="u_addr" name ="u_addr">Addr</span>
                     </div>
-                <input type="text" name="u_addr" class="form-control" aria-label="address" aria-describedby="basic-addon1" id="sample5_address" placeholder="addr">
-                <input type="button" class="btn btn-dark" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
+                    <input type="text" name="u_addr" class="form-control" id="detail_addr" aria-label="address" aria-describedby="basic-addon1"  value = "<%=rows[0].addr%>">
+                    <input type="button" class="btn btn-dark" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
                 </div>
                 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
                 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=발급받은 API KEY를 사용하세요&libraries=services"></script>
                 <script> var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-                    mapOption = { center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
-                    level: 5 // 지도의 확대 레벨
-                     };
+                        mapOption = { center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+                            level: 5 // 지도의 확대 레벨
+                        };
                     //지도를 미리 생성
                     var map = new daum.maps.Map(mapContainer, mapOption);
                     //주소-좌표 변환 객체를 생성
@@ -110,7 +124,7 @@
                                     fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
                                 }
                                 // 주소 정보를 해당 필드에 넣는다.
-                                document.getElementById("sample5_address").value = fullAddr;
+                                document.getElementById("detail_addr").value = fullAddr;
                                 // 주소로 상세 정보를 검색
                                 geocoder.addressSearch(data.address, function(results, status) {
                                     // 정상적으로 검색이 완료됐으면
@@ -134,8 +148,8 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="u_addr2" name ="u_addr2">detail addr</span>
                     </div>
-                    <input type="text" name="u_addr2" class="form-control"
-                           placeholder="detail addr" aria-label="Input addr2"
+                    <input type="text" name="u_addr2" class="form-control" id="detail_addr2"
+                           placeholder="detail addr" aria-label="Input addr2" value=""
                            aria-describedby="basic-addon1" required>
                 </div>
                 <div class="input-group mb-2">
@@ -143,15 +157,14 @@
                         <span class="input-group-text" id="u_number" name ="u_number">Phone Number</span>
                     </div>
                     <input type="text" name="u_number" class="form-control"
-                           placeholder="Input Phone Number" aria-label="Input Phone Number"
+                           id="detail_num" value = "<%=rows[0].u_number%>" aria-label="Input Phone Number"
                            aria-describedby="basic-addon1" required>
                 </div>
-                <button type="submit" class="btn btn-dark btn-sm btn-block mt-1">
-                    회원가입</button>
+                <button onclick="change_detail()" class="btn btn-dark btn-sm btn-block mt-1">
+                    개인정보수정</button>
             </form>
         </div>
     </div>
 </div>
-<br><br><br>
 </body>
 </html>

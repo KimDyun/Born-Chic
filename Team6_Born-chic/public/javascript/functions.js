@@ -201,3 +201,116 @@ function buy_check(delivery, idx){
         window.location.reload();
     }
 }
+function change_info(where){
+    alert("현재 비밀번호를 입력하세요.");
+    var pwd = prompt("현재 비밀번호 입력" + "");
+    if(pwd==null){
+        alert("취소하셨습니다.");
+        window.location.reload();
+        return;
+    }
+    var truefalse = confirm("비밀번호가 맞습니까?");
+    if (truefalse) {
+        $.ajax({// 서버로 데이터 전송
+            url:'/mypage/check/pwd',
+            type:'post',
+            data:{"pwd":pwd},
+            success: function(data) {
+                var sign = JSON.parse(JSON.stringify(data));
+                sign = sign.data;
+
+                if(sign == "check success") {
+                    if(where==1){
+                        location.href = "/changedetail";
+                    }
+                    else{
+                        var pwd = prompt("새로운 비밀번호" + "");
+                        var pwd2 = prompt("확인 비밀번호"+"");
+                        if(pwd!=pwd2){
+                            alert("비밀번호가 일치하지 않습니다");
+                            window.location.reload();
+                            return false;
+                        }
+                        if(pwd == "" || pwd2=="" || pwd == null || pwd2==null){
+                            alert("비밀번호 변경이 실패하였습니다");
+                            window.location.reload();
+                            return false;
+                        }
+                        else{
+                            $.ajax({// 서버로 데이터 전송
+                                url:'/mypage/change/pwd/',
+                                type:'post',
+                                data:{"pwd":pwd},
+                                success: function(data) {
+                                    var sign = JSON.parse(JSON.stringify(data));
+                                    sign = sign.data;
+
+                                    if(sign == "change success") {
+                                        alert("비밀번호 변경이 완료되였습니다.");
+                                        window.location.reload();
+                                        return true;
+                                    }
+                                    else{
+                                        alert("비밀번호 변경이 실패하였습니다");
+                                        window.location.reload();
+                                        return false;
+                                    }
+                                },
+                                error:function (data){}
+                            })
+                        }
+                    }
+                }
+                else{
+                    alert("비밀번호가 일치하지 않습니다");
+                    window.location.reload();
+                    return false;
+                }
+            },
+            error:function (data){}
+        })
+    } else {
+        if(where ==1){
+            alert("개인정보 변경하기를 취소하셨습니다.");
+            window.location.reload();
+        }
+        else{
+            alert("비밀번호 변경하기를 취소하셨습니다.");
+            window.location.reload();
+        }
+    }
+}
+function change_detail(){
+    var name = $('#detail_name').val();
+    var addr = $('#detail_addr').val() + " " + $('#detail_addr2').val();
+    var num = $('#detail_num').val();
+
+    var result = confirm("변경하시겠습니까?");
+    if(result) {
+        $.ajax({// 서버로 데이터 전송
+            url:'/changedetail/change/detail_info/',
+            type:'post',
+            data:{"name":name, "addr":addr, "phone":num},
+            success: function(data) {
+                var sign = JSON.parse(JSON.stringify(data));
+                sign = sign.data;
+
+                if(sign == "success") {
+                    alert("변경이 완료되였습니다.");
+                    window.location.reload();
+                    return true;
+                }
+                else{
+                    alert("변경이 실패하였습니다");
+                    window.location.reload();
+                    return false;
+                }
+            },
+            error:function (data){}
+        })
+    }
+    else{
+        alert("변경하기를 취소하셨습니다.");
+        window.location.reload();
+    }
+}

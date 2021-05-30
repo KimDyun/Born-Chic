@@ -11,10 +11,18 @@ router.get('/', function (req, res, next) {
     connection.query(sqlForInsertList, [id], function (err, rows) {
         if (err) console.error("err : " + err);
         console.log("rows : " + JSON.stringify(rows));
-        res.render('mypage', {user_id: id, admin: admin, rows: rows});
+        var sqlForInsertList = "select * from user where u_id = ?";
+        connection.query(sqlForInsertList, [id], function (err, user) {
+            if (err) console.error("err : " + err);
+            res.render('mypage', {user_id: id, admin: admin, rows: rows, user:user});
+        });
     });
 });
-router.post('/', function (req, res) {
+router.post('/', function (req, res){
+    var search = req.body.search;
+    res.redirect('/itemlist/search/1/'+search);
+});
+router.post('/control', function (req, res) {
     var id = req.cookies.id;
     var buy_count = req.body.b_count;
     var item_code = req.body.i_code;
@@ -74,5 +82,37 @@ router.post('/', function (req, res) {
         });
     }
 });
+router.post('/check/pwd', function (req, res, next) {
+    var id = req.cookies.id;
+    var admin = req.cookies.admin;
+    var pwd = req.body.pwd;
+    var sqlForInsertList = "select * from user where pwd = ? and u_id = ?";
+    connection.query(sqlForInsertList, [pwd,id], function (err, rows) {
+        if (err) console.error("err : " + err);
+        console.log("rows : " + JSON.stringify(rows));
+        if(rows.length!=0) {
+            res.send({data: "check success"});
+        }
+        else{
+            res.send({data: "check failed"});
+        }
+    });
+});
 
+router.post('/change/pwd', function (req, res, next) {
+    var id = req.cookies.id;
+    var admin = req.cookies.admin;
+    var pwd = req.body.pwd;
+    var sqlForInsertList = "update user set pwd = ? where u_id = ?";
+    connection.query(sqlForInsertList, [pwd,id], function (err, rows) {
+        if (err) console.error("err : " + err);
+        console.log("rows : " + JSON.stringify(rows));
+        if(rows.changedRows==1) {
+            res.send({data: "change success"});
+        }
+        else{
+            res.send({data: "change failed"});
+        }
+    });
+});
 module.exports = router;

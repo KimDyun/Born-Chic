@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="/javascript/functions.js"></script>
+
 </head>
 
 <body>
-<a href="/" class="nav-link">
-    <div class="jumbotron text-center">
+<a href="/main"  class="nav-link"> <div class="jumbotron text-center">
         <h1 style="color: dimgrey">Born-chic</h1>
-    </div>
-</a>
+    </div></a>
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <a class="navbar-brand" style="color: aliceblue">Menu</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -23,11 +23,11 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item"><a href="/itemlist/m_outer/1" class="nav-link">남성 아우터</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">남성 상의</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">남성 하의</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">여성 아우터</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">여성 상의</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">여성 하의</a></li>
+            <li class="nav-item"><a href="/itemlist/m_tops/1" class="nav-link">남성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/m_bottoms/1" class="nav-link">남성 하의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_outer/1" class="nav-link">여성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/w_tops/1" class="nav-link">여성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_bottoms/1" class="nav-link">여성 하의</a></li>
         </ul>
         <form class="navbar-form pull-left" role="search" method="post">
             <div class="input-group">
@@ -37,26 +37,33 @@
                 </div>
             </div>
         </form>
-        <% if(user_id == ''){ %>
+        <%if(user_id == ''){%>
             <ul class="navbar-nav">
                 <li class="nav-item"><a href="/main/login" class="nav-link">Login</a></li>
             </ul>
-        <% }else{
-        if(admin == '' || admin == 0){ %>
+        <%}else{
+        if(admin == '' || admin == 0){%>
             <ul class="navbar-nav">
                 <li class="nav-item "><a class="nav-link" href="/mypage">마이페이지</a></li>
                 <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
             </ul>
-        <% } else{ %>
+        <%} else{%>
             <ul class="navbar-nav">
                 <li class="nav-item "><a class="nav-link" href="/manage">물품관리</a></li>
                 <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
             </ul>
-        <% } %>
-        <% } %>
+        <%}%>
+        <%}%>
     </div>
 </nav>
+<br><br>
+<p>아이디: <%=user[0].u_id%></p>
+<p>이름: <%=user[0].u_name%></p>
+<p>주소: <%=user[0].addr%></p>
+<p>폰: <%=user[0].u_number%></p>
 <br><br><br><br>
+<button type="button" class="btn btn-dark btn-sm btn-block mt-1" onclick="change_info(1)">개인정보 수정</button>
+<button type="button" class="btn btn-dark btn-sm btn-block mt-1" onclick="change_info(2)">비밀번호 변경</button>
 
 <%
 var basketEmpty = true;
@@ -65,12 +72,13 @@ var deliveryEmpty = true;
 var deliveryRows = [];
 var j = 0;
 var k = 0;
-for (var i = 0; i < rows.length; i++) {
+for(var i=0; i<rows.length; i++) {
     if (rows[i].delivery == -1) {
         basketEmpty = false;
         basketRows[j] = rows[i];
         j = j + 1;
-    } else {
+    }
+    else{
         deliveryEmpty = false;
         deliveryRows[k] = rows[i];
         k = k + 1;
@@ -78,7 +86,7 @@ for (var i = 0; i < rows.length; i++) {
 }
 %>
 <div class="container">
-    <h4>장바구니<img src="/img/basket.jpg" style="width: 50px; height: 50px"></h4>
+    <h4>장바구니</h4>
     <table class="table">
         <thead>
             <tr class="table-secondary">
@@ -97,8 +105,8 @@ for (var i = 0; i < rows.length; i++) {
         <h5 style="text-align: center"><a href = "/main">계속 쇼핑하기</a></h5>
         <%}
         else{
-        for(var i = 0; i < basketRows.length; i++){
-            var basketItem = basketRows[i]; %>
+            for(var i=0; i<basketRows.length; i++){
+                var basketItem = basketRows[i]; %>
         <div class="row-cols-lg-3-lg-3">
             <td><img src="<%=basketItem.image%>" width="200" height="200"></td>
             <td style="vertical-align: middle"><a style="color: black; text-decoration: none" href="/itemdetail/<%= basketItem.i_code%>"><%= basketItem.i_name %></a></td>
@@ -109,7 +117,7 @@ for (var i = 0; i < rows.length; i++) {
         <%}} %>
     </table>
     <br><br><br><br>
-    <h4>배송목록<img src="/img/delivery.png" style="width: 50px; height: 50px"></h4>
+    <h4>배송목록</h4>
     <table class="table">
         <thead>
         <tr class="table-secondary">
@@ -129,7 +137,7 @@ for (var i = 0; i < rows.length; i++) {
             <h5 style="text-align: center"><a href = "/main">계속 쇼핑하기</a></h5><br><br><br><br>
         <%}
         else{
-        for(var i = 0; i < deliveryRows.length; i++){
+        for(var i=0; i<deliveryRows.length; i++){
             var deliveryItem = deliveryRows[i]; %>
         <div class="row-cols-lg-3-lg-3">
             <td style="width: 348px; height: 225px"><img src="<%=deliveryItem.image%>" width="200px" height="200px"></td>
@@ -150,65 +158,67 @@ for (var i = 0; i < rows.length; i++) {
 </div>
 
 <script type="text/javascript">
-    function purchase_delete_popup(item_code) {
-        var result = confirm("장바구니에서 상품을 제거하시겠습니까?");
-        // 결제 시스템 추후 추가 구현
-        if (result) {
-            $.ajax({// 서버로 데이터 전송
-                url: '/mypage',
-                type: 'post',
-                data: {"i_code": item_code},
-                success: function (data) {
-                    var sign = JSON.parse(JSON.stringify(data));
-                    sign = sign.data;
+   function purchase_delete_popup(item_code){
+       var result = confirm("장바구니에서 상품을 제거하시겠습니까?");
+       // 결제 시스템 추후 추가 구현
+       if(result){
+           $.ajax({// 서버로 데이터 전송
+               url:'/mypage/control',
+               type:'post',
+               data:{"i_code":item_code},
+               success: function(data) {
+                   var sign = JSON.parse(JSON.stringify(data));
+                   sign = sign.data;
 
-                    if (sign == "delete error") {
-                        alert("장바구니에서 해당 상품을 제거할 수 없습니다. 다시 시도해주십시오.");
-                        window.location.reload();
-                        return false;
-                    } else {
-                        alert("장바구니에서 해당 상품을 제거하였습니다.");
-                        window.location.reload();
-                        return true;
-                    }
-                },
-                error: function (data) {
-                }
-            })   //ajax
-        } else {
-            alert("결제를 취소하셨습니다.");
-            window.location.reload();
-        }
-    }
+                   if(sign == "delete error") {
+                       alert("장바구니에서 해당 상품을 제거할 수 없습니다. 다시 시도해주십시오.");
+                       window.location.reload();
+                       return false;
+                   }
+                   else{
+                       alert("장바구니에서 해당 상품을 제거하였습니다.");
+                       window.location.reload();
+                       return true;
+                   }
+               },
+               error:function (data){}
+           })   //ajax
+       }
+       else{
+           alert("결제를 취소하셨습니다.");
+           window.location.reload();
+       }
+   }
 
     function purchase_popup(i_code, buy_count) {
-        var item_code = parseInt(i_code);
-        console.log(item_code, buy_count);
-        var result = confirm("결제하시겠습니까?");
+       var item_code = parseInt(i_code);
+       console.log(item_code, buy_count);
+       var result = confirm("결제하시겠습니까?");
         // 결제 시스템 추후 추가 구현
-        if (result) {
+        if(result){
             $.ajax({// 서버로 데이터 전송
-                url: '/mypage',
-                type: 'post',
-                data: {"i_code": item_code, "b_count": buy_count},
-                success: function (data) {
+                url:'/mypage/control',
+                type:'post',
+                data:{"i_code":item_code, "b_count":buy_count},
+                success: function(data) {
                     var sign = JSON.parse(JSON.stringify(data));
                     sign = sign.data;
 
-                    if (sign == "Purchase error") {
+                    if(sign == "Purchase error") {
                         alert("구매할 수 없습니다. 다시 시도해주십시오.");
                         window.location.reload();
                         return false;
-                    } else {
+                    }
+                    else{
                         alert("구매가 완료되었습니다.");
                         window.location.reload();
                         return true;
                     }
                 },
-                error: function (data) {
-                }
+                error:function (data){}
             })   //ajax
-        } else {
+        }
+        else{
             alert("결제를 취소하셨습니다.");
             window.location.reload();
         }
@@ -217,29 +227,30 @@ for (var i = 0; i < rows.length; i++) {
     function delivery_complete(item_code) {
         var result = confirm("배송 목록에서 해당 상품을 삭제하시겠습니까?");
         // 결제 시스템 추후 추가 구현
-        if (result) {
+        if(result){
             $.ajax({// 서버로 데이터 전송
-                url: '/mypage',
-                type: 'post',
-                data: {"b_code": item_code},
-                success: function (data) {
+                url:'/mypage/control',
+                type:'post',
+                data:{"b_code":item_code},
+                success: function(data) {
                     var sign = JSON.parse(JSON.stringify(data));
                     sign = sign.data;
 
-                    if (sign == "delete error") {
+                    if(sign == "delete error") {
                         alert("배송 목록에서 해당 상품을 삭제할 수 없습니다.");
                         window.location.reload();
                         return false;
-                    } else {
+                    }
+                    else{
                         alert("배송 목록에서 해당 상품을 삭제하였습니다.");
                         window.location.reload();
                         return true;
                     }
                 },
-                error: function (data) {
-                }
+                error:function (data){}
             })   //ajax
-        } else {
+        }
+        else{
             alert("결제를 취소하셨습니다.");
             window.location.reload();
         }

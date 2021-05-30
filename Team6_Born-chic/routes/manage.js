@@ -82,4 +82,9 @@ router.post('/delivery/change', function (req, res) {
 
 });
 
+router.post('/:category/:cur_page/', function (req, res){
+    var search = req.body.search;
+    res.redirect('/itemlist/search/1/'+search);
+});
+
 module.exports = router;
