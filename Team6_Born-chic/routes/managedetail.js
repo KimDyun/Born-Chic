@@ -85,7 +85,8 @@ router.post('/itemupload',function(req,res,next){
         }
     });
 });
-router.post('/itemupdate/:i_code', function (req, res){
+
+router.post('/search', function (req, res){
     var search = req.body.search;
     res.redirect('/itemlist/search/1/'+search);
 });
