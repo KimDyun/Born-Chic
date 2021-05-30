@@ -57,7 +57,7 @@
             </ul>
         <% } else{ %>
             <ul class="navbar-nav">
-                <li class="nav-item "><a class="nav-link" href="/">물품관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/manage/m_outer/1">물품관리</a></li>
                 <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
             </ul>
         <% } %>
@@ -67,11 +67,11 @@
 
 <br><br><br><br>
 
-<h2>물품 수정</h2>
 <div class="container">
     <div>
+        <h2>물품 수정</h2>
         <div id="Category_dd" class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" id="btnCategory" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-dark dropdown-toggle" style="color: aliceblue" id="btnCategory" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Select a category
                 <span class="caret"></span>
             </button>
@@ -84,6 +84,32 @@
                 <li role="presentation"><a class="dropdown-item" value="w_bottoms" href="javascript:void(0)">여성 하의</a></li>
             </ul>
         </div>
+        <div class="input-group mt-3 mb-1">
+            <div class="input-group-prepend">
+                <span class="input-group-text" style="width: 100px">상품명</span>
+            </div>
+            <input type="hidden" aria-describedby="basic-addon1">
+            <td><input type="text" name="i_name" id="i_name" class="form-control" value="<%=row.i_name%>" aria-label="Update name" aria-describedby="basic-addon1" required></td>
+        </div>
+        <div class="input-group mt-3 mb-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text" style="width: 100px">상품 수량</span>
+            </div>
+            <input type="text" name="i_stock" id="i_stock" class="form-control" value="<%=row.stock%>" aria-label="Update stock" aria-describedby="basic-addon1" required>
+        </div>
+        <div class="input-group mt-3 mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" style="width: 100px">상품 가격</span>
+            </div>
+            <input type="text" name="i_price" id="i_price" class="form-control" value="<%=row.price%>" aria-label="Update price" aria-describedby="basic-addon1" required>
+        </div>
+        <div class="input-group mt-3 mb-4">
+            <div class="input-group-prepend">
+                <span class="input-group-text" style="width: 100px">대표 이미지</span>
+            </div>
+            <input type="file" name="i_image" id="i_image" class="form-control" value="<%=row.image%>" aria-label="Update price" aria-describedby="basic-addon1" required>
+        </div>
+        <!--
         <div>
             <td><input type="hidden" aria-describedby="basic-addon1">상품명</td>
             <td><input type="text" name="i_name" id="i_name" value="<%=row.i_name%>" placeholder="상품명을 입력하세요." class="form-control" aria-describedby="basic-addon1"/></td>
@@ -100,25 +126,30 @@
             <td><input type="hidden" aria-describedby="basic-addon1">대표 이미지</td>
             <td><input type="file" name="i_image" id="i_image" value="<%=row.image%>" class="form-control" aria-describedby="basic-addon1"/></td>
         </div>
-        <br><br>
+        <br><br>-->
         <!-- placeholder은 제목을 입력할 수 있도록 도움말을 출력함 -->
-
-        <div>
-            <label style ="width:120px" class="form-control" aria-describedby="basic-addon1" for="addImage">이미지 삽입</label> <!-- id="addImage와 연결됨 -->
-            <td><textarea style="white-space:pre-line" class="form-control" id="i_content" name="i_content" rows="3" cols="80" placeholder="내용을 입력하세요"><%=row.detail%></textarea></td>
+        <div class="input-group mt-3 mb-3">
+            <div>
+            <div class="input-group-prepend">
+                <span class="input-group-text" style="width: 100px; height: 37px">세부 설명</span>
+                <label style ="width:120px;" class="form-control" aria-describedby="basic-addon1" for="addImage">이미지 삽입</label> <!-- id="addImage와 연결됨 -->
+            </div>
+            <div>
+                <td><textarea style="white-space:pre-line" class="form-control" id="i_content" name="i_content" rows="10" cols="150" placeholder="내용을 입력하세요"><%=row.detail%></textarea></td>
+            </div>
+            </div>
         </div>
     </div>
-    <div style = "width:700px; text-align:center;">
+    <div>
         <div style = "text-align:center;" >
-            <button type = "submit" class="btn" onclick="btnUpdate(<%=row.i_code%>)">수정</button>
-            <button type = "submit" class="btn" onclick="btnDelete(<%=row.i_code%>)">삭제</button>
-            <button type = "button" id = "btnList" class="btn">목록</button>
+            <button class="btn btn-dark btn-sm" type = "submit" onclick="btnUpdate(<%=row.i_code%>)">수정</button>
+            <button class="btn btn-dark btn-sm" type = "button" id = "btnList">목록</button>
         </div>
     </div>
 
     <input type="file" name="addImage" id="addImage" style="display:none;"/></td> <!-- 안보임 -->
 </div>
-
+<br><br><br><br><br>
 <!-- 마찬가지로 내용을 입력하도록 도움말을 출력함 -->
 <script>
     var selected_category = "";

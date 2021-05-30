@@ -13,8 +13,10 @@ router.get('/', function (req, res, next) {
         console.log("rows : " + JSON.stringify(rows));
         var sqlForInsertList = "select * from user where u_id = ?";
         connection.query(sqlForInsertList, [id], function (err, user) {
+            var addr = [];
+            addr=user[0].addr.split('+');
             if (err) console.error("err : " + err);
-            res.render('mypage', {user_id: id, admin: admin, rows: rows, user:user});
+            res.render('mypage', {user_id: id, admin: admin, rows: rows, user:user, addr:addr});
         });
     });
 });

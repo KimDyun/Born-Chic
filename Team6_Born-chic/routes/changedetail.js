@@ -11,7 +11,9 @@ router.get('/', function (req, res){
     connection.query(sqlForSelectList,[id], function (err, result){
         if (err) console.error("err : " + err);
         console.log(result);
-        res.render('changedetail', {user_id: id, rows:result,admin:admin});
+        var addr = [];
+        addr=result[0].addr.split('+');
+        res.render('changedetail', {user_id: id, rows:result,admin:admin, addr:addr});
     });
 });
 router.post('/change/detail_info', function (req, res) {
