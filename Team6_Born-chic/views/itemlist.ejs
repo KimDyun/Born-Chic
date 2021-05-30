@@ -67,7 +67,9 @@
             <img class="card-img-top" src="<%=oneItem.image%>" width="100" height="200" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title"><%=oneItem.i_name%></h5>
-                <p class="card-text">가격 : <%=oneItem.price%> 원</p>
+                <p class="card-text">가격 : <%=oneItem.price%> 원 <%if(oneItem.stock==0){%>
+                        <span style="color: red">품절</span>
+                    <%}%> </p>
             </div>
         </div>
         </div>

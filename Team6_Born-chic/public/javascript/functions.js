@@ -1,10 +1,11 @@
 
 function shopping_basket(){
-    const count = $('#count_button').val();
+    var count = $('#count_button').val();
     const idx = $('#idx').val();
     const user_id = $('#user_id').val();
-    const stock = $('#stock').val();
-
+    var stock = $('#stock').val();
+    stock *=1;
+    count *=1;
     if(user_id =="" || user_id==null){
         alert("로그인 없이는 장바구니에 담을 수 없습니다. 로그인 먼저 해주십시오.");
         window.location.reload();

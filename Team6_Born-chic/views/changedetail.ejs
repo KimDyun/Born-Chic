@@ -87,7 +87,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="u_addr" style="width: 130px; display: inline-block; text-align: center" name ="u_addr">Addr</span>
                     </div>
-                    <input type="text" name="u_addr" class="form-control" id="detail_addr" aria-label="address" aria-describedby="basic-addon1"  value = "<%=rows[0].addr%>">
+                    <input type="text" name="u_addr" class="form-control" id="detail_addr" aria-label="address" aria-describedby="basic-addon1"  value = "<%=addr[0]%>">
                     <input type="button" class="btn btn-dark" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
                 </div>
                 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
@@ -149,7 +149,7 @@
                         <span class="input-group-text" id="u_addr2" style="width: 130px; display: inline-block; text-align: center" name ="u_addr2">detail addr</span>
                     </div>
                     <input type="text" name="u_addr2" class="form-control" id="detail_addr2"
-                           placeholder="detail addr" aria-label="Input addr2" value=""
+                           value="<%=addr[1]%>" aria-label="Input addr2" value=""
                            aria-describedby="basic-addon1" required>
                 </div>
                 <div class="input-group mb-2">

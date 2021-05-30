@@ -9,11 +9,11 @@ router.get('/:category/:cur_page/',function (req, res,next){
     var cur_page = req.params.cur_page;
     var id = req.cookies.id;
     var admin = req.cookies.admin;
-    var sqlForInsertList = "select idx, B.b_id, B.delivery, B.b_count, I.i_name, I.category, I.stock, I.sell, I.image, I.price from BUY as B JOIN ITEM as I on I.i_code = B.b_code where delivery=0 or delivery=1 or delivery=2 ;";
+    var sqlForInsertList = "select idx, B.b_id, B.delivery, B.b_count, I.i_name, I.category, I.stock, I.sell, I.image, I.price from BUY as B JOIN ITEM as I on I.i_code = B.b_code where delivery=0 or delivery=1;";
     connection.query(sqlForInsertList, function (err, rows) {
         if (err) console.error("err : " + err);
 
-        var page_list_size = 9;
+        var page_list_size = 7;
         var total_count = 0;
 
         var sqlForUpdateList = "SELECT count(*) as cnt FROM ITEM WHERE category = ?";
@@ -64,8 +64,6 @@ router.post('/delivery/change', function (req, res) {
         change = 1;
     } else if (delivery == 1) {
         change = 2;
-    } else if (delivery == 2) {
-        change = 3;
     }
     var sqlForUpdateList = "UPDATE BUY SET delivery = ? WHERE idx = ?";
     connection.query(sqlForUpdateList, [change, idx], function (err, check_buy) {
