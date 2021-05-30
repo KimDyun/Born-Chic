@@ -10,7 +10,7 @@ router.get('/itemupdate/:i_code', function (req, res, next){
     console.log(item_code);
     var id = req.cookies.id;
     var admin = req.cookies.admin;
-    if(item_code != undefined) { // item code가 있으면 물품 수정
+    if(item_code != undefined) {
         var sqlForSelectList = "SELECT i_code, i_name, category, image, stock, price, detail FROM item WHERE i_code = ?";
         connection.query(sqlForSelectList, [item_code], function (err, row) {
             if (err) console.error("err : " + err);
