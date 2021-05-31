@@ -19,9 +19,9 @@ Byung Min Kim (2016722030)
 ## Page
 
 *### 로그인 / 회원가입 페이지
-![Uploading Epoch100_Cats_and_Dogs_Using_ImageAugmentation_Dropout.PNG…]()
 
 *### 메인 페이지
+![screencapture-localhost-3000-main-sign-2021-05-31-21_40_45](https://user-images.githubusercontent.com/74770095/120194766-fea3f280-c258-11eb-8fd5-bf4a32fd26a8.png)
 
 *### 물품 리스트 페이지
 
