@@ -70,21 +70,30 @@ router.get('/search/:cur_page/:search', function (req, res){
 
         var sqlForSelectList = "SELECT * FROM ITEM WHERE i_name LIKE ?";
         connection.query(sqlForSelectList,["%"+search+"%"], function (err, data){
-            if (err) console.error("err : " + err);
-            var result = [];
-            var seq=0;
-            for(var i= start; i<=end; i++){
-                if(data[i]==null)
-                    break;
-                result[seq] = data[i];
-                seq++;
-            }
-            res.render('itemlist', {user_id : id, admin: admin, rows: result, total_page:totalpage, cur_page:cur_page, category:"search",search:search});
+            var sqlForSelectList = "select ROUND(avg(rating)) as rate, c_code from comment as c JOIN ITEM as i on i.i_code = c.c_code where reply=0 group by c_code;\n";
+            connection.query(sqlForSelectList, function (err, data2){
+                if (err) console.error("err : " + err);
+                var result = [];
+                var seq=0;
+                for(var i= start; i<=end; i++){
+                    if(data[i]==null)
+                        break;
+                    data[i].rate=0;
+                    for(var j=0; j<data2.length;j++){
+                        if(data[i].i_code==data2[j].c_code){
+                            data[i].rate = data2[j].rate;
+                        }
+                    }
+                    result[seq] = data[i];
+                    seq++;
+                }
+                res.render('itemlist', {user_id : id, admin: admin, rows: result,total_page:totalpage, cur_page:cur_page, category:"search", search:search});
+            });
         });
     });
 
 });
-router.post('/:category/:cur_page/', function (req, res){
+router.post('/search/:cur_page/:search', function (req, res){
     var search = req.body.search;
     res.redirect('/itemlist/search/1/'+search);
 });
