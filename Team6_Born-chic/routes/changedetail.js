@@ -21,13 +21,13 @@ router.post('/change/detail_info', function (req, res) {
     var name = req.body.name;
     var addr = req.body.addr;
     var phone = req.body.phone;
+    var email = req.body.email;
 
-    var sqlForUpdateList = "UPDATE user SET u_name = ?, addr = ?, u_number = ? WHERE u_id = ?";
-    connection.query(sqlForUpdateList, [name, addr, phone, id], function (err, check_buy) {
+    var sqlForUpdateList = "UPDATE user SET u_name = ?, addr = ?, u_number = ?, u_email=? WHERE u_id = ?";
+    connection.query(sqlForUpdateList, [name, addr, phone, email,id], function (err, check_buy) {
         console.log(check_buy);
         if (err) console.error("err : " + err);
         if (check_buy == undefined || check_buy == null) {
-            console.error("buy database setting is failed");
             res.send({data: "error"});
         } else {
             res.send({data: "success"});
