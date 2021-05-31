@@ -5,7 +5,6 @@ var mysql_dbc = require('../config/database')();
 var connection = mysql_dbc.init();
 mysql_dbc.test_open(connection);
 
-
 router.get('/',function (req, res,next){
      var id = req.cookies.id;
     if(id==null)
@@ -87,8 +86,7 @@ router.get('/sign', function (req, res, next){
     res.render('sign');
 });
 
-router.post('/sign', function (req, res){
-
+router.post('/sign', function(req, res){
     var user_id = req.body.u_id;
     var passwd = req.body.pwd;
     var u_name = req.body.u_name;

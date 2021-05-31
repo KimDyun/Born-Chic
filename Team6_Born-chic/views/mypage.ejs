@@ -64,13 +64,24 @@ var basketEmpty = true;
 var basketRows = [];
 var deliveryEmpty = true;
 var deliveryRows = [];
+var purchaseEmpty = true;
+var purchaseRows = [];
+var dateForm = [];
 var j = 0;
 var k = 0;
+var l = 0;
 for(var i=0; i<rows.length; i++) {
     if (rows[i].delivery == -1) {
         basketEmpty = false;
         basketRows[j] = rows[i];
         j = j + 1;
+    }
+    else if(rows[i].delivery == 3){
+        purchaseEmpty = false;
+        purchaseRows[l] = rows[i];
+        dateForm[l] = date[i];
+        l = l+1;
+
     }
     else{
         deliveryEmpty = false;
@@ -155,6 +166,40 @@ for(var i=0; i<rows.length; i++) {
     </div>
     <%}%>
     <br><br><br><br>
+
+    <h4>구매현황<img src="" style="width: 50px; height: 50px"></h4>
+    <table class="table">
+        <thead>
+        <tr class="table-secondary">
+            <th scope="col"></th>
+            <th scope="col">상품명</th>
+            <th scope="col">가격</th>
+            <th scope="col">수량</th>
+            <th scope="col">구매 날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <%if(purchaseEmpty) {%>
+        </tr></tbody></table>
+    <h3 style="text-align: center">구매한 상품이 없습니다.</h3>
+    <h5 style="text-align: center"><a href = "/main">계속 쇼핑하기</a></h5>
+    <%}
+    else{
+    for(var i=0; i<purchaseRows.length; i++){
+        var purchaseItem = purchaseRows[i];
+    %>
+    <div class="row-cols-lg-3-lg-3">
+        <td><img src="<%=purchaseItem.image%>" width="200" height="200"></td>
+        <td style="vertical-align: middle"><a style="color: black; text-decoration: none" href="/itemdetail/<%= purchaseItem.i_code%>"><%= purchaseItem.i_name%></a></td>
+        <td style="vertical-align: middle"><%=purchaseItem.price * purchaseItem.b_count%>원</td>
+        <td style="vertical-align: middle"><%=purchaseItem.b_count%></td>
+        <td style="vertical-align: middle"><%=dateForm[i]%></td>
+    </div></tr></tbody>
+    <%}}%>
+    </table>
+    <br><br><br><br>
+
     <h4>배송목록<img src="/img/delivery.png" style="width: 50px; height: 50px"></h4>
     <table class="table">
         <thead>

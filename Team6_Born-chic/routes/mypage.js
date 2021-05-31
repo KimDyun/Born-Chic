@@ -7,8 +7,13 @@ mysql_dbc.test_open(connection);
 router.get('/', function (req, res, next) {
     var id = req.cookies.id;
     var admin = req.cookies.admin;
-    var sqlForInsertList = "select i_code, i.image, i_name, i.price, b_date, b.delivery, b_count from item as i, buy as b where i_code = b_code and b.delivery <=2 and b_id = ?";
+    var dateForm = [];
+    var sqlForInsertList = "select i_code, i.image, i_name, i.price, b_date, b.delivery, b_count from item as i, buy as b where i_code = b_code and b_id = ?";
     connection.query(sqlForInsertList, [id], function (err, rows) {
+        for(var i = 0 ; i < rows.length ; i++) {
+            var date = new Date(rows[i].b_date);
+            dateForm[i] = date.getFullYear() + '년 ' + (date.getMonth() + 1) + '월 ' + date.getDate() + '일';
+        }
         if (err) console.error("err : " + err);
         console.log("rows : " + JSON.stringify(rows));
         var sqlForInsertList = "select * from user where u_id = ?";
@@ -16,7 +21,7 @@ router.get('/', function (req, res, next) {
             var addr = [];
             addr=user[0].addr.split('+');
             if (err) console.error("err : " + err);
-            res.render('mypage', {user_id: id, admin: admin, rows: rows, user:user, addr:addr});
+            res.render('mypage', {user_id: id, admin: admin, rows: rows, user:user, addr:addr, date:dateForm});
         });
     });
 });
