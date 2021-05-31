@@ -164,7 +164,6 @@
     </div>
 </div>
 <input type="hidden" id="key" value="0000"/>
-<input type="hidden" id="key_check" value="0"/>
 
 <br><br><br>
 <script>
@@ -219,7 +218,6 @@
             alert("메일이 인증 되었습니다.");
             $('#user_email').attr("readonly",true);
             $('#verify_code').hide();
-            $('#key_check').val(1);
             $('#sign_button').attr('disabled', false);
         }
         else{

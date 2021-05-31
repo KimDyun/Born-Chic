@@ -283,15 +283,15 @@ function change_info(where){
 }
 function change_detail(){
     var name = $('#detail_name').val();
-    var addr = $('#detail_addr').val() + " " + $('#detail_addr2').val();
+    var addr = $('#detail_addr').val() + "+" + $('#detail_addr2').val();
     var num = $('#detail_num').val();
-
+    var email = $('#user_email').val();
     var result = confirm("변경하시겠습니까?");
     if(result) {
         $.ajax({// 서버로 데이터 전송
             url:'/changedetail/change/detail_info/',
             type:'post',
-            data:{"name":name, "addr":addr, "phone":num},
+            data:{"name":name, "addr":addr, "phone":num, "email":email},
             success: function(data) {
                 var sign = JSON.parse(JSON.stringify(data));
                 sign = sign.data;
