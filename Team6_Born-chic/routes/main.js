@@ -127,16 +127,14 @@ router.post('/message/update', function (req, res, next){
         }
     });
 });
-let key=0; //key값 비교
-//인증코드 발생
+let key=0;
 var generateKey = function(min,max){
     var generate_key = Math.floor(Math.random()*(max-min+1)) + min;
     return generate_key;
 }
 
-//인증코드 이메일발신
 router.post("/sendauth",function(req,res,next){
-    let email =req.body.email;
+    var email =req.body.email;
     key =generateKey(1111,9999);
 
     let transporter = nodemailer.createTransport({
@@ -149,21 +147,22 @@ router.post("/sendauth",function(req,res,next){
 
     let mailOptions = {
         from: 'kbm2514@gmail.com',
-        to: 'byoungmin251@naver.com',
-        subject: "[윤초코]인증 관련 이메일 입니다.",
+        to: email,
+        subject: "[bornchic] 인증 관련 이메일 입니다.",
         text: "오른쪽 숫자 4자리를 입력해주세요 : " + key
     };
 
     transporter.sendMail(mailOptions, function(error, info){
         if(error){
             console.log(error);
+            res.send({data: "error", truekey:""});
+
         }
         else {
             console.log('Email 전송완료: ' + info.response);
+            res.send({data: "success", truekey:key});
+
         }
     });
-    res.send({data: "success"});
-
-    res.send({success:true, truekey: key});
 });
 module.exports = router;
