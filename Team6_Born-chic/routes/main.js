@@ -7,6 +7,8 @@ mysql_dbc.test_open(connection);
 
 router.get('/',function (req, res,next){
      var id = req.cookies.id;
+    if(id==null)
+        id ="";
     var sqlForSelectList2 = "select * from ITEM ORDER BY i_date DESC limit 3";
     connection.query(sqlForSelectList2 ,function (err, new_item) {
         if (err) console.error("err : " + err);
@@ -14,20 +16,30 @@ router.get('/',function (req, res,next){
         var sqlForSelectList3 = "select ROUND(avg(rating)) as rate, c_code, i.* from comment as c JOIN ITEM as i on c.c_code = i.i_code group by c_code order by rate desc limit 3";
         connection.query(sqlForSelectList3, function (err, popular_item) {
 
+            var message=[];
             if (err) console.error("err : " + err);
             if (id == null) {
                 res.cookie('id', '');
-                res.render('main', {title: 'Main', user_id: '', admin: '', new_item: new_item, popular_item:popular_item});
+                res.render('main', {title: 'Main', user_id: '', admin: '', new_item: new_item, popular_item:popular_item, message:message});
             }
             if (id == '') {
-                res.render('main', {title: 'Main', user_id: id, admin: '', new_item: new_item, popular_item:popular_item});
+                res.render('main', {title: 'Main', user_id: id, admin: '', new_item: new_item, popular_item:popular_item, message:message});
             } else {
-                var sqlForSelectList = "SELECT u_admin FROM USER WHERE u_id=?";
-                connection.query(sqlForSelectList, [id], function (err, admin) {
-                    if (err) console.error("err : " + err);
-                    res.cookie('admin', admin[0].u_admin);
-                    res.render('main', {title: 'Main', user_id: id, admin: admin[0].u_admin, new_item: new_item, popular_item:popular_item});
-
+                var sqlForSelectList3 = "select * from MESSAGE where c_id = ? and check_message=0";
+                connection.query(sqlForSelectList3,[id], function (err, message) {
+                    var sqlForSelectList = "SELECT u_admin FROM USER WHERE u_id=?";
+                    connection.query(sqlForSelectList, [id], function (err, admin) {
+                        if (err) console.error("err : " + err);
+                        res.cookie('admin', admin[0].u_admin);
+                        res.render('main', {
+                            title: 'Main',
+                            user_id: id,
+                            admin: admin[0].u_admin,
+                            new_item: new_item,
+                            popular_item: popular_item,
+                            message: message
+                        });
+                    });
                 });
             }
         });
@@ -100,5 +112,16 @@ router.post('/sign', function(req, res){
         }
     });
 });
-
+router.post('/message/update', function (req, res, next){
+    var idx = req.body.idx;
+    var sqlForUpdateList = "UPDATE MESSAGE SET check_message = 1 WHERE idx = ?";
+    connection.query(sqlForUpdateList, [idx], function (err, check) {
+        if (err) console.error("err : " + err);
+        if (check == undefined) {
+            res.send({data: "error"});
+        } else {
+            res.send({data: "success"});
+        }
+    });
+});
 module.exports = router;
