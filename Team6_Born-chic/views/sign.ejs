@@ -8,6 +8,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-auth.js"></script>
     <style>
         .carousel-inner > .carousel-item > img{  width: 20px; height: 500px;  }
         .text-center {font-size: small;}
@@ -64,12 +66,26 @@
                     </div>
                     <input type="text" name="u_name" class="form-control" placeholder="Input Name" aria-label="Input Name" aria-describedby="basic-addon1" required>
                 </div>
+                <div class="input-group mb-2" id ="verify_email">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="u_email" name ="u_email" style="width: 130px; display: inline-block; text-align: center">Email</span>
+                    </div>
+                    <input type="text" name="u_email" id="user_email" class="form-control" placeholder="Input email" aria-label="Input email" aria-describedby="basic-addon1" required>
+                    <input type="button" class="btn btn-dark" id = "user_email_button"value="이메일 인증" onclick="check_email()" style="width: 110px"><br>
+                </div>
+                <div class="input-group mb-2" id="verify_code" style="display:none">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="u_email" name ="u_email" style="width: 130px; display: inline-block; text-align: center">Code</span>
+                    </div>
+                    <input type="text" id="u_email_code" class="form-control" placeholder="email code" aria-label="Input email code" aria-describedby="basic-addon1" required>
+                    <input type="button" class="btn btn-dark" id="u_email_code_button" value="인증번호 확인" onclick="check_email_code()" style="width: 110px"><br>
+                </div>
                 <div class="input-group mb-2">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="u_addr" name ="u_addr" style="width: 130px; display: inline-block; text-align: center">Addr</span>
                     </div>
                 <input type="text" name="u_addr" class="form-control" aria-label="address" aria-describedby="basic-addon1" id="sample5_address" placeholder="addr">
-                <input type="button" class="btn btn-dark" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
+                <input type="button" class="btn btn-dark" style="width: 110px" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
                 </div>
                 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
                 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=발급받은 API KEY를 사용하세요&libraries=services"></script>
@@ -141,12 +157,75 @@
                            placeholder="Input Phone Number" aria-label="Input Phone Number"
                            aria-describedby="basic-addon1" required>
                 </div>
-                <button type="submit" class="btn btn-dark btn-sm btn-block mt-1">
+                <button type="submit" id="sign_button" class="btn btn-dark btn-sm btn-block mt-1" disabled="true">
                     회원가입</button>
             </form>
         </div>
     </div>
 </div>
+<input type="hidden" id="key" value="0000"/>
+<input type="hidden" id="key_check" value="0"/>
+
 <br><br><br>
+<script>
+    function CheckEmail(str)
+    {
+        var reg_email = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+        if(!reg_email.test(str)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function check_email(){
+        var email = $('#user_email').val();
+        if(!CheckEmail(email)){
+            alert("이메일 양식을 맞추기 바랍니다");
+            return;
+        }
+        $.ajax({// 서버로 데이터 전송
+            url:'/main/sendauth',
+            type:'post',
+            data: {
+                "email":email
+            },
+            success: function(data) {
+                var sign = JSON.parse(JSON.stringify(data));
+                var truekey = sign.truekey;
+                sign = sign.data;
+
+                if(sign == "success"){
+                    alert("메일이 발송되었습니다.");
+                    $('#key').val(truekey);
+                    $('#verify_code').show();
+                    return true;
+                }
+                else{
+                    alert("메일 발송 에러");
+                    return false;
+                }
+            },
+            error:function (data){}
+        })
+
+    }
+    function check_email_code(){
+        var key=$('#key').val();
+        var u_key=$('#u_email_code').val();
+        console.log(u_key);
+        if(key==u_key){
+            alert("메일이 인증 되었습니다.");
+            $('#user_email').attr("readonly",true);
+            $('#verify_code').hide();
+            $('#key_check').val(1);
+            $('#sign_button').attr('disabled', false);
+        }
+        else{
+            alert("메일 인증이 실패 하였습니다.");
+        }
+    }
+</script>
 </body>
 </html>

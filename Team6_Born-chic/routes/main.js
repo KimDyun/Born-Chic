@@ -4,6 +4,8 @@ var router = express.Router();
 var mysql_dbc = require('../config/database')();
 var connection = mysql_dbc.init();
 mysql_dbc.test_open(connection);
+var nodemailer = require('nodemailer');
+
 
 router.get('/',function (req, res,next){
      var id = req.cookies.id;
@@ -90,20 +92,21 @@ router.post('/sign', function(req, res){
     var user_id = req.body.u_id;
     var passwd = req.body.pwd;
     var u_name = req.body.u_name;
+    var u_email = req.body.u_email;
     var addr = req.body.u_addr;
     var addr2 = req.body.u_addr2;
     var u_number = req.body.u_number;
     var u_admin = false;
     addr += '+';
     addr += addr2;
-    var datas = [user_id, passwd, u_name, addr, u_number, u_admin];
+    var datas = [user_id, passwd, u_name, u_email, addr, u_number, u_admin];
     var sqlForCheckList = "SELECT * FROM USER WHERE u_id=?";
     connection.query(sqlForCheckList, user_id, function(err, rows){
         if (err) console.error("err : " + err);
         if(rows[0])
             res.send('<script type="text/javascript">alert("이미 존재하는 아이디입니다."); document.location.href="sign";</script>');
         else{
-            var sqlForInsertList = "INSERT INTO USER(u_id, pwd, u_name, addr, u_number, u_admin) values(?, ?, ?, ?, ?, ?)";
+            var sqlForInsertList = "INSERT INTO USER(u_id, pwd, u_name, u_email, addr, u_number, u_admin) values(?, ?, ?, ?, ?, ?, ?)";
             connection.query(sqlForInsertList,datas ,function (err, rows){
                 if (err) console.error("err : " + err);
                 console.log("rows : "+ JSON.stringify(rows));
@@ -121,6 +124,44 @@ router.post('/message/update', function (req, res, next){
             res.send({data: "error"});
         } else {
             res.send({data: "success"});
+        }
+    });
+});
+let key=0;
+var generateKey = function(min,max){
+    var generate_key = Math.floor(Math.random()*(max-min+1)) + min;
+    return generate_key;
+}
+
+router.post("/sendauth",function(req,res,next){
+    var email =req.body.email;
+    key =generateKey(1111,9999);
+
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'kbm2514@gmail.com',
+            pass: '06anan22@'
+        }
+    });
+
+    let mailOptions = {
+        from: 'kbm2514@gmail.com',
+        to: email,
+        subject: "[bornchic] 인증 관련 이메일 입니다.",
+        text: "오른쪽 숫자 4자리를 입력해주세요 : " + key
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            console.log(error);
+            res.send({data: "error", truekey:""});
+
+        }
+        else {
+            console.log('Email 전송완료: ' + info.response);
+            res.send({data: "success", truekey:key});
+
         }
     });
 });
