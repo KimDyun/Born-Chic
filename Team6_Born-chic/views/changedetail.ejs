@@ -86,6 +86,14 @@
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-prepend">
+                        <span class="input-group-text" style="width: 130px; display: inline-block; text-align: center" name ="u_email">Email</span>
+                    </div>
+                    <input type="text" name="u_name" class="form-control" id="detail_email"
+                           value = "<%=rows[0].u_email%>" aria-label="Input email"
+                           aria-describedby="basic-addon1" required>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
                         <span class="input-group-text" id="u_addr" style="width: 130px; display: inline-block; text-align: center" name ="u_addr">Addr</span>
                     </div>
                     <input type="text" name="u_addr" class="form-control" id="detail_addr" aria-label="address" aria-describedby="basic-addon1"  value = "<%=addr[0]%>">
