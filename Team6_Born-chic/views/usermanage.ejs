@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>
-        Born-chic
-    </title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <title>Born-Chic</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="/javascript/functions.js"></script>
+    <style>
+        .carousel-inner > .carousel-item > img{  width: 700px; height: 100px;  }
+        .text-center {font-size: small;}
+    </style>
+
 </head>
 <body>
 <a href="/main"  class="nav-link"> <div class="jumbotron text-center">
@@ -27,7 +34,7 @@
             <li class="nav-item"><a href="/itemlist/w_tops/1" class="nav-link">여성 상의</a></li>
             <li class="nav-item"><a href="/itemlist/w_bottoms/1" class="nav-link">여성 하의</a></li>
         </ul>
-        <form class="navbar-form pull-left" role="searchw" method="post">
+        <form class="navbar-form pull-left" role="search" method="post">
             <div class="input-group">
                 <input type="text" class="form-control" name="search" placeholder="Search">
                 <div class="input-group-btn">
@@ -42,7 +49,7 @@
         <%}else{
         if(admin == '' || admin == 0){%>
             <ul class="navbar-nav">
-                <li class="nav-item "><a class="nav-link" href="/mypage/">마이페이지</a></li>
+                <li class="nav-item "><a class="nav-link" href="/mypage">마이페이지</a></li>
                 <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
             </ul>
         <%} else{%>
@@ -54,48 +61,64 @@
         <%}%>
         <%}%>
     </div>
-</nav><br><br>
-<%for(var j = 0; j < Math.ceil(rows.length/4); j++){%>
-    <div class="card-deck justify-content-center">
-        <%
-        for(var i=j*4; i<4*(j+1); i++){
-            if(i==rows.length)
-                break;
-            var oneItem = rows[i];
-        %>
-        <div class="col-xs-3" style="width: 300px; height: 300px">
-        <div class="card" onclick="location.href='/itemdetail/<%=oneItem.i_code%>'">
-            <img class="card-img-top" src="<%=oneItem.image%>" width="100" height="200" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title"><%=oneItem.i_name%></h5>
-                <p class="card-text">가격 : <%=oneItem.price%> 원 <%if(oneItem.stock==0){%>
-                        <span style="color: red">품절</span>
-                    <%}%> </p>
-                <p class="card-text">
-                    <%if(oneItem.rate!=0){%>평점 : <%
-                    for(var k=0; k<oneItem.rate; k++){%><span style="color: sandybrown">★</span><%}%>
-                    <%}else{%>
-                                         아직 평점이 없습니다
-                    <%}%>
-                </p>
-            </div>
-        </div>
-        </div>
-        <%}%>
-    </div>
-<br><br><br>
-<%}%>
-<%if(rows.length==0){%>
-    <p>검색에 해당하는 물품이 존재하지 않습니다.</p>
-<%}%>
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-        <%
-        for(i=1; i<=total_page; i++){
-        %>
-        <li class="page-item" ><a class="page-link" style="color: dimgrey" href="/itemlist/<%=category%>/<%=i%>/<%=search%>"><%=i%></a></li>
-        <%}%>
-    </ul>
 </nav>
+<br><br>
+<%for(var i=0; i<rows.length; i++){
+if(rows[i].u_admin==1){%>
+<p><%=rows[i].u_id%></p>
+<p><%=rows[i].pwd%></p>
+<p><%=rows[i].u_name%></p>
+<p><%=rows[i].addr%></p>
+<p><%=rows[i].u_number%></p>
+<%}}%>
+
+<br><br>
+<%for(var i=0; i<rows.length; i++){
+    if(rows[i].u_admin==0){%>
+    <p onclick="change_user_id('<%=rows[i].u_id%>')"><%=rows[i].u_id%></p>
+    <p><%=rows[i].pwd%></p>
+    <p><%=rows[i].u_name%></p>
+    <p><%=rows[i].addr%></p>
+    <p><%=rows[i].u_number%></p>
+<%}}%>
+
+<input type="hidden" id="user_id" value=""/>
+<textarea id="message_content" ></textarea>
+
+<button class="btn btn-dark btn-sm" type="button" onclick="send_message()"></button>
+<script>
+    function change_user_id(user_id){
+        $('#user_id').val(user_id);
+        $('#message_content').attr('placeholder',user_id+'님에 대한 메시지를 작성하세요');
+    }
+
+    function send_message(){
+        var content = $('#message_content').val();
+        var user_id = $('#user_id').val();
+        $.ajax({// 서버로 데이터 전송
+            url: "/usermanage/sendmessage",
+            type: 'post',
+            data: {
+                "user_id":user_id,"content":content,
+            },
+            success: function (data) {
+                var sign = JSON.parse(JSON.stringify(data));
+                sign = sign.data;
+
+                if (sign == "error") {
+                    alert("메시지를 전송할 수 없습니다. 다시 시도주십시오.");
+                    window.location.reload();
+                    return false;
+                } else {
+                    alert("메시지를 전송했습니다.");
+                    window.location.reload();
+                    return true;
+                }
+            },
+            error: function (data) {
+            }
+        })   //ajax
+    }
+</script>
 </body>
 </html>

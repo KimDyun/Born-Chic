@@ -4,6 +4,7 @@
     <title>Born-Chic</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -54,15 +55,13 @@
             <%} else{%>
             <ul class="navbar-nav">
                 <li class="nav-item "><a class="nav-link" href="/manage/m_outer/1">물품관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/usermanage">회원관리</a></li>
                 <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
             </ul>
             <%}%>
         <%}%>
     </div>
 </nav>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <div class="container">
     <h2> </h2>
 </div>
@@ -186,5 +185,48 @@
     우리 쇼핑몰은 여러 사람의 개성, 즉 여러 종류의 타고난 멋을 더욱 돋보이게 해줄 타고난, 멋있는 디자인의 다양한 의류를 판매한다.
 </p>
 <br><br><br>
+<%if(message.length!=0){%>
+    <input type="hidden" id="message_length" value="<%message.length%>"/>
+    <input type="hidden" id="message_id" value="<%=message[0].idx%>"/>
+    <input type="hidden" id="message_content" value="<%=message[0].content%>"/>
+<%}else{%>
+    <input type="hidden" id="message_length" value="0"/>
+    <input type="hidden" id="message_id" value="0"/>
+    <input type="hidden" id="message_content" value="0"/>
+<%}%>
+<script type="text/javascript">
+    var id = $('#message_id').val();
+    var content = $('#message_content').val();
+    var length = $('#message_length').val();
+    window.onload = pageLoad;
+    function pageLoad(){
+        if(content!="0"){
+            var result = confirm('관리자의 메시지: '+content);
+            if(result){
+                $.ajax({// 서버로 데이터 전송
+                    url:'/main/message/update',
+                    type:'post',
+                    data:{idx: id},
+                    success: function (data) {
+                        var sign = JSON.parse(JSON.stringify(data));
+                        sign = sign.data;
+
+                        if (sign == "error") {
+                            alert("메시지를 확인하지 않았습니다.");
+                            window.location.reload();
+                            return false;
+                        } else {
+                            alert("메시지를 확인했습니다.");
+                            window.location.reload();
+                            return true;
+                        }
+                    },
+                    error: function (data) {
+                    }
+                })   //ajax
+            }
+        }
+    }
+</script>
 </body>
 </html>
