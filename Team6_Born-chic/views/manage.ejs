@@ -59,8 +59,10 @@
     </div>
 </nav>
 <br><br>
+<div class="container">
 <table class="table">
     <thead>
+    <h4>판매 현황</h4>
     <tr class="table-secondary">
         <th scope="col">구매자</th>
         <th scope="col">상품명</th>
@@ -102,43 +104,54 @@
 </table>
 <br><br><br>
 
-<table class="table">
-    <thead>
-    <tr class="table-secondary">
-        <th scope="col">물품 이미지</th>
-        <th scope="col">상품명</th>
-        <th scope="col">카테고리</th>
-        <th scope="col">총 판매량</th>
-        <th scope="col">판매 수익</th>
-        <th scope="col">평점</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <%
-        if(sellList.length == 0 || sellList == null){ %>
-            <td><br><p style="margin-right: 40px;margin-left: 40px">아직 판매한 상품이 없습니다.</p></td>
-        <%}%>
 
-        <%
-        var categories = ['m_outer', 'm_tops', 'm_bottoms', 'w_outer', 'w_tops', 'w_bottoms'];
-        var names = ['남성 아우터', '남성 상의', '남성 하의', '여성 아우터', '여성 상의', '여성 하의'];
-        for(var i = 0; i < sellList.length; i++){
-            var category_name = "";
-            for(var j = 0 ; j< categories.length ; j++){
-                if(categories[j] == sellList[i].category)
-                    category_name = names[j];
-            }
-        %>
-            <div class="row-cols-lg-3-lg-3">
-                <td style="vertical-align: middle"><img src="<%= sellList[i].image %>" width="100" height="100"></td>
-                <td style="vertical-align: middle"><%=sellList[i].i_name%></td>
-                <td style="vertical-align: middle"><%=category_name%></td>
-                <td style="vertical-align: middle"><%=sellList[i].sell%></td>
-                <td style="vertical-align: middle"><%=sellList[i].sell*sellList[i].price%></td>
-            </div></tr></tbody>
-    <%}%>
-</table>
+    <h4>판매내역</h4>
+    <div style="width: 100%; height:500px; overflow-y:auto; overflow-x: hidden;">
+        <table class="table">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col" style="text-align: center">물품 이미지</th>
+                <th scope="col" style="text-align: center">상품명</th>
+                <th scope="col">카테고리</th>
+                <th scope="col">총 판매량</th>
+                <th scope="col">판매 수익</th>
+                <th scope="col">별점</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <%
+                if(sellList.length == 0 || sellList == null){ %>
+                    <td><br><p style="margin-right: 40px;margin-left: 40px">아직 판매한 상품이 없습니다.</p></td>
+                <%}%>
+                <%
+                var categories = ['m_outer', 'm_tops', 'm_bottoms', 'w_outer', 'w_tops', 'w_bottoms'];
+                var names = ['남성 아우터', '남성 상의', '남성 하의', '여성 아우터', '여성 상의', '여성 하의'];
+                for(var i = 0; i < sellList.length; i++){
+                    var category_name = "";
+                    for(var j = 0 ; j< categories.length ; j++){
+                        if(categories[j] == sellList[i].category)
+                            category_name = names[j];
+                    }
+                %>
+                    <td style="vertical-align: middle; text-align: center"><img src="<%= sellList[i].image %>" width="100" height="100"></td>
+                    <td style="vertical-align: middle; text-align: center"><%=sellList[i].i_name%></td>
+                    <td style="vertical-align: middle"><%=category_name%></td>
+                    <td style="vertical-align: middle"><%=sellList[i].sell%></td>
+                    <td style="vertical-align: middle"><%=sellList[i].sell*sellList[i].price%></td>
+                    <%
+                    if(sellList[i].rate!=0){%>
+                        <td style="vertical-align: middle"><%for(var k=0; k<sellList[i].rate; k++){%><span style="color: sandybrown">★</span><%}%></td>
+
+                    <%}else{%>
+                        <td style="vertical-align: middle">아직 평점이 없습니다</td>
+                    <%}%>
+
+            </tr></tbody>
+            <%}%>
+        </table>
+    </div>
+</div>
 <br><br><br>
 
 <div class="container-fluid">
