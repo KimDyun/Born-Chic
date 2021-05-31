@@ -16,7 +16,7 @@ Jae Hyeok Choi (2016722091)
 Byung Min Kim (2016722030)
 
 ***
-## Page
+* ## Page
 
 ### 로그인 / 회원가입 페이지
 
