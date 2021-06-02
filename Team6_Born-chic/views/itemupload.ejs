@@ -141,12 +141,13 @@
     });
     var fileInput = document.getElementById("addImage");
     fileInput.addEventListener('change',function(e){
+        var item_category = selected_category;
         var total_text = document.getElementById("i_content");
         var image = fileInput.value;
         var strarr = image.split("\\");
         var image_path;
         for(var i=0; strarr[i] != null; i++)
-            image_path = '/img/'+strarr[i];
+            image_path = '/img/'+ item_category +'/' +strarr[i];
 
         var input_image = '\r\n' + image_path;
         total_text.value += input_image;
@@ -156,7 +157,7 @@
         if(uploadAvailable == false)
             return false;
 
-        item_category = selected_category;
+        var item_category = selected_category;
         console.log(item_category);
         var item_name = document.getElementById("i_name").value;
         var item_stock = document.getElementById("i_stock").value;
@@ -165,7 +166,7 @@
         var strarr = image.split("\\");
         var item_image;
         for(var i=0; strarr[i] != null; i++)
-            item_image = '/img/'+strarr[i];
+            item_image = '/img/'+ item_category +'/' + strarr[i];
         var item_content = document.getElementById("i_content").value;
 
         $.ajax({// 서버로 데이터 전송

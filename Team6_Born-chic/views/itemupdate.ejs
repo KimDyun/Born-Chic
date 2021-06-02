@@ -187,7 +187,7 @@
             var strarr = image.split("\\");
             var item_image;
             for (var i = 0; strarr[i] != null; i++)
-                item_image = '/img/' + strarr[i];
+                item_image = '/img/' + item_category +'/'+ strarr[i];
             var item_content = document.getElementById("i_content").value;
 
             $.ajax({// 서버로 데이터 전송

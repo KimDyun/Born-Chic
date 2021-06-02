@@ -140,16 +140,16 @@ router.post("/sendauth",function(req,res,next){
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'kbm2514@gmail.com',
-            pass: '06anan22@'
+            user: 'swslooser@gmail.com',
+            pass: 'rlaeogus153'
         }
     });
 
     let mailOptions = {
-        from: 'kbm2514@gmail.com',
+        from: 'swslooser@gmail.com',
         to: email,
-        subject: "[bornchic] 인증 관련 이메일 입니다.",
-        text: "오른쪽 숫자 4자리를 입력해주세요 : " + key
+        subject: "[Born-Chic] 인증 관련 이메일 입니다.",
+        text: "[Born-Chic] 회원가입을 위한 인증번호 4자리입니다. [" + key +"]"
     };
 
     transporter.sendMail(mailOptions, function(error, info){

@@ -298,7 +298,7 @@ function change_detail(){
 
                 if(sign == "success") {
                     alert("변경이 완료되였습니다.");
-                    window.location.reload();
+                    location.href = "/mypage";
                     return true;
                 }
                 else{
