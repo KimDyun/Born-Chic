@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Born-chic
+    </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<a href="/main"  class="nav-link"> <div class="jumbotron text-center">
+        <h1 style="color: dimgrey">Born-chic</h1>
+    </div></a>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: aliceblue">Menu</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a href="/itemlist/m_outer/1" class="nav-link">남성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/m_tops/1" class="nav-link">남성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/m_bottoms/1" class="nav-link">남성 하의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_outer/1" class="nav-link">여성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/w_tops/1" class="nav-link">여성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_bottoms/1" class="nav-link">여성 하의</a></li>
+        </ul>
+        <form class="navbar-form pull-left" role="search" method="post">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default">검색</button>
+                </div>
+            </div>
+        </form>
+        <%if(user_id == ''){%>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="/main/login" class="nav-link">Login</a></li>
+            </ul>
+        <%}else{
+        if(admin == '' || admin == 0){%>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/mypage/">마이페이지</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <%} else{%>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/manage/m_outer/1">물품관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/usermanage">회원관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <%}%>
+        <%}%>
+    </div>
+</nav><br><br>
+<%for(var j = 0; j < Math.ceil(rows.length/4); j++){%>
+    <div class="card-deck justify-content-center">
+        <%
+        for(var i=j*4; i<4*(j+1); i++){
+            if(i==rows.length)
+                break;
+            var oneItem = rows[i];
+        %>
+        <div class="col-xs-3" style="width: 300px; height: 300px">
+        <div class="card" onclick="location.href='/itemdetail/<%=oneItem.i_code%>'">
+            <img class="card-img-top" src="<%=oneItem.image%>" width="100" height="200" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title"><%=oneItem.i_name%></h5>
+                <p class="card-text">가격 : <%=oneItem.price%> 원 <%if(oneItem.stock==0){%>
+                        <span style="color: red">품절</span>
+                    <%}%> </p>
+                <p class="card-text">
+                    <%if(oneItem.rate!=0){%>평점 : <%
+                    for(var k=0; k<oneItem.rate; k++){%><span style="color: sandybrown">★</span><%}%>
+                    <%}else{%>
+                                         아직 평점이 없습니다
+                    <%}%>
+                </p>
+            </div>
+        </div>
+        </div>
+        <%}%>
+    </div>
+<br><br><br>
+<%}%>
+<%if(rows.length==0){%>
+    <p>검색에 해당하는 물품이 존재하지 않습니다.</p>
+<%}%>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <%
+        for(i=1; i<=total_page; i++){
+        %>
+        <li class="page-item" ><a class="page-link" style="color: dimgrey" href="/itemlist/<%=category%>/<%=i%>/<%=search%>"><%=i%></a></li>
+        <%}%>
+    </ul>
+</nav>
+<a class="nav-link"> <div style="height:150px; background-color: #eee; align-items: center">
+        <div style="width:300px; height:100px; float:left"></div>
+        <div style="width:1400px; height:100px;  text-align: left; margin:0">
+            <a style="color: gray">ⓒBorn-Chic Korea 서울특별시 노원구 월계1동 광운로 20, 2층 (01819) &nbsp 대표자: Team6 &nbsp 대표자 번호:010-1920-8275<br>
+                사업자 등록 번호:1920-2812-717 &nbsp 개인정보관리책임자:Team6 &nbsp 호스팅서비스사업자:Born-Chic Korea<br>
+                고객센터:1920-0821 &nbsp 이메일:Born_Chic_Korea@bornchic.com &nbsp 통신판매업신고:2021-nowon-01819</a>
+        </div>
+    </div>
+</a>
+</body>
+</html>

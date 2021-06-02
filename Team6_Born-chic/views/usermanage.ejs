@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Born-Chic</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="/javascript/functions.js"></script>
+    <style>
+        .carousel-inner > .carousel-item > img{  width: 700px; height: 100px;  }
+        .text-center {font-size: small;}
+    </style>
+
+</head>
+<body>
+<a href="/main"  class="nav-link"> <div class="jumbotron text-center">
+        <h1 style="color: dimgrey">Born-chic</h1>
+    </div></a>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: aliceblue">Menu</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a href="/itemlist/m_outer/1" class="nav-link">남성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/m_tops/1" class="nav-link">남성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/m_bottoms/1" class="nav-link">남성 하의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_outer/1" class="nav-link">여성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/w_tops/1" class="nav-link">여성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_bottoms/1" class="nav-link">여성 하의</a></li>
+        </ul>
+        <form class="navbar-form pull-left" role="search" method="post">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default">검색</button>
+                </div>
+            </div>
+        </form>
+        <%if(user_id == ''){%>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="/main/login" class="nav-link">Login</a></li>
+            </ul>
+        <%}else{
+        if(admin == '' || admin == 0){%>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/mypage">마이페이지</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <%} else{%>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/manage/m_outer/1">물품관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/usermanage">회원관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <%}%>
+        <%}%>
+    </div>
+</nav>
+<br><br>
+
+<div class="container">
+    <%for(var i=0; i<rows.length; i++){
+    if(rows[i].u_admin==1){%>
+    <h4>관리자 정보</h4>
+    <br>
+    <form>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label"style="text-align: right">I D  : </label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=rows[i].u_id%>">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label"style="text-align: right">Name  : </label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=rows[i].u_name%>">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label"style="text-align: right">Email  : </label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=rows[i].u_email%>">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label"style="text-align: right">Address  : </label>
+            <div class="col-sm-10">
+                <%var addr = rows[i].addr.split('+')
+                if(addr[1]!=null) {
+                    var total_addr = addr[0] + ' '+addr[1];
+                }else{
+                    var total_addr = addr[0];
+                }%>
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=total_addr%>">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label"style="text-align: right">Phone Number  : </label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=rows[i].u_number%>">
+            </div>
+        </div>
+        <button type="button" class="btn btn-dark btn-sm float-right" onclick="change_info(1)">개인정보 수정</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-dark btn-sm float-right mr-1" onclick="change_info(2)">비밀번호 변경</button>
+    </form>
+    <hr>
+    <%}}%>
+    <br><br>
+    <table class="table table-hover">
+        <h4>구매자 정보</h4>
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">아이디</th>
+            <th scope="col">비밀번호</th>
+            <th scope="col">이름</th>
+            <th scope="col">이메일</th>
+            <th scope="col">주소</th>
+            <th scope="col">전화번호</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%for(var i=0; i<rows.length; i++){
+        if(rows[i].u_admin==0){%>
+        <tr>
+            <th scope="row"><%=i%></th>
+            <td onclick="change_user_id('<%=rows[i].u_id%>')"><%=rows[i].u_id%></td>
+            <td onclick="change_user_id('<%=rows[i].u_id%>')"><%=rows[i].pwd%></td>
+            <td onclick="change_user_id('<%=rows[i].u_id%>')"><%=rows[i].u_name%></td>
+            <td onclick="change_user_id('<%=rows[i].u_id%>')"><%=rows[i].u_email%></td>
+            <%var addr = rows[i].addr.split('+')
+                if(addr[1]!=null) {
+                    var total_addr = addr[0] + ' '+addr[1];
+                }else{
+                    var total_addr = addr[0];
+                }%>
+            <td onclick="change_user_id('<%=rows[i].u_id%>')"><%=total_addr%></td>
+            <td onclick="change_user_id('<%=rows[i].u_id%>')"><%=rows[i].u_number%></td>
+        </tr>
+        <%}}%>
+        </tbody>
+    </table>
+    <input type="hidden" id="user_id" value=""/>
+    <p>사용자에게 보낼 메세지</p>
+    <textarea class="form-control" id="message_content" ></textarea>
+    <br>
+    <button class="btn btn-dark btn-sm float-right" type="button" onclick="send_message()">메세지 전송</button>
+</div>
+<br><br>
+<br><br><br>
+<script>
+    function change_user_id(user_id){
+        $('#user_id').val(user_id);
+        $('#message_content').attr('placeholder',user_id+'님에게 보낼 메시지를 작성하세요');
+    }
+
+    function send_message(){
+        var content = $('#message_content').val();
+        var user_id = $('#user_id').val();
+        $.ajax({// 서버로 데이터 전송
+            url: "/usermanage/sendmessage",
+            type: 'post',
+            data: {
+                "user_id":user_id,"content":content,
+            },
+            success: function (data) {
+                var sign = JSON.parse(JSON.stringify(data));
+                sign = sign.data;
+
+                if (sign == "error") {
+                    alert("메시지를 전송할 수 없습니다. 다시 시도주십시오.");
+                    window.location.reload();
+                    return false;
+                } else {
+                    alert("메시지를 전송했습니다.");
+                    window.location.reload();
+                    return true;
+                }
+            },
+            error: function (data) {
+            }
+        })   //ajax
+    }
+</script>
+
+<a class="nav-link"> <div style="height:150px; background-color: #eee; align-items: center">
+        <div style="width:300px; height:100px; float:left"></div>
+        <div style="width:1400px; height:100px;  text-align: left; margin:0">
+            <a style="color: gray">ⓒBorn-Chic Korea 서울특별시 노원구 월계1동 광운로 20, 2층 (01819) &nbsp 대표자: Team6 &nbsp 대표자 번호:010-1920-8275<br>
+                사업자 등록 번호:1920-2812-717 &nbsp 개인정보관리책임자:Team6 &nbsp 호스팅서비스사업자:Born-Chic Korea<br>
+                고객센터:1920-0821 &nbsp 이메일:Born_Chic_Korea@bornchic.com &nbsp 통신판매업신고:2021-nowon-01819</a>
+        </div>
+    </div>
+</a>
+</body>
+</html>

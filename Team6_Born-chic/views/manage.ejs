@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Born-chic
+    </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="/javascript/functions.js"></script>
+</head>
+<body>
+<a href="/main" class="nav-link">
+    <div class="jumbotron text-center">
+        <h1 style="color: dimgrey">Born-chic</h1>
+    </div>
+</a>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: aliceblue">Menu</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a href="/itemlist/m_outer/1" class="nav-link">남성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/m_tops/1" class="nav-link">남성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/m_bottoms/1" class="nav-link">남성 하의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_outer/1" class="nav-link">여성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/w_tops/1" class="nav-link">여성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_bottoms/1" class="nav-link">여성 하의</a></li>
+        </ul>
+        <form class="navbar-form pull-left" role="search" method="post">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default">검색</button>
+                </div>
+            </div>
+        </form>
+        <% if(user_id == ''){ %>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="/main/login" class="nav-link">Login</a></li>
+            </ul>
+        <% }else{
+        if(admin == '' || admin == 0){ %>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/">마이페이지</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <% } else{ %>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/manage/m_outer/1">물품관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/usermanage">회원관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <% } %>
+        <% } %>
+    </div>
+</nav>
+<br><br>
+<div class="container">
+<table class="table">
+    <thead>
+    <h4>주문 현황</h4>
+    <tr class="table-secondary">
+        <th scope="col">구매자</th>
+        <th scope="col">상품명</th>
+        <th scope="col">물품 재고, 가격</th>
+        <th scop="col">구매량</th>
+        <th scope="col">물품 이미지</th>
+        <th scope="col">배송 현황</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <%
+        if(rows.length == 0 || rows == null){ %>
+            <td><br><p style="margin-right: 40px;margin-left: 40px">아직 구매 상품이 없습니다.</p></td>
+        <% } %>
+
+        <% for(var i = 0; i < rows.length; i++){ %>
+        <div class="row-cols-lg-3-lg-3">
+            <td style="vertical-align: middle"><%= rows[i].b_id %></td>
+            <td style="vertical-align: middle"><%= rows[i].i_name %></td>
+            <td style="vertical-align: middle">물품 재고: <%= rows[i].stock %><br>물품 가격: <%= rows[i].price %></td>
+            <td style="vertical-align: middle">물품 구매량: <%= rows[i].b_count %></td>
+            <td style="vertical-align: middle"><img src="<%= rows[i].image %>" width="100" height="100"></td>
+            <% if(rows[i].delivery == 0){ %>
+                <td id="delivery" style="vertical-align: middle">배송 준비중
+                    <button class="btn btn-dark btn-sm float-right" type="button" style="width: 200px; height: 30px"
+                            onclick="buy_check('<%= rows[i].delivery %>', <%= rows[i].idx %>)">배송 중으로 변경
+                    </button>
+                </td>
+            <% }else if(rows[i].delivery == 1){ %>
+                <td id="delivery" style="vertical-align: middle">배송 중
+                    <button class="btn btn-dark btn-sm float-right" type="button" style="width: 200px; height: 30px"
+                            onclick="buy_check('<%= rows[i].delivery %>', <%= rows[i].idx %>)">배송 완료로 변경
+                    </button>
+                </td>
+            <% }%>
+        </div></tr></tbody>
+    <%}%>
+</table>
+<br><br><br>
+
+
+    <h4>판매내역</h4>
+    <div style="width: 100%; height:500px; overflow-y:auto; overflow-x: hidden;">
+        <table class="table">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col" style="text-align: center">물품 이미지</th>
+                <th scope="col" style="text-align: center">상품명</th>
+                <th scope="col">카테고리</th>
+                <th scope="col">총 판매량</th>
+                <th scope="col">판매 수익</th>
+                <th scope="col">별점</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <%
+                if(sellList.length == 0 || sellList == null){ %>
+                    <td><br><p style="margin-right: 40px;margin-left: 40px">아직 판매한 상품이 없습니다.</p></td>
+                <%}%>
+                <%
+                var categories = ['m_outer', 'm_tops', 'm_bottoms', 'w_outer', 'w_tops', 'w_bottoms'];
+                var names = ['남성 아우터', '남성 상의', '남성 하의', '여성 아우터', '여성 상의', '여성 하의'];
+                for(var i = 0; i < sellList.length; i++){
+                    var category_name = "";
+                    for(var j = 0 ; j< categories.length ; j++){
+                        if(categories[j] == sellList[i].category)
+                            category_name = names[j];
+                    }
+                %>
+                    <td style="vertical-align: middle; text-align: center"><img src="<%= sellList[i].image %>" width="100" height="100"></td>
+                    <td style="vertical-align: middle; text-align: center"><%=sellList[i].i_name%></td>
+                    <td style="vertical-align: middle"><%=category_name%></td>
+                    <td style="vertical-align: middle"><%=sellList[i].sell%></td>
+                    <td style="vertical-align: middle"><%=sellList[i].sell*sellList[i].price%></td>
+                    <%
+                    if(sellList[i].rate!=0){%>
+                        <td style="vertical-align: middle"><%for(var k=0; k<sellList[i].rate; k++){%><span style="color: sandybrown">★</span><%}%></td>
+
+                    <%}else{%>
+                        <td style="vertical-align: middle">아직 평점이 없습니다</td>
+                    <%}%>
+
+            </tr></tbody>
+            <%}%>
+        </table>
+    </div>
+</div>
+<br><br><br>
+
+<div class="container-fluid">
+    <div class="row">
+    <div class="card col-lg-6">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" id="bologna-list" role="tablist">
+                <%var categorys = ['m_outer', 'm_tops', 'm_bottoms', 'w_outer', 'w_tops', 'w_bottoms'];
+                var names = ['남성 아우터', '남성 상의', '남성 하의', '여성 아우터', '여성 상의', '여성 하의'];
+                for(var i=0; i<6; i++){
+                    if(categorys[i] == category){%>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/manage/<%=categorys[i]%>/1" role="tab" aria-selected="true" style="color: black"><%=names[i]%></a>
+                    </li>
+                <%}
+                    else{%>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manage/<%=categorys[i]%>/1" role="tab" aria-selected="false" style="color: black"><%=names[i]%></a>
+                    </li>
+                <%}}%>
+            </ul>
+        </div>
+        <div class="card-body">
+            <h4 class="card-title">물품 관리 <button type="submit" class="btn btn-dark btn-sm float-right" onclick="location.href='/managedetail/itemupload'">물품등록</button></h4>
+
+            <div class="tab-content mt-3">
+                <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="m_outer-tab">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">물품 이름</th>
+                            <th scope="col">이미지</th>
+                            <th scope="col">재고</th>
+                            <th scope="col">판매량</th>
+                            <th scope="col">가격</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <% for(var i = 0; i < item.length; i++){%>
+                            <tr>
+                                <th scope="row" style="vertical-align: middle"><a style="color: black; text-decoration: none" href="/managedetail/itemupdate/<%= item[i].i_code%>"><%= item[i].i_name %></a></th>
+                                <td style="vertical-align: middle"><img src="<%= item[i].image %>" width="50" height="50"></td>
+                                <td style="vertical-align: middle"><%= item[i].stock %></td>
+                                <td style="vertical-align: middle"><%= item[i].sell %></td>
+                                <td style="vertical-align: middle"><%= item[i].price %></td>
+                            </tr>
+                        <%} %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </tbody>
+            </table>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <%
+                    for(i=1; i<=total_page; i++){
+                    %>
+                    <li class="page-item" ><a class="page-link" style="color: dimgrey" href="/manage/<%=category%>/<%=i%>/"><%=i%></a></li>
+                    <%}%>
+                </ul>
+            </nav>
+        </div>
+    </div>
+        <div class="col-lg-6" id="chart" style="width:100px; height:100px;">
+            <input type="hidden" id="mon_1" value="<%=sales[0]%>"/>
+            <input type="hidden" id="mon_2" value="<%=sales[1]%>"/>
+            <input type="hidden" id="mon_3" value="<%=sales[2]%>"/>
+            <input type="hidden" id="mon_4" value="<%=sales[3]%>"/>
+            <input type="hidden" id="mon_5" value="<%=sales[4]%>"/>
+            <input type="hidden" id="mon_6" value="<%=sales[5]%>"/>
+            <input type="hidden" id="mon_7" value="<%=sales[6]%>"/>
+            <input type="hidden" id="mon_8" value="<%=sales[7]%>"/>
+            <input type="hidden" id="mon_9" value="<%=sales[8]%>"/>
+            <input type="hidden" id="mon_10" value="<%=sales[9]%>"/>
+            <input type="hidden" id="mon_11" value="<%=sales[10]%>"/>
+            <input type="hidden" id="mon_12" value="<%=sales[11]%>"/>
+
+
+            <script type="text/javascript">
+                var sales = [$('#mon_1').val(),$('#mon_2').val(),$('#mon_3').val(),$('#mon_4').val(),$('#mon_5').val(),$('#mon_6').val(),$('#mon_7').val(),$('#mon_8').val(),$('#mon_9').val(),$('#mon_10').val(),$('#mon_11').val(),$('#mon_12').val()];
+                $(document).ready(function() {
+                    var options = {
+                        title:{
+                            text:"월별 매출액",
+                            align: 'center',
+                            style: {
+                                fontSize:  '18px',
+                                fontWeight:  'bold'
+                            },
+                        },
+                        series: sales,
+                        chart: {
+                            type: 'polarArea'
+                        },
+                        stroke: {
+                            colors: ['#fff']
+                        },
+                        fill: {
+                            opacity: 0.8
+                        },
+                        responsive: [{
+                            breakpoint: 480,
+                            options: {
+                                chart: {
+                                    width: 200,
+                                    height:200
+                                },
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            }
+                        }],
+                        labels: ["1월", "2월", "3월","4월","5월","6월","7월","8월","9월","10월","11월", "12월"],
+                        yaxis: {
+                            labels: {
+                                formatter: function(val) {
+                                    return val + '원'
+                                }
+                            }
+                        }
+                    };
+                    var chart = new ApexCharts(document.querySelector("#chart"), options);
+                    chart.render();
+                });
+            </script>
+        </div>
+    </div>
+</div>
+<a class="nav-link"> <div style="height:150px; background-color: #eee; align-items: center">
+        <div style="width:300px; height:100px; float:left"></div>
+        <div style="width:1400px; height:100px;  text-align: left; margin:0">
+            <a style="color: gray">ⓒBorn-Chic Korea 서울특별시 노원구 월계1동 광운로 20, 2층 (01819) &nbsp 대표자: Team6 &nbsp 대표자 번호:010-1920-8275<br>
+                사업자 등록 번호:1920-2812-717 &nbsp 개인정보관리책임자:Team6 &nbsp 호스팅서비스사업자:Born-Chic Korea<br>
+                고객센터:1920-0821 &nbsp 이메일:Born_Chic_Korea@bornchic.com &nbsp 통신판매업신고:2021-nowon-01819</a>
+        </div>
+    </div>
+</a>
+</body>
+</html>

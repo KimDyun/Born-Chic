@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Born-chic
+    </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+    <script src="/javascript/functions.js"></script>
+
+</head>
+
+<body>
+<a href="/main"  class="nav-link"> <div class="jumbotron text-center">
+        <h1 style="color: dimgrey">Born-chic</h1>
+    </div></a>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: aliceblue">Menu</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a href="/itemlist/m_outer/1" class="nav-link">남성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/m_tops/1" class="nav-link">남성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/m_bottoms/1" class="nav-link">남성 하의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_outer/1" class="nav-link">여성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/w_tops/1" class="nav-link">여성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_bottoms/1" class="nav-link">여성 하의</a></li>
+        </ul>
+        <form class="navbar-form pull-left" role="search" method="post">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default">검색</button>
+                </div>
+            </div>
+        </form>
+        <%if(user_id == ''){%>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="/main/login" class="nav-link">Login</a></li>
+            </ul>
+        <%}else{
+        if(admin == '' || admin == 0){%>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/mypage">마이페이지</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <%} else{%>
+            <ul class="navbar-nav">
+                <li class="nav-item "><a class="nav-link" href="/manage">물품관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/usermanage">회원관리</a></li>
+                <li class="nav-item "><a class="nav-link" href="/main/delete_cookie">Logout</a></li>
+            </ul>
+        <%}%>
+        <%}%>
+    </div>
+</nav>
+<br><br>
+<%
+var basketEmpty = true;
+var basketRows = [];
+var deliveryEmpty = true;
+var deliveryRows = [];
+var purchaseEmpty = true;
+var purchaseRows = [];
+var dateForm = [];
+var j = 0;
+var k = 0;
+var l = 0;
+for(var i=0; i<rows.length; i++) {
+    if (rows[i].delivery == -1) {
+        basketEmpty = false;
+        basketRows[j] = rows[i];
+        j = j + 1;
+    }
+    else if(rows[i].delivery == 3){
+        purchaseEmpty = false;
+        purchaseRows[l] = rows[i];
+        dateForm[l] = date[i];
+        l = l+1;
+    }
+    else{
+        deliveryEmpty = false;
+        deliveryRows[k] = rows[i];
+        k = k + 1;
+    }
+}
+%>
+<div class="container">
+    <h4>회원정보</h4>
+    <br>
+    <form>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label"style="text-align: right">I D  : </label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=user[0].u_id%>">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label"style="text-align: right">Name  : </label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=user[0].u_name%>">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label"style="text-align: right">Email  : </label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=user[0].u_email%>">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label"style="text-align: right">Address  : </label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=addr[0]%> <%=addr[1]%>">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label"style="text-align: right">Phone Number  : </label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=user[0].u_number%>">
+            </div>
+        </div>
+        <button type="button" class="btn btn-dark btn-sm float-right" onclick="change_info(1)">개인정보 수정</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-dark btn-sm float-right mr-1" onclick="change_info(2)">비밀번호 변경</button>
+    </form>
+    <hr>
+    <br><br><br><br>
+
+
+    <h4>장바구니<img src="/img/basket.jpg" style="width: 50px; height: 50px"></h4>
+    <table class="table">
+        <thead>
+            <tr class="table-secondary">
+                <th scope="col"></th>
+                <th scope="col">상품명</th>
+                <th scope="col">가격</th>
+                <th scope="col">수량</th>
+                <th scope="col">확인</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <%if(basketEmpty) {%>
+        </tr></tbody></table>
+        <h3 style="text-align: center">장바구니가 비었습니다.</h3>
+        <h5 style="text-align: center"><a href = "/main">계속 쇼핑하기</a></h5>
+        <%}
+        else{
+            for(var i=0; i<basketRows.length; i++){
+                var basketItem = basketRows[i];
+        %>
+        <div class="row-cols-lg-3-lg-3">
+            <td><img src="<%=basketItem.image%>" width="200" height="200"></td>
+            <td style="vertical-align: middle"><a style="color: black; text-decoration: none" href="/itemdetail/<%= basketItem.i_code%>"><%= basketItem.i_name %></a></td>
+            <td style="vertical-align: middle"><%=basketItem.price * basketItem.b_count%>원</td>
+            <td style="vertical-align: middle"><%=basketItem.b_count%></td>
+            <td style="vertical-align: middle"><button type="submit" class="btn btn-dark btn-sm" onclick="purchase_popup('<%=basketItem.i_code%>', '<%=basketItem.i_name%>', '<%=basketItem.price * basketItem.b_count%>', <%=basketItem.b_count%>)">구매</button>&nbsp;<button type="submit" class="btn btn-dark btn-sm" onclick="purchase_delete_popup(<%=basketItem.i_code%>)">제거</button></td>
+            <input type="hidden" id="code<%=i%>" value="<%=basketItem.i_code%>"/>
+            <input type="hidden" id="name<%=i%>" value="<%=basketItem.i_name%>"/>
+            <input type="hidden" id="price<%=i%>" value="<%=basketItem.price * basketItem.b_count%>"/>
+            <input type="hidden" id="count<%=i%>" value="<%=basketItem.b_count%>"/>
+        </div></tr></tbody>
+        <%}%>
+    </table>
+    <hr class="m-2">
+    <div style="text-align: right">
+        <button type="submit" class="btn btn-dark btn-sm" onclick="all_purchase_popup()">전체 구매</button>
+        <button type="submit" class="btn btn-dark btn-sm" onclick="all_purchase_delete_popup()">전체 제거</button>
+    </div>
+    <%}%>
+    <br><br><br><br>
+
+    <h4>배송목록<img src="/img/delivery.png" style="width: 50px; height: 50px"></h4>
+    <table class="table">
+        <thead>
+        <tr class="table-secondary">
+            <th scope="col"></th>
+            <th scope="col">상품명</th>
+            <th scope="col">가격</th>
+            <th scope="col">수량</th>
+            <th scope="col">배송 현황</th>
+            <th scope="col">확인</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <%if(deliveryEmpty) {%>
+        </tr></tbody></table>
+            <h3 style="text-align: center">현재 배송중인 상품이 없습니다.</h3>
+            <h5 style="text-align: center"><a href = "/main">계속 쇼핑하기</a></h5><br><br><br><br>
+        <%}
+        else{
+        for(var i=0; i<deliveryRows.length; i++){
+            var deliveryItem = deliveryRows[i]; %>
+        <div class="row-cols-lg-3-lg-3">
+            <td style="width: 348px; height: 225px"><img src="<%=deliveryItem.image%>" width="200px" height="200px"></td>
+            <td style="vertical-align: middle"><a style="color: black; text-decoration: none" href="/itemdetail/<%= deliveryItem.i_code %>"><%= deliveryItem.i_name %></a></td>
+            <td style="vertical-align: middle"><%=deliveryItem.price * deliveryItem.b_count%>원</td>
+            <td style="vertical-align: middle"><%=deliveryItem.b_count%></td>
+            <% if(deliveryItem.delivery == 0){%>
+            <td style="vertical-align: middle">배송 준비중</td><td></td>
+            <%} else if(deliveryItem.delivery == 1){%>
+            <td style="vertical-align: middle">배송 중</td><td></td>
+            <%} else{%>
+            <td style="vertical-align: middle">배송 완료</td>
+            <td style="vertical-align: middle"><button type="submit" class="btn btn-dark btn-sm" onclick="delivery_complete(<%=deliveryItem.i_code%>)">확인</button>
+            <%}%>
+            <input type="hidden" id="b_code<%=i%>" value="<%=deliveryItem.i_code%>"/>
+        </div></tr></tbody>
+        <%}%>
+    </table>
+    <hr class="m-2">
+    <div style="text-align: right">
+        <button type="submit" class="btn btn-dark btn-sm" onclick="all_delivery_complete_popup()">전체 확인</button>
+    </div>
+    <%}%>
+    <br><br><br><br>
+
+
+
+
+    <h4>구매내역<img src="/img/shopping.jpg" style="width: 40px; height: 30px"></h4>
+    <div style="width: 100%; height:500px; overflow-y:auto; overflow-x: hidden;">
+    <table class="table">
+        <thead>
+        <tr class="table-secondary">
+            <th scope="col"></th>
+            <th scope="col">상품명</th>
+            <th scope="col">가격</th>
+            <th scope="col">수량</th>
+            <th scope="col">구매 날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <%if(purchaseEmpty) {%>
+        </tr></tbody></table>
+    <h3 style="text-align: center">구매한 상품이 없습니다.</h3>
+    <h5 style="text-align: center"><a href = "/main">계속 쇼핑하기</a></h5>
+    <%}
+    else{
+    for(var i=0; i<purchaseRows.length; i++){
+        var purchaseItem = purchaseRows[i];
+    %>
+    <div class="row-cols-lg-3-lg-3">
+        <td><img src="<%=purchaseItem.image%>" width="200" height="200"></td>
+        <td style="vertical-align: middle"><a style="color: black; text-decoration: none" href="/itemdetail/<%= purchaseItem.i_code%>"><%= purchaseItem.i_name%></a></td>
+        <td style="vertical-align: middle"><%=purchaseItem.price * purchaseItem.b_count%>원</td>
+        <td style="vertical-align: middle"><%=purchaseItem.b_count%></td>
+        <td style="vertical-align: middle"><%=dateForm[i]%></td>
+    </div></tr></tbody>
+    <%}}%>
+    </table>
+    </div>
+    <br><br><br><br>
+</div>
+
+<script type="text/javascript">
+    function all_purchase_delete_popup(){
+        var result = confirm("장바구니에서 모든 상품을 제거하시겠습니까?");
+        if(result) {
+            var item_codes = [];
+            var item_code = "default";
+            for(var i=0; ; i++) {
+                var id = 'code'+i.toString();
+                if(document.getElementById(id)==null)
+                    break;
+                item_code=document.getElementById(id).value;
+                item_codes[i] = item_code;
+            }
+            $.ajax({// 서버로 데이터 전송
+                url:'/mypage/control',
+                type:'post',
+                traditional : true,
+                data:{"i_codes":item_codes},
+                success: function(data) {
+                    var sign = JSON.parse(JSON.stringify(data));
+                    sign = sign.data;
+
+                    if(sign == "delete error") {
+                        alert("장바구니에서 해당 상품을 제거할 수 없습니다. 다시 시도해주십시오.");
+                        window.location.reload();
+                        return false;
+                    }
+                    else{
+                        alert("장바구니에서 해당 상품을 제거하였습니다.");
+                        window.location.reload();
+                        return true;
+                    }
+                },
+                error:function (data){}
+            })   //ajax
+        }
+        else{
+            alert("상품 제거를 취소하셨습니다.");
+            window.location.reload();
+        }
+    }
+    function all_purchase_popup(){
+        var result = confirm("장바구니에 담긴 모든 상품들을 구매하시겠습니까?");
+        if(result) {
+            var item_count =0;
+            var all_price = 0;
+            var item_codes = [];
+            var item_code = "default";
+            var buy_counts = [];
+            var buy_count = 0;
+            for(var i=0; ; i++) {
+                var id = 'code'+i.toString();
+                if(document.getElementById(id)==null)
+                    break;
+                item_count += 1;
+
+                item_code=document.getElementById(id).value;
+                item_codes[i] = item_code;
+
+                var c_id = 'count'+i.toString();
+                buy_count = document.getElementById(c_id).value;
+                buy_counts[i] = buy_count;
+
+                var b_id = 'price'+i.toString();
+                var price = document.getElementById(b_id).value;
+                all_price+= parseInt(price);
+            }
+            var item_name;
+            if(item_count == 1)
+                item_name = document.getElementById("name0").value;
+            else
+                item_name = document.getElementById("name0").value + ' 외 ' + (item_count-1).toString() +'개';
+            console.log(item_name, all_price, typeof(item_name), typeof(all_price));
+            IMP.init('imp49200152');
+            IMP.request_pay({
+                pg : 'inicis', // version 1.1.0부터 지원.
+                pay_method : 'card',
+                merchant_uid : 'merchant_' + new Date().getTime(),
+                name : item_name,
+                amount : all_price, //판매 가격
+                buyer_email : 'iamport@siot.do',
+                buyer_name : '구매자이름',
+                buyer_tel : '010-1234-5678',
+                buyer_addr : '서울특별시 강남구 삼성동',
+                buyer_postcode : '123-456'
+            }, function(rsp) {
+                if ( rsp.success ) {
+                    $.ajax({// 서버로 데이터 전송
+                        url:'/mypage/control',
+                        type:'post',
+                        traditional: true,
+                        data:{"i_codes":item_codes, "b_counts":buy_counts},
+                        success: function(data) {
+                            var sign = JSON.parse(JSON.stringify(data));
+                            sign = sign.data;
+
+                            if(sign == "Purchase error") {
+                                alert("구매할 수 없습니다. 다시 시도해주십시오.");
+                                window.location.reload();
+                                return false;
+                            }
+                            else{
+                                alert("구매가 완료되었습니다.");
+                                window.location.reload();
+                                return true;
+                            }
+                        },
+                        error:function (data){}
+                    })   //ajax
+                }
+                else {
+                    alert("결제를 취소하셨습니다");
+                    window.location.reload();
+                    return false;
+                }
+            });
+        }
+        else{
+            alert("전체 상품 구매를 취소하셨습니다.");
+            window.location.reload();
+        }
+    }
+    function all_delivery_complete_popup(){
+        var result = confirm("모든 배송 완료 상품을 삭제하시겠습니까?");
+        if(result) {
+            var buy_codes = [];
+            var buy_code = "default";
+            for(var i=0; ; i++) {
+                var id = 'b_code'+i.toString();
+                if(document.getElementById(id)==null)
+                    break;
+                buy_code=document.getElementById(id).value;
+                buy_codes[i] = buy_code;
+            }
+            $.ajax({// 서버로 데이터 전송
+                url:'/mypage/control',
+                type:'post',
+                traditional : true,
+                data:{"b_codes":buy_codes},
+                success: function(data) {
+                    var sign = JSON.parse(JSON.stringify(data));
+                    sign = sign.data;
+
+                    if(sign == "delete error") {
+                        alert("배송 목록에서 배송 완료 상품들을 삭제할 수 없습니다. 다시 시도해주십시오.");
+                        window.location.reload();
+                        return false;
+                    }
+                    else{
+                        alert("배송 목록에서 배송 완료 상품들을 제거하였습니다.");
+                        window.location.reload();
+                        return true;
+                    }
+                },
+                error:function (data){}
+            })   //ajax
+        }
+        else{
+            alert("배송 확인을 취소하셨습니다.");
+            window.location.reload();
+        }
+    }
+    function purchase_delete_popup(item_code){
+       var result = confirm("장바구니에서 상품을 제거하시겠습니까?");
+       // 결제 시스템 추후 추가 구현
+       if(result){
+           $.ajax({// 서버로 데이터 전송
+               url:'/mypage/control',
+               type:'post',
+               data:{"i_code":item_code},
+               success: function(data) {
+                   var sign = JSON.parse(JSON.stringify(data));
+                   sign = sign.data;
+
+                   if(sign == "delete error") {
+                       alert("장바구니에서 해당 상품을 제거할 수 없습니다. 다시 시도해주십시오.");
+                       window.location.reload();
+                       return false;
+                   }
+                   else{
+                       alert("장바구니에서 해당 상품을 제거하였습니다.");
+                       window.location.reload();
+                       return true;
+                   }
+               },
+               error:function (data){}
+           })   //ajax
+       }
+       else{
+           alert("상품 제거를 취소하셨습니다.");
+           window.location.reload();
+       }
+   }
+
+    function purchase_popup(i_code, item_name, b_price, buy_count) {
+       var item_code = parseInt(i_code);
+       var buy_price = parseInt(b_price);
+       var result = confirm("구매하시겠습니까?");
+        if(result) {
+            IMP.init('imp49200152');
+            IMP.request_pay({
+                pg : 'inicis', // version 1.1.0부터 지원.
+                pay_method : 'card',
+                merchant_uid : 'merchant_' + new Date().getTime(),
+                name : item_name,
+                amount : buy_price, //판매 가격
+                buyer_email : 'iamport@siot.do',
+                buyer_name : '구매자이름',
+                buyer_tel : '010-1234-5678',
+                buyer_addr : '서울특별시 강남구 삼성동',
+                buyer_postcode : '123-456'
+            }, function(rsp) {
+                if ( rsp.success ) {
+                    $.ajax({// 서버로 데이터 전송
+                        url:'/mypage/control',
+                        type:'post',
+                        data:{"i_code":item_code, "b_count":buy_count},
+                        success: function(data) {
+                            var sign = JSON.parse(JSON.stringify(data));
+                            sign = sign.data;
+
+                            if(sign == "Purchase error") {
+                                alert("구매할 수 없습니다. 다시 시도해주십시오.");
+                                window.location.reload();
+                                return false;
+                            }
+                            else{
+                                alert("구매가 완료되었습니다.");
+                                window.location.reload();
+                                return true;
+                            }
+                        },
+                        error:function (data){}
+                    })   //ajax
+                }
+                else {
+                    alert("결제를 취소하셨습니다");
+                    window.location.reload();
+                    return false;
+                }
+            });
+        }
+        else{
+            alert("구매하기를 취소하셨습니다.");
+            window.location.reload();
+        }
+    }
+
+    function delivery_complete(item_code) {
+        var result = confirm("배송 목록에서 해당 상품을 삭제하시겠습니까?");
+        // 결제 시스템 추후 추가 구현
+        if(result){
+            $.ajax({// 서버로 데이터 전송
+                url:'/mypage/control',
+                type:'post',
+                data:{"b_code":item_code},
+                success: function(data) {
+                    var sign = JSON.parse(JSON.stringify(data));
+                    sign = sign.data;
+
+                    if(sign == "delete error") {
+                        alert("배송 목록에서 해당 상품을 삭제할 수 없습니다.");
+                        window.location.reload();
+                        return false;
+                    }
+                    else{
+                        alert("배송 목록에서 해당 상품을 삭제하였습니다.");
+                        window.location.reload();
+                        return true;
+                    }
+                },
+                error:function (data){}
+            })   //ajax
+        }
+        else{
+            alert("배송 완료 확인을 취소하셨습니다.");
+            window.location.reload();
+        }
+    }
+</script>
+<a class="nav-link"> <div style="height:150px; background-color: #eee; align-items: center">
+        <div style="width:300px; height:100px; float:left"></div>
+        <div style="width:1400px; height:100px;  text-align: left; margin:0">
+            <a style="color: gray">ⓒBorn-Chic Korea 서울특별시 노원구 월계1동 광운로 20, 2층 (01819) &nbsp 대표자: Team6 &nbsp 대표자 번호:010-1920-8275<br>
+                사업자 등록 번호:1920-2812-717 &nbsp 개인정보관리책임자:Team6 &nbsp 호스팅서비스사업자:Born-Chic Korea<br>
+                고객센터:1920-0821 &nbsp 이메일:Born_Chic_Korea@bornchic.com &nbsp 통신판매업신고:2021-nowon-01819</a>
+        </div>
+    </div>
+</a>
+</body>
+</html>

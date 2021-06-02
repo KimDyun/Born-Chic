@@ -1,29 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Born-Chic</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <style>
+        .carousel-inner > .carousel-item > img{  width: 20px; height: 500px;  }
+        .text-center {font-size: small;}
+    </style>
+
 </head>
 <body>
+<a href="/main"  class="nav-link">
+    <div class="jumbotron text-center">
+        <h1 style="color: dimgrey">Born-chic</h1>
+    </div></a>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: aliceblue">Menu</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a href="/itemlist/m_outer/1" class="nav-link">남성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/m_tops/1" class="nav-link">남성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/m_bottoms/1" class="nav-link">남성 하의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_outer/1" class="nav-link">여성 아우터</a></li>
+            <li class="nav-item"><a href="/itemlist/w_tops/1" class="nav-link">여성 상의</a></li>
+            <li class="nav-item"><a href="/itemlist/w_bottoms/1" class="nav-link">여성 하의</a></li>
+        </ul>
+    </div>
+</nav><br>
+<div class="container-fluid">
 
-<h3>로그인</h3>
-<form action="/login" method="post">
-    <table>
-        <tr>
-            <td>아이디 : </td>
-            <td><input type="text" name="u_id"></td>
-        </tr>
-        <tr>
-            <td>비번 : </td>
-            <td><input type="password" name="pwd"></td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="로그인"></td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="회원가입"></td>
-        </tr>
-    </table>
-</form>
+    <div class="row">
+        <div class="col-lg-6">
+            <img class="d-block img-fluid mx-auto" style=" height: 400px" src="/img/login.jpg">
+        </div>
+        <div class="col-lg-4" style="position: relative">
+            <br><br><br><br>
+            <h3>로그인</h3>
+            <form action="login" method="post">
+                <div class="input-group mt-3 mb-1">
+                    <div class="input-group-prepend" style="text-align: center">
+                        <span class="input-group-text" id="u_id" name="u_id" style="width: 50px;display: inline-block; text-align: center">I D</span>
+                    </div>
+                    <input type="text" name="u_id" class="form-control" placeholder="Input ID" aria-label="Input ID" aria-describedby="basic-addon1" required>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="pwd" name ="pwd" style="width: 50px; display: inline-block; text-align: center">PW</span>
+                    </div>
+                    <input type="password" name="pwd" class="form-control" placeholder="Input Password" aria-label="Input Password" aria-describedby="basic-addon1" required>
+                </div>
+                <button type="submit" class="btn btn-dark btn-sm btn-block">
+                    로그인 하기</button>
+            </form>
+            <button type="button" class="btn btn-dark btn-sm btn-block mt-1"
+                    onclick="location.href='/main/sign'">회원가입 하기</button>
+        </div>
+    </div>
+</div>
+<br><br><br>
+<a class="nav-link"> <div style="height:150px; background-color: #eee; align-items: center">
+        <div style="width:300px; height:100px; float:left"></div>
+        <div style="width:1400px; height:100px;  text-align: left; margin:0">
+            <a style="color: gray">ⓒBorn-Chic Korea 서울특별시 노원구 월계1동 광운로 20, 2층 (01819) &nbsp 대표자: Team6 &nbsp 대표자 번호:010-1920-8275<br>
+                사업자 등록 번호:1920-2812-717 &nbsp 개인정보관리책임자:Team6 &nbsp 호스팅서비스사업자:Born-Chic Korea<br>
+                고객센터:1920-0821 &nbsp 이메일:Born_Chic_Korea@bornchic.com &nbsp 통신판매업신고:2021-nowon-01819</a>
+        </div>
+    </div>
+</a>
 </body>
 </html>
